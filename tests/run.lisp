@@ -1,0 +1,12 @@
+;;;; sbcl --script tests/run.lisp
+(let ((*load-verbose* nil)
+      (*load-print* nil)
+      (root (merge-pathnames (make-pathname :directory '(:relative :up))
+                             (make-pathname :name nil :type nil :defaults *load-truename*))))
+  (load (merge-pathnames "src/feature-audit.lisp" root))
+  (load (merge-pathnames "tests/tests.lisp" root))
+  (let ((ok (funcall (find-symbol "RUN-TESTS" "FEATURE-AUDIT-TESTS"))))
+    #+sbcl (sb-ext:exit :code (if ok 0 1))
+    #+ccl (ccl:quit (if ok 0 1))
+    #+ecl (ext:quit (if ok 0 1))
+    #+clisp (ext:quit (if ok 0 1))))

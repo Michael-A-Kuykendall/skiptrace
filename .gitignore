@@ -1,0 +1,13 @@
+# Windows Mark-of-the-Web sidecars from the original zip
+*:Zone.Identifier
+*:Zone.Identifier:*
+
+# sweep.sh writes clones and reports here
+corpus/
+sweep/
+
+# Lisp compile output
+*.fasl
+*.lx64fsl
+*.fas
+*.lib
