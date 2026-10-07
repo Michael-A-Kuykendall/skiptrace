@@ -418,8 +418,7 @@ Handwritten profiles live in DIR/approximate/ and load when NAME is requested."
                        (sort (mapcar #'read-profile (profile-files dir))
                              #'string< :key #'profile-name)))))
 
-;;; Feature names that exist somewhere in the Lisp world, so #+lispworks reads as
-;;; "not in your matrix" rather than "typo".
+;;; Real feature names in some Lisp. A near miss against one of them is not a typo.
 (defparameter *known-features*
   '(:allegro :franz-inc :lispworks :lispworks6 :lispworks7 :lispworks8 :clisp :cmu :cmucl :cmu20
     :scl :mcl :openmcl :ccl :clozure :clozure-common-lisp :ecl :abcl :armedbear :java :mkcl :clasp
@@ -537,7 +536,7 @@ lispworks-64bit, java-1.8), the implementation name; otherwise NIL."
          *exclusive-groups*))
 
 (defun chain-satisfiable (site)
-  "T if some conceivable image reads SITE's form, NIL if none can, :UNKNOWN if we can't tell."
+  "T when some feature set reads SITE's form, NIL when none can, :UNKNOWN when the guard is not static or the search is wider than 16 names."
   (let ((chain (site-chain site)) (atoms (chain-atoms site)))
     (cond ((some (lambda (s) (and (consp (site-expr s)) (member (first (site-expr s)) '(:dynamic :bad))))
                  chain)
@@ -650,12 +649,12 @@ doesn't already have them: the push may be conditional or run after the read."
             (length contradictions) (length typos))
     (format stream "skiptrace: ~a file~:p, ~a guarded form~:p (~a commented out with #+(or)/#+nil/#+ignore)~%~%"
             (length results) (length (getf analysis :sites)) (length (getf analysis :comment-sites)))
-    (format stream "Profiles (matrix columns, left to right):~%")
+    (format stream "Implementations:~%")
     (loop for p in profiles for i from 1
           do (format stream "  [~a] ~a~@[  -- ~a~]~%" i (profile-name p) (profile-source p)))
 
     (when all
-      (format stream "~%== Every guarded form ==   + read   . skipped   ? can't tell~%")
+      (format stream "~%== Every guarded form ==   + reads the form, . skips the form, ? not a static feature test~%")
       (dolist (s live)
         (format stream "  ~{~a~^ ~}  ~a  ~a~%"
                 (mapcar (lambda (p) (status-char (read-status s p))) profiles)
@@ -674,16 +673,15 @@ doesn't already have them: the push may be conditional or run after the read."
             (print-sites where stream :preview nil :limit 5)))
         (format stream "  none~%"))
 
-    (format stream "~%== Never read by your matrix, though each feature involved appears in some profile (~a) ==~%"
+    (format stream "~%== Never read: each feature in the guard is in one of these implementations, and no implementation here reads the form (~a) ==~%"
             (length matrix-dead))
-    (format stream "  Usually unsupported-implementation fallbacks, or a combination you don't test~%  (say clisp + win32). Worth a glance.~%")
     (if matrix-dead
         (print-sites matrix-dead stream :limit (if all 100000 10))
         (format stream "  none~%"))
 
     (let ((untested (remove-if (lambda (u) (assoc (car u) typos))
                                (hash-to-ranked-list (getf analysis :untested)))))
-      (format stream "~%== Untested: forms only read with features none of your profiles have ==~%")
+      (format stream "~%== Needs a feature none of these implementations have ==~%")
       (if untested
           (dolist (u untested)
             (format stream "  :~(~30a~) ~4d form~:p in ~d file~:p~%" (car u) (length (cdr u)) (files-count (cdr u))))
@@ -693,8 +691,7 @@ doesn't already have them: the push may be conditional or run after the read."
            (known (getf analysis :known))
            (other (remove-if (lambda (o) (or (member (car o) known) (assoc (car o) typos))) outside)))
       (when other
-        (format stream "~%== Feature names this tool has never heard of (~a) ==~%" (length other))
-        (format stream "  Not typos as far as it can tell: project-specific, other libraries', or exotic ports.~%")
+        (format stream "~%== Feature names none of these implementations define (~a) ==~%" (length other))
         (dolist (o other)
           (format stream "  :~(~30a~) ~4d site~:p~@[   (version feature of ~(~a~))~]~%"
                   (car o) (length (cdr o)) (version-feature-of (car o))))))
@@ -718,7 +715,7 @@ doesn't already have them: the push may be conditional or run after the read."
       (when pushed
         (format stream "~%Features this code pushes onto *features* itself (treated as unknown, not as present):~%  ~{:~(~a~)~^ ~}~%" pushed)))
 
-    (format stream "~%== Per profile ==~%")
+    (format stream "~%== Per implementation ==~%")
     (dolist (p profiles)
       (let ((n (count :true live :key (lambda (s) (read-status s p)))))
         (format stream "  ~30a reads ~4d of ~d guarded forms~%" (profile-name p) n (length live))))
@@ -903,15 +900,14 @@ The command-line launcher passes that directory itself and does not need this."
 (defun usage ()
   (format t "Usage: skiptrace [options] PATH...
 
-Reports which #+/#- guarded forms (and ASDF :if-feature components) each
-implementation profile actually reads, which are never read by any of them,
-and which feature names look like typos.
+Reports which #+/#- forms and ASDF :if-feature components each loaded
+implementation reads.
 
 Options:
   --profiles NAME,NAME   Only use these profiles (default: all in the profile dir)
   --profile-dir DIR      Where *.sexp profiles live (default: ../profiles next to this tool)
   --known FEAT,FEAT      Extra feature names to treat as legitimate
-  --all                  Print the full matrix, not just findings
+  --all                  Print every guarded form, not only the findings
   --json                 Machine-readable output
   --strict               Exit 1 on contradictions or likely typos (for CI)
   -h, --help             This text
