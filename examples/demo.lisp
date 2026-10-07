@@ -1,5 +1,5 @@
-;;;; A file with one of each problem feature-audit looks for.
-;;;; sbcl --script bin/feature-audit.lisp examples/
+;;;; A file with one of each problem skiptrace looks for.
+;;;; sbcl --script bin/skiptrace.lisp examples/
 
 (defpackage #:demo (:use #:cl))
 (in-package #:demo)

@@ -1,4 +1,4 @@
-;;;; Print a feature-audit profile for the Lisp running this file.
+;;;; Print a skiptrace profile for the Lisp running this file.
 ;;;;
 ;;;;   sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
 ;;;;   ccl -b -l dump-features.lisp -e '(quit)' > profiles/ccl-linux-x86-64.sexp

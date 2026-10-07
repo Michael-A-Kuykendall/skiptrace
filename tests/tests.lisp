@@ -1,10 +1,10 @@
 ;;;; Tests. Run:  sbcl --script tests/run.lisp
 
-(defpackage #:feature-audit-tests
-  (:use #:common-lisp #:feature-audit)
+(defpackage #:skiptrace-tests
+  (:use #:common-lisp #:skiptrace)
   (:export #:run-tests))
 
-(in-package #:feature-audit-tests)
+(in-package #:skiptrace-tests)
 
 (defvar *failures* 0)
 (defvar *count* 0)
@@ -20,12 +20,12 @@
        (format t "FAIL ~a~%  expected ~s~%  got      ~s~%" ,name want got))))
 
 (defun sites-of (text &key asd)
-  (feature-audit::fr-sites (feature-audit::scan-text text "t.lisp" :asd asd)))
+  (skiptrace::fr-sites (skiptrace::scan-text text "t.lisp" :asd asd)))
 
 (defun summary (text &key asd)
   "List of (line guard-string preview parent-line) for each site in TEXT."
   (mapcar (lambda (s)
-            (list (site-line s) (feature-audit::site-guard-string s) (site-preview s)
+            (list (site-line s) (skiptrace::site-guard-string s) (site-preview s)
                   (and (site-parent s) (site-line (site-parent s)))))
           (sites-of text :asd asd)))
 
@@ -41,7 +41,7 @@
                          :if-does-not-exist :create)
       (write-string "#+sbcl (nested)" out))
     (unwind-protect
-         (sort (mapcar #'cdr (feature-audit::collect-files root)) #'string<)
+         (sort (mapcar #'cdr (skiptrace::collect-files root)) #'string<)
       (ignore-errors (delete-file leaf)))))
 
 (defun run-tests ()
@@ -119,39 +119,39 @@
   ;; Pushed features
   (check "pushed features"
          (sort (mapcar #'symbol-name
-                       (feature-audit::find-pushed-features
+                       (skiptrace::find-pushed-features
                         "(pushnew :my-lib *features*) (push :other cl:*features*) (pushnew x *features*)"))
                #'string<)
          '("MY-LIB" "OTHER"))
   (check "push in comment ignored"
          (sort (mapcar #'symbol-name
-                       (feature-audit::find-pushed-features
+                       (skiptrace::find-pushed-features
                         ";; (pushnew :ghost *features*)
 (pushnew :real *features*)"))
                #'string<)
          '("REAL"))
   (check "push in string ignored"
          (sort (mapcar #'symbol-name
-                       (feature-audit::find-pushed-features
+                       (skiptrace::find-pushed-features
                         "(print \"(pushnew :ghost *features*)\") (pushnew :real *features*)"))
                #'string<)
          '("REAL"))
 
   ;; Typo detection: conservative on purpose
-  (check "typo underscore" (feature-audit::near-miss :sb_thread '(:sb-thread :sbcl)) :sb-thread)
-  (check "typo swap" (feature-audit::near-miss :linxu '(:linux :unix)) :linux)
-  (check "version is not a typo" (feature-audit::near-miss :lispworks4 '(:lispworks)) nil)
-  (check "digit change is not a typo" (feature-audit::near-miss :32-bit-host '(:64-bit-host)) nil)
-  (check "suffix is not a typo" (feature-audit::near-miss :solaris2 '(:solaris)) nil)
-  (check "no false match" (feature-audit::near-miss :my-feature '(:linux :sbcl)) nil)
-  (check "version feature" (feature-audit::version-feature-of :lispworks4.1) "LISPWORKS")
-  (check "version feature dash" (feature-audit::version-feature-of :ccl-5.2) "CCL")
-  (check "not a version feature" (feature-audit::version-feature-of :lispworks) nil)
+  (check "typo underscore" (skiptrace::near-miss :sb_thread '(:sb-thread :sbcl)) :sb-thread)
+  (check "typo swap" (skiptrace::near-miss :linxu '(:linux :unix)) :linux)
+  (check "version is not a typo" (skiptrace::near-miss :lispworks4 '(:lispworks)) nil)
+  (check "digit change is not a typo" (skiptrace::near-miss :32-bit-host '(:64-bit-host)) nil)
+  (check "suffix is not a typo" (skiptrace::near-miss :solaris2 '(:solaris)) nil)
+  (check "no false match" (skiptrace::near-miss :my-feature '(:linux :sbcl)) nil)
+  (check "version feature" (skiptrace::version-feature-of :lispworks4.1) "LISPWORKS")
+  (check "version feature dash" (skiptrace::version-feature-of :ccl-5.2) "CCL")
+  (check "not a version feature" (skiptrace::version-feature-of :lispworks) nil)
 
   ;; Whole pipeline on a fixture with known answers
-  (let* ((profiles (list (feature-audit::make-profile :name "a" :features '(:sbcl :linux :unix))
-                         (feature-audit::make-profile :name "b" :features '(:ccl :linux :unix))))
-         (results (list (feature-audit::scan-text "#+sbcl (a)
+  (let* ((profiles (list (skiptrace::make-profile :name "a" :features '(:sbcl :linux :unix))
+                         (skiptrace::make-profile :name "b" :features '(:ccl :linux :unix))))
+         (results (list (skiptrace::scan-text "#+sbcl (a)
 #+ccl (b)
 #+(and sbcl ccl) (never)
 #+lispworks (lw)
@@ -165,7 +165,7 @@
 (progn
   #+openmcl (impossible))
 #+ignore (also-commented)" "f.lisp")))
-         (an (feature-audit::analyze results profiles '()))
+         (an (skiptrace::analyze results profiles '()))
          (lines (lambda (key) (mapcar #'site-line (getf an key))))
          (untested (sort (loop for k being the hash-keys of (getf an :untested) collect (symbol-name k))
                          #'string<)))
@@ -175,7 +175,7 @@
     (check "typos" (mapcar (lambda (x) (list (first x) (second x))) (getf an :typos)) '((:linxu :linux)))
     (check "comment sites" (length (getf an :comment-sites)) 2)
     (check "pushed feature is can't-tell, not dead"
-           (feature-audit::read-status (find 8 (getf an :live) :key #'site-line)
+           (skiptrace::read-status (find 8 (getf an :live) :key #'site-line)
                                        (first (getf an :profiles)))
            :unknown)
     (check "maybe" (eval-feature-expression :x '() '(:x)) :unknown)

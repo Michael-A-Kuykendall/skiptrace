@@ -1,13 +1,13 @@
-;;;; Command-line launcher.  sbcl --script bin/feature-audit.lisp [options] PATH...
-;;;; Also: ecl --shell bin/feature-audit.lisp PATH...
-;;;;       clisp bin/feature-audit.lisp PATH...
-;;;;       ccl -b -l bin/feature-audit.lisp -- PATH...
+;;;; Command-line launcher.  sbcl --script bin/skiptrace [options] PATH...
+;;;; Also: ecl --shell bin/skiptrace PATH...
+;;;;       clisp bin/skiptrace PATH...
+;;;;       ccl -b -l bin/skiptrace -- PATH...
 
 (let* ((*load-verbose* nil)
        (*load-print* nil)
        (here (make-pathname :name nil :type nil :defaults *load-truename*))
        (root (merge-pathnames (make-pathname :directory '(:relative :up)) here)))
-  (load (merge-pathnames "src/feature-audit.lisp" root))
+  (load (merge-pathnames "src/skiptrace.lisp" root))
   (labels ((script-tail (argv)
              "Arguments after this script. ECL keeps the script path in COMMAND-ARGS;
 `--` is accepted too, so an explicit separator still works."
@@ -31,10 +31,10 @@
                  #+clisp ext:*args*
                  #-(or sbcl ccl ecl clisp) (error "Add argument handling for this Lisp"))
          (code (handler-case
-                   (funcall (find-symbol "MAIN" "FEATURE-AUDIT") args
+                   (funcall (find-symbol "MAIN" "SKIPTRACE") args
                             :default-profile-dir (merge-pathnames "profiles/" root))
                  (error (e)
-                   (format *error-output* "feature-audit: ~a~%" e)
+                   (format *error-output* "skiptrace: ~a~%" e)
                    2))))
       (finish-output)
       #+sbcl (sb-ext:exit :code code)

@@ -1,4 +1,4 @@
-;;;; feature-audit.lisp -- which source forms does each Lisp implementation never read?
+;;;; skiptrace.lisp -- which source forms does each Lisp implementation never read?
 ;;;;
 ;;;; Common Lisp's #+ and #- reader conditionals skip forms at READ time. A form
 ;;;; guarded by #+sbcl is not merely untested on CCL; CCL never sees it. No test
@@ -10,14 +10,14 @@
 ;;;;
 ;;;; Zero dependencies. Portable Common Lisp plus a few feature-guarded lines.
 
-(defpackage #:feature-audit
+(defpackage #:skiptrace
   (:use #:common-lisp)
   (:export #:main #:audit-paths #:scan-file #:parse-feature-expression
            #:eval-feature-expression #:load-profiles
            #:site #:site-file #:site-line #:site-column #:site-kind #:site-expr
            #:site-raw #:site-parent #:site-preview #:site-end-line #:site-comment-p))
 
-(in-package #:feature-audit)
+(in-package #:skiptrace)
 
 ;;; ------------------------------------------------------------------
 ;;; Data
@@ -632,7 +632,7 @@ doesn't already have them: the push may be conditional or run after the read."
          (contradictions (getf analysis :contradictions))
          (matrix-dead (getf analysis :matrix-dead))
          (typos (getf analysis :typos)))
-    (format stream "feature-audit: ~a file~:p, ~a guarded form~:p (~a commented out with #+(or)/#+nil/#+ignore)~%~%"
+    (format stream "skiptrace: ~a file~:p, ~a guarded form~:p (~a commented out with #+(or)/#+nil/#+ignore)~%~%"
             (length results) (length (getf analysis :sites)) (length (getf analysis :comment-sites)))
     (format stream "Profiles (matrix columns, left to right):~%")
     (loop for p in profiles for i from 1
@@ -869,7 +869,7 @@ either listing does not discard the other."
         while comma do (setf start (1+ comma))))
 
 (defun usage ()
-  (format t "Usage: feature-audit [options] PATH...
+  (format t "Usage: skiptrace [options] PATH...
 
 Reports which #+/#- guarded forms (and ASDF :if-feature components) each
 implementation profile actually reads, which are never read by any of them,

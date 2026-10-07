@@ -1,110 +1,141 @@
 <div align="center">
-  <img src="assets/skiptrace-logo.png" alt="skiptrace logo" width="480" />
+  <img src="https://raw.githubusercontent.com/Michael-A-Kuykendall/skiptrace/main/assets/skiptrace-logo.png" alt="skiptrace logo" width="480" />
 
   # skiptrace
 
   Finds Common Lisp forms the reader never reads.
 </div>
 
-Finds Common Lisp code that your implementations never read.
+`#+sbcl (foo)` is not untested on Clozure. Clozure's reader skips the form, so no test suite and no coverage tool can see it. skiptrace scans source without calling `READ`, records every `#+` / `#-` and every ASDF `:if-feature`, and checks each guard against `*features*` lists from the implementations you ship.
 
-`#+sbcl (foo)` isn't just untested on CCL. CCL's reader skips it entirely, so no
-test suite or coverage tool can see it. `feature-audit` scans your source without
-reading it into Lisp, records every `#+`/`#-` guard and every ASDF `:if-feature`,
-and checks each one against real `*features*` lists from the implementations you
-care about.
-
-It reports:
-
-- **Contradictions:** code no Common Lisp can ever read, like `#+ccl` nested
-  inside `#+sbcl`, or a `#+mcl` branch inside a guard that excludes MCL.
-- **Likely typos:** `#+sb_thread` instead of `#+sb-thread`. A misspelled feature
-  doesn't error; the code silently disappears.
-- **Never read by your matrix:** code for feature combinations you don't test.
-- **Untested:** which features you'd need a profile for, ranked by how much code
-  depends on them.
-- **Risky comment idioms:** `#+nil` and `#+ignore`, which break if anything pushes
-  those features. `#+(or)` is the safe form.
+Zero dependencies. Not in Quicklisp yet. Clone the repository and run it from the checkout. Version 0.1.0. The system name is `skiptrace`.
 
 ## Run it
 
-Zero dependencies. Needs SBCL (other Lisps work too; see `bin/feature-audit.lisp`).
+From the repository root:
 
 ```sh
-sbcl --script bin/feature-audit.lisp path/to/your/system/
-sbcl --script bin/feature-audit.lisp --all src/            # full read matrix
-sbcl --script bin/feature-audit.lisp --strict src/         # exit 1 on contradictions/typos (CI)
-sbcl --script bin/feature-audit.lisp --json src/ > audit.json
-sbcl --script bin/feature-audit.lisp --profiles sbcl-linux-x86-64,ccl-linux-x86-64 src/
-sbcl --script bin/feature-audit.lisp --known my-debug,fiveam-dev src/
+sbcl --script bin/skiptrace path/to/your-system/
+sbcl --script bin/skiptrace --all src/
+sbcl --script bin/skiptrace --strict src/
+sbcl --script bin/skiptrace --json src/ > audit.json
+sbcl --script bin/skiptrace --profiles sbcl-linux-x86-64,ecl-linux-x86-64 src/
+sbcl --script bin/skiptrace --known my-debug,fiveam-dev src/
 ```
 
-Try `examples/demo.lisp`, which has one of each problem.
-
-## Profiles
-
-A profile is one implementation's `*features*`, stored in `profiles/*.sexp`.
-`sbcl-linux-x86-64` and `ecl-linux-x86-64` were captured from real images.
-**The others are approximations written by hand.** Replace them with real ones
-from the Lisps you ship on:
+Other implementations:
 
 ```sh
-sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
-ccl  -b -l dump-features.lisp -e '(quit)' > profiles/ccl-linux-x86-64.sexp
-ecl --shell dump-features.lisp > profiles/ecl-linux-x86-64.sexp
+ecl --shell bin/skiptrace src/
+clisp bin/skiptrace src/
+ccl -b -l bin/skiptrace -- src/
 ```
 
-Capture them with whatever you normally load (ASDF, Quicklisp), since loading those
-pushes features too.
+`sbcl --script` does not pass a `--` argument through. Do not write `sbcl --script bin/skiptrace -- src/`. ECL and CLISP accept `--`. CCL needs it.
 
-## Tests
+Exit status: `0` clean, `1` with `--strict` when there is a contradiction or a likely typo, `2` when the path is missing or no path was given.
+
+Try the fixture first:
+
+```sh
+sbcl --script bin/skiptrace examples/
+```
+
+That exits 0. The same command with `--strict` exits 1. `examples/demo.lisp` has one contradiction (`#+ccl` inside `#+sbcl`), one typo (`#+sb_thread`), one risky `#+nil`, and one safe `#+(or)` that is not reported.
+
+## From Lisp
+
+```lisp
+(asdf:load-asd (truename "skiptrace.asd"))
+(asdf:load-system "skiptrace")
+
+(skiptrace:audit-paths '("src/")
+                       :profile-dir (merge-pathnames "profiles/"))
+```
+
+`audit-paths` returns three values: file results, the profiles it loaded, and the analysis plist. The exported entry points are `main`, `audit-paths`, `scan-file`, `parse-feature-expression`, `eval-feature-expression`, and `load-profiles`.
+
+```lisp
+(asdf:test-system "skiptrace")
+```
+
+or, without ASDF:
 
 ```sh
 sbcl --script tests/run.lisp
+ecl --shell tests/run.lisp
+clisp -q -norc tests/run.lisp
 ```
 
-Or, with ASDF: `(asdf:test-system "feature-audit")`.
+## What the report means
 
-## How it works, and its limits
+A guard is a `#+` / `#-` site, or an ASDF `:if-feature` in a `.asd` file. `:if-feature` is not applied to the file that component names. The scanner never calls `READ`, so a missing package or a custom readtable does not stop it.
 
-The scanner walks source text the way the reader would: strings, `;` and `#| |#`
-comments, character literals like `#\(`, `|escaped symbols|`, quote and backquote
-prefixes, and standard `#` dispatch macros. It never calls `READ`, so missing
-packages and custom readtables don't stop it.
+- **Contradictions.** No Common Lisp can read this form. `#+ccl` nested inside `#+sbcl`, or `#+mcl` inside a guard that lists every implementation except MCL. Implementations and operating-system kernels are treated as mutually exclusive. Other implications are not.
+- **Likely typos.** A feature name one edit from a name in your profiles, such as `#+sb_thread` for `:sb-thread`. Version features (`:lispworks4.1`, `:ccl-5.2`) are not treated as typos. A misspelled feature does not error. The form disappears.
+- **Never read by your matrix.** Every feature in the guard appears in some profile, but no loaded profile makes the guard true. Often an unsupported-implementation fallback, or a combination you do not test (`clisp` and `win32`).
+- **Untested.** The guard needs a feature none of your profiles have. Ranked by how many forms depend on it. This is the list of profiles you still need to capture.
+- **`#+nil` / `#+ignore`.** These comment forms out until something pushes `:nil` or `:ignore`. `#+(or)` cannot be made true. `#+(or)` is not reported.
+- **Can't tell.** `#.` in a guard, or a nonstandard expression such as Allegro's `(version>= 9)`. A `(push :my-lib *features*)` or `pushnew` makes that feature "maybe", not present, because the push is often itself conditional. The same form in a comment or a string does not count. `(setf *features* (adjoin :x *features*))` is not detected.
 
-Known limits:
+`--json` includes contradictions, never-read forms, and likely typos. It omits `#+nil` / `#+ignore`, the untested ranking, and the scanner notes.
 
-- **Custom reader macros** (`#?` from cl-interpol, `#_` and `#$` from CCL) are
-  assumed to read one following object. That's usually right, and the report notes
-  each one it meets.
-- **`#.` read-time evaluation** in a guard can't be evaluated statically. Those
-  sites are reported as "can't tell", as are nonstandard expressions like Allegro's
-  `(version>= 9)`.
-- **Features the code pushes itself** (`(pushnew :my-lib *features*)`) are treated
-  as unknown, not present, since the push is often conditional. A push inside a
-  comment or a string does not count.
-- **Stacked guards** like `#+a #+b form` are treated as "both a and b". That matches
-  intent; the reader does something odder when `a` holds and `b` doesn't.
-- **Contradiction detection** knows that implementations (sbcl, ccl, ecl, ...) and
-  OS kernels (linux, darwin, win32, ...) are mutually exclusive. It doesn't know
-  every implication between features.
-- **Directory walk** lists subdirectories with a separate wildcard. ECL's
-  `DIRECTORY` omits them from a name/type wildcard; the walker used to stop at
-  the top directory on ECL.
+`--known feat,feat` adds names to treat as legitimate, so a project feature is not offered as a typo.
 
-## What it found on its first run
+## Profiles
 
-Across 18 popular libraries (about 4,000 guarded forms), with no false positives
-after tuning:
+A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
 
-- **UIOP** `uiop/run-program.lisp:465`, `#+mcl` inside
-  `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)`
-  at line 439. MCL is in neither implementation guard of `%system`.
-- **UIOP** `uiop/launch-program.lisp:178`, `#+lispworks *terminal-io*` inside
-  `#-(or lispworks abcl)` at line 176.
-- **SLIME** `swank/ecl.lisp:1086`, `#+(and ecl-weak-hash (or))`. Disabled on
-  purpose. The empty `(or)` is the safe comment idiom.
+| File | Source |
+| --- | --- |
+| `sbcl-linux-x86-64` | captured, SBCL 2.2.9.debian |
+| `ecl-linux-x86-64` | captured, ECL 21.2.1 |
+| `abcl-linux-x86-64` | handwritten |
+| `ccl-linux-x86-64` | handwritten |
+| `sbcl-darwin-arm64` | handwritten |
+| `sbcl-windows-x86-64` | handwritten |
 
-Rechecked 2026-10-06 against `fare/asdf` master and `slime/slime` master on
-GitHub. Those line numbers are that checkout. The canonical ASDF repository is
-gitlab.common-lisp.net; this pass did not re-fetch it.
+The default run loads every `*.sexp` in `profiles/`. Handwritten profiles are in that directory, so they are in the default matrix. Replace them before you trust a "never read" or "untested" result:
+
+```sh
+sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
+ecl --shell dump-features.lisp > profiles/ecl-linux-x86-64.sexp
+clisp -q -norc dump-features.lisp > profiles/clisp-linux-x86-64.sexp
+ccl -b -l dump-features.lisp -e '(quit)' > profiles/ccl-linux-x86-64.sexp
+```
+
+Capture them in the image you ship, after ASDF or Quicklisp if you load those. Both push features. A captured file's `:source` starts with `captured from`.
+
+`--profiles` selects by the `:name` in the file, not by the filename.
+
+## Sweep
+
+`sweep.sh` clones 18 libraries at depth 1 into `./corpus` and writes `./sweep/<name>.txt`. Both directories are gitignored. One library failing does not stop the rest. It runs SBCL only.
+
+```sh
+sh sweep.sh
+```
+
+A sweep of those checkouts found three contradictions and no likely typos:
+
+- UIOP `uiop/launch-program.lisp:178`, `#+lispworks` inside `#-(or lispworks abcl)` at line 176.
+- UIOP `uiop/run-program.lisp:465`, `#+mcl` inside `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)` at line 439.
+- SLIME `swank/ecl.lisp:1086`, `#+(and ecl-weak-hash (or))`. Disabled on purpose. The empty `(or)` is the safe comment idiom.
+
+Rechecked 2026-10-06 against `fare/asdf` master and `slime/slime` master. Those line numbers are that checkout. `sweep.sh` clones the GitHub mirror of ASDF, not gitlab.common-lisp.net.
+
+Libraries: usocket, bordeaux-threads, cffi, slime, trivial-features, asdf, hunchentoot, ironclad, dissect, dexador, trivial-garbage, iolib, deploy, babel, split-sequence, Postmodern, chipz, woo.
+
+## Limits
+
+The walker follows the standard reader: strings, `;` comments, nested `#| |#` comments, character literals, `|escaped symbols|`, quote and backquote, and standard `#` dispatch.
+
+- A custom reader macro (`#?`, CCL's `#_` and `#$`) is assumed to read one following object. The report notes each one.
+- Stacked guards such as `#+a #+b form` are treated as "both a and b". That matches how they are written. The reader does something else when `a` is true and `b` is not.
+- Contradiction detection does not know every implication between features. It knows implementations and OS kernels are mutually exclusive.
+- ECL's `DIRECTORY` omits subdirectories from a name/type wildcard. The walker lists directories with a separate wildcard.
+- The Lisp sources are ASCII so CLISP can load them without a UTF-8 locale.
+
+## License
+
+MIT. See `skiptrace.asd`.
