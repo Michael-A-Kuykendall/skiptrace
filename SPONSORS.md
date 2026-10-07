@@ -1,16 +1,23 @@
-# Sponsors
+# These people make the work possible
 
-Nobody is listed yet. This page is where a sponsor's name goes after they ask for it.
+Zephyr and alistairheath sponsor my work.
 
-The amounts match the GitHub Sponsors tiers for this maintainer:
+- [Zephyr](https://github.com/ZephyrCloudIO)
+- [alistairheath](https://github.com/alistairheath)
 
-| Amount | What is listed here |
-| --- | --- |
-| $5 a month | Name |
-| $25 a month | Name, and a reported bug moves up the queue |
-| $100 a month | Name and a logo |
-| $500 a month | Name, a logo, and a say in which capture or port comes next |
+## Infrastructure Partners ($500+/month)
+*Your logo could be here*
 
-[Sponsor skiptrace](https://github.com/sponsors/Michael-A-Kuykendall).
+## Corporate Backers ($100+/month)
+*Your logo could be here*
 
-The scanner does not get a reduced free edition. Money pays for time: porting, new captured profiles, and keeping the three Lisps in CI working as they change.
+## Bug Prioritizers ($25+/month)
+
+## Coffee Tier Heroes ($5+/month)
+*Your support could be here*
+
+---
+
+**Want to support the work?** [Become a sponsor](https://github.com/sponsors/Michael-A-Kuykendall)
+
+skiptrace stays free. Sponsorship is how I pay for the time: ports, captured profiles, and keeping SBCL, ECL, and CLISP in CI as they change.
