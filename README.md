@@ -8,7 +8,7 @@ skiptrace stays free to use, copy, and ship, including in commercial work. There
 
 `#+sbcl (foo)` is not untested on Clozure. Clozure's reader skips the form, so no test suite and no coverage tool can see it. skiptrace scans source without calling `READ`, records every `#+` / `#-` and every ASDF `:if-feature`, and checks each guard against `*features*` lists from the implementations you ship.
 
-Zero dependencies. Not in Quicklisp yet. Clone the repository and run it from the checkout. Version 0.1.0. The system name is `skiptrace`.
+Zero dependencies. Version 0.1.0. The system name is `skiptrace`.
 
 ## Run it
 
@@ -35,7 +35,13 @@ A leading `--` is ignored, so `sbcl --script bin/skiptrace -- src/` is the same 
 
 ## Install
 
-`bin/skiptrace` finds `src/` and `profiles/` by walking up from its own file. Put a symlink to that file on your `PATH`:
+From Quicklisp:
+
+```lisp
+(ql:quickload "skiptrace")
+```
+
+From a git checkout, `bin/skiptrace` finds `src/` and `profiles/` by walking up from its own file. Put a symlink to that file on your `PATH`:
 
 ```sh
 ln -s "$(pwd)/bin/skiptrace" "$HOME/.local/bin/skiptrace"
@@ -79,7 +85,7 @@ clisp -q -norc tests/run.lisp
 
 ## Profiles
 
-A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
+A profile is the `*features*` of one Lisp image, a plist in `profiles/*.sexp`.
 
 | File | Source |
 | --- | --- |
@@ -91,7 +97,7 @@ A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
 | `sbcl-windows-x86-64` | captured, SBCL 2.6.9 |
 | `sbcl-darwin-arm64` | captured, SBCL 2.6.8 |
 
-The default run loads every `*.sexp` directly in `profiles/`. That is the seven captured files. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. The file name is the machine the list was captured on. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. That directory has no profiles left.
+The default run loads every `*.sexp` in `profiles/`. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. A list that is not part of the default run goes in `profiles/approximate/`. `--profiles` names it.
 
 ```sh
 sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
@@ -119,7 +125,7 @@ A sweep of those checkouts found three contradictions and no likely typos:
 - UIOP `uiop/run-program.lisp:465`, `#+mcl` inside `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)` at line 439.
 - SLIME `swank/ecl.lisp:1086`, `#+(and ecl-weak-hash (or))`. Disabled on purpose. The empty `(or)` is the safe comment idiom.
 
-Rechecked 2026-10-06 against `fare/asdf` master and `slime/slime` master. Those line numbers are that checkout. `sweep.sh` clones the GitHub mirror of ASDF, not gitlab.common-lisp.net.
+Line numbers are from the upstream revisions checked on 2026-10-06. `sweep.sh` clones the GitHub mirror of ASDF, not gitlab.common-lisp.net.
 
 Libraries: usocket, bordeaux-threads, cffi, slime, trivial-features, asdf, hunchentoot, ironclad, dissect, dexador, trivial-garbage, iolib, deploy, babel, split-sequence, Postmodern, chipz, woo.
 
