@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to skiptrace are documented in this file.
+All notable changes to Skiptrace are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -21,9 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Tests run on SBCL, ECL, and CLISP, including a push onto `*features*` inside a comment or a string, which does not count.
 - GitHub Actions workflow that installs SBCL, ECL, and CLISP and runs the tests, plus a DCO check on pull requests.
 - Project docs: license, conduct, contributing, security, governance, DCO, changelog, roadmap, sponsors.
+- [EXAMPLES.md](EXAMPLES.md): contradictions and likely typos from 243 libraries. The README lists the best-known ones.
 
 ### Fixed
 
+- An unclosed `|` or a trailing `\` in a token stops at the end of the file. The scan of that file no longer aborts with a bounds error.
+- `;` comments and `#| ... |#` comments inside a feature expression are skipped. A comment word is no longer treated as a feature name.
 - `--profiles` now rejects a request when any named profile is missing instead of silently using the valid subset.
 - Escaped feature symbols now resume normal case folding after `|...|`, preserve escaped colons as symbol data, and handle backslash escapes inside multiple escapes.
 - SBCL `--script` again receives the arguments you pass. A path that looks like `bin/skiptrace` is no longer treated as the script name.

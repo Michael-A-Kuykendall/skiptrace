@@ -1,12 +1,12 @@
-# skiptrace roadmap
+# Skiptrace roadmap
 
 **Vision:** a small, permanent tool that tells you which Common Lisp forms your implementations never read.
 
-skiptrace scans source. It does not load the system under audit, and it does not need a library of its own.
+Skiptrace scans source. It does not load the system under audit, and it does not need a library of its own.
 
 ## Free forever
 
-**skiptrace stays free and open source.** That is the project, not a free tier.
+**Skiptrace stays free and open source.** That is the project, not a free tier.
 
 - No feature limits
 - No usage limits. Use it commercially or personally.

@@ -49,7 +49,31 @@
   "Parse the text of a feature expression into keywords and (:AND ...) / (:OR ...) /
 (:NOT x) lists. Read-time evaluation (#.) becomes (:DYNAMIC); garbage becomes (:BAD text)."
   (let ((pos 0) (len (length text)))
-    (labels ((ws () (loop while (and (< pos len) (whitespacep (char text pos))) do (incf pos)))
+    (labels ((ws ()
+               "Skip whitespace and comments. A feature expression is read with the normal reader."
+               (loop
+                 (when (>= pos len) (return))
+                 (let ((c (char text pos)))
+                   (cond ((whitespacep c) (incf pos))
+                         ((char= c #\;)
+                          (loop while (and (< pos len) (char/= (char text pos) #\Newline))
+                                do (incf pos)))
+                         ((and (char= c #\#) (< (1+ pos) len) (char= (char text (1+ pos)) #\|))
+                          (incf pos 2)
+                          (let ((depth 1))
+                            (loop while (and (< pos len) (> depth 0))
+                                  do (cond ((and (< (1+ pos) len)
+                                                  (char= (char text pos) #\|)
+                                                  (char= (char text (1+ pos)) #\#))
+                                             (decf depth)
+                                             (incf pos 2))
+                                            ((and (< (1+ pos) len)
+                                                  (char= (char text pos) #\#)
+                                                  (char= (char text (1+ pos)) #\|))
+                                             (incf depth)
+                                             (incf pos 2))
+                                            (t (incf pos))))))
+                         (t (return))))))
              (item ()
                (ws)
                (when (>= pos len) (throw 'bad nil))
@@ -85,7 +109,7 @@
                    (loop
                      (unless (< pos len) (return))
                      (let ((c (char text pos)))
-                       (when (or (whitespacep c) (member c '(#\( #\)))) (return))
+                       (when (or (whitespacep c) (member c '(#\( #\) #\;))) (return))
                        (cond ((char= c #\|)
                               (incf pos)
                               (loop
@@ -222,16 +246,17 @@ expressions are also :UNKNOWN."
             (t (return pos))))))
 
 (defun scan-token (pos)
+  "End position of the token at POS. An unclosed | or a trailing backslash stops at the end of the text."
   (loop
     (let ((c (peek pos)))
       (cond ((or (null c) (terminatingp c)) (return pos))
-            ((char= c #\\) (incf pos 2))
+            ((char= c #\\) (setf pos (min (+ pos 2) *len*)))
             ((char= c #\|)
              (incf pos)
              (loop for d = (peek pos)
                    while (and d (char/= d #\|))
-                   do (incf pos (if (char= d #\\) 2 1)))
-             (incf pos))
+                   do (setf pos (min (+ pos (if (char= d #\\) 2 1)) *len*)))
+             (when (peek pos) (incf pos)))
             (t (incf pos))))))
 
 (defun scan-string (pos)

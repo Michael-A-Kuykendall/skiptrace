@@ -87,6 +87,14 @@ A container running as an unknown uid reports a home of /, which is not writable
   (check "read-eval" (fx "#.(cl:if t '(and) '(or))") '(:dynamic))
   (check "garbage" (fx "(sbcl ccl)") '(:bad "(sbcl ccl)"))
   (check "not arity" (fx "(not a b)") '(:bad "(not a b)"))
+  (check "line comment inside a feature expression"
+         (fx "(and cl-json-clos
+             (not allegro) ; seems like allegro doesn't, either.
+             (not cmu))")
+         '(:and :cl-json-clos (:not :allegro) (:not :cmu)))
+  (check "block comment inside a feature expression"
+         (fx "(and sbcl #| not a feature |# linux)")
+         '(:and :sbcl :linux))
 
   ;; Evaluation
   (check "true" (ev ":sbcl" '(:sbcl)) :true)
@@ -100,6 +108,12 @@ A container running as an unknown uid reports a home of /, which is not writable
   (check "in string" (summary "(print \"#+sbcl not code\")") '())
   (check "in line comment" (summary "; #+sbcl (foo)
 (bar)") '())
+  (check "comment in a guard is not part of the expression"
+         (summary "#+(and sbcl
+(not allegro) ; the word allegro here must not be a feature
+(not cmu))
+(foo)")
+         '((1 "#+(and sbcl (not allegro) (not cmu))" "(foo)" nil)))
   (check "in nested block comment" (summary "#| outer #| inner |# #+sbcl (x) |# (y)") '())
   (check "char literal paren" (summary "(list #\\( #\\) #\\\") #+ccl (z)")
          '((1 "#+ccl" "(z)" nil)))
@@ -298,6 +312,9 @@ A container running as an unknown uid reports a home of /, which is not writable
   (check "character literal ends at one character"
          (summary "(list #\\  #+sbcl x)")
          '((1 "#+sbcl" "x" nil)))
+  (check "unclosed escape does not abort the file"
+         (progn (sites-of "#+(and sbcl |unterminated (foo)") t)
+         t)
 
   (let* ((demo (namestring (merge-pathnames "../examples/demo.lisp" *profiles-dir*)))
          (analysis (nth-value 2 (skiptrace:audit-paths (list demo) :profile-dir *profiles-dir*)))

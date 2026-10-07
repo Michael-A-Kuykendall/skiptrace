@@ -1,4 +1,4 @@
-# Contributing to skiptrace
+# Contributing to Skiptrace
 
 ## Maintainer-only pull requests
 
