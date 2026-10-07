@@ -1,6 +1,9 @@
 (defsystem "skiptrace"
   :description "Reports which #+/#- guarded forms each Lisp implementation never reads."
+  :author "Michael A. Kuykendall <michaelallenkuykendall@gmail.com>"
   :license "MIT"
+  :homepage "https://github.com/Michael-A-Kuykendall/skiptrace"
+  :bug-tracker "https://github.com/Michael-A-Kuykendall/skiptrace/issues"
   :version "0.1.0"
   :components ((:module "src" :components ((:file "skiptrace"))))
   :in-order-to ((test-op (test-op "skiptrace/tests"))))
