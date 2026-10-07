@@ -8,6 +8,7 @@
 
 (defvar *failures* 0)
 (defvar *count* 0)
+(declaim (special *skiptrace-dump-quiet*))
 (defvar *profiles-dir*
   (or (let ((asdf (find-package :asdf)))
         (when asdf
@@ -203,6 +204,22 @@
          (mapcar #'skiptrace::profile-name
                  (skiptrace:load-profiles *profiles-dir* '("ccl-linux-x86-64")))
          '("ccl-linux-x86-64"))
+
+  ;; dump-features.lisp prints a profile when loaded as a script.
+  (let ((*skiptrace-dump-quiet* t)
+        (*standard-output* (make-broadcast-stream))
+        (*error-output* (make-broadcast-stream)))
+    (load (merge-pathnames "../dump-features.lisp" *profiles-dir*)))
+  (check "clisp software-type is not a profile name"
+         (cl-user::skiptrace-dump-name
+          "CLISP"
+          "gcc -g -O2 -ffile-prefix-map=/build/clisp/src"
+          "X86_64")
+         "clisp-x86-64")
+  (check "sane dump name keeps software and machine"
+         (list (cl-user::skiptrace-dump-name "SBCL" "Linux" "X86-64")
+               (cl-user::skiptrace-dump-name "ECL" "Linux" "x86_64"))
+         '("sbcl-linux-x86-64" "ecl-linux-x86-64"))
 
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
