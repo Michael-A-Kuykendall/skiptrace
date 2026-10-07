@@ -77,21 +77,6 @@ ecl --shell tests/run.lisp
 clisp -q -norc tests/run.lisp
 ```
 
-## What the report means
-
-A guard is a `#+` / `#-` site, or an ASDF `:if-feature` in a `.asd` file. `:if-feature` is not applied to the file that component names. The scanner never calls `READ`, so a missing package or a custom readtable does not stop it.
-
-- **Contradictions.** No Common Lisp can read this form. `#+ccl` nested inside `#+sbcl`, or `#+mcl` inside a guard that lists every implementation except MCL. Implementations and operating-system kernels are treated as mutually exclusive. Other implications are not.
-- **Likely typos.** A feature name one edit from a name in your profiles, such as `#+sb_thread` for `:sb-thread`. Version features (`:lispworks4.1`, `:ccl-5.2`) are not treated as typos. A misspelled feature does not error. The form disappears.
-- **Never read by your matrix.** Every feature in the guard appears in some profile, but no loaded profile makes the guard true. Often an unsupported-implementation fallback, or a combination you do not test (`clisp` and `win32`).
-- **Untested.** The guard needs a feature none of your profiles have. Ranked by how many forms depend on it. This is the list of profiles you still need to capture.
-- **`#+nil` / `#+ignore`.** These comment forms out until something pushes `:nil` or `:ignore`. `#+(or)` cannot be made true. `#+(or)` is not reported.
-- **Can't tell.** `#.` in a guard, or a nonstandard expression such as Allegro's `(version>= 9)`. A `(push :my-lib *features*)` or `pushnew` makes that feature "maybe", not present, because the push is often itself conditional. The same form in a comment or a string does not count. `(setf *features* (adjoin :x *features*))` is not detected.
-
-`--json` includes contradictions, never-read forms, and likely typos. It omits `#+nil` / `#+ignore`, the untested ranking, and the scanner notes.
-
-`--known feat,feat` adds names to treat as legitimate, so a project feature is not offered as a typo.
-
 ## Profiles
 
 A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
