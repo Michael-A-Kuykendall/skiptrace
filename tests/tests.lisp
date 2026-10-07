@@ -287,5 +287,21 @@
          (list (fx "(version>= 10 1)") (ev "(version>= 10 1)" '()))
          '((:bad "(version>= 10 1)") :unknown))
 
+  (labels ((first-line (text)
+             (let* ((result (skiptrace::scan-text text "t.lisp"))
+                    (profiles (skiptrace:load-profiles *profiles-dir*))
+                    (analysis (skiptrace::analyze (list result) profiles nil))
+                    (out (with-output-to-string (s)
+                           (skiptrace::report-text (list result) profiles analysis :stream s))))
+               (subseq out 0 (position #\Newline out)))))
+    (let* ((examples (namestring (merge-pathnames "../examples/" *profiles-dir*)))
+           (reported (with-output-to-string (*standard-output*)
+                       (skiptrace:main (list examples) :default-profile-dir *profiles-dir*))))
+      (check "report opens with defect counts"
+             (list (subseq reported 0 (position #\Newline reported))
+                   (first-line "#+(or) (commented)"))
+             '("skiptrace: 1 contradiction, 1 typo"
+               "skiptrace: 0 contradictions, 0 typos"))))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
