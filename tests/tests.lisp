@@ -269,5 +269,16 @@
          (summary "(list #\\  #+sbcl x)")
          '((1 "#+sbcl" "x" nil)))
 
+  (let* ((demo (namestring (merge-pathnames "../examples/demo.lisp" *profiles-dir*)))
+         (analysis (nth-value 2 (skiptrace:audit-paths (list demo) :profile-dir *profiles-dir*)))
+         (hits (getf analysis :contradictions))
+         (typos (getf analysis :typos)))
+    (check "demo keeps its known findings"
+           (list (length hits)
+                 (and hits (site-line (first hits)))
+                 (and hits (not (null (search "demo.lisp" (site-file (first hits))))))
+                 (mapcar (lambda (x) (list (first x) (second x))) typos))
+           (list 1 16 t '((:sb_thread :sb-thread)))))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
