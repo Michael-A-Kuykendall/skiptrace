@@ -42,10 +42,20 @@
 (defun fx (s) (parse-feature-expression s))
 (defun ev (s features) (eval-feature-expression (fx s) features))
 
+(defun test-temp (relative)
+  "A writable fixture path. Windows SBCL cannot create an absolute /tmp.
+A container running as an unknown uid reports a home of /, which is not writable."
+  (let* ((home (user-homedir-pathname))
+         (root (if (and home
+                        (not (equal (pathname-directory home) '(:absolute)))
+                        (ignore-errors (probe-file home)))
+                   home
+                   (make-pathname :directory '(:absolute "tmp")))))
+    (merge-pathnames relative root)))
+
 (defun nested-walk-names ()
   "Write a source file one directory down and collect it. ECL used to miss this."
-  (let* ((root (merge-pathnames "skiptrace-nest-fixture/"
-                                (make-pathname :directory '(:absolute "tmp"))))
+  (let* ((root (test-temp "skiptrace-nest-fixture/"))
          (leaf (merge-pathnames "sub/leaf.lisp" root)))
     (ensure-directories-exist leaf)
     (with-open-file (out leaf :direction :output :if-exists :supersede
@@ -200,7 +210,7 @@
          (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles *profiles-dir*))
                #'string<)
          '("abcl-linux-x86-64" "ccl-linux-x86-64" "clisp-linux-x86-64"
-           "ecl-linux-x86-64" "sbcl-linux-x86-64"))
+           "ecl-linux-x86-64" "sbcl-linux-x86-64" "sbcl-windows-x86-64"))
   (check "named handwritten profile still loads"
          (mapcar #'skiptrace::profile-name
                  (skiptrace:load-profiles *profiles-dir* '("ccl-linux-x86-64")))
@@ -251,7 +261,7 @@
                                 (error () 2)))))
                code)))
     (let ((examples (namestring (merge-pathnames "../examples/" *profiles-dir*)))
-          (lone #p"/tmp/skiptrace-untested-only.lisp"))
+          (lone (test-temp "skiptrace-untested-only.lisp")))
       (with-open-file (out lone :direction :output :if-exists :supersede
                            :if-does-not-exist :create)
         (write-string "#+lispworks (foo)" out))
@@ -260,7 +270,7 @@
                   (list (quiet-main (list examples))
                         (quiet-main (list "--strict" examples))
                         (quiet-main (list "--strict" (namestring lone)))
-                        (quiet-main (list "/tmp/skiptrace-missing-path-that-does-not-exist"))
+                        (quiet-main (list (namestring (test-temp "skiptrace-missing-path-that-does-not-exist"))))
                         (quiet-main nil))
                   '(0 1 0 2 2))
         (ignore-errors (delete-file lone)))))
@@ -310,10 +320,8 @@
                                   :direction :output :if-exists :supersede
                                   :if-does-not-exist :create)
                (format out "(:name ~s :source ~s :features (:common-lisp))~%" name source))))
-    (let ((cap (merge-pathnames "skiptrace-prof-cap/"
-                                (make-pathname :directory '(:absolute "tmp"))))
-          (hand (merge-pathnames "skiptrace-prof-hand/"
-                                 (make-pathname :directory '(:absolute "tmp")))))
+    (let ((cap (test-temp "skiptrace-prof-cap/"))
+          (hand (test-temp "skiptrace-prof-hand/")))
       (write-profile cap "zebra" "captured from TestLisp 1.0; notes mention approximate builds")
       (write-profile hand "hand" "approximate, written by hand")
       (unwind-protect
