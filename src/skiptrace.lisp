@@ -1,14 +1,16 @@
-;;;; skiptrace.lisp -- which source forms does each Lisp implementation never read?
+;;;; skiptrace.lisp -- scan #+/#- and ASDF :if-feature without reading the file.
 ;;;;
-;;;; Common Lisp's #+ and #- reader conditionals skip forms at READ time. A form
-;;;; guarded by #+sbcl is not merely untested on CCL; CCL never sees it. No test
-;;;; suite or coverage tool can report on code the reader discarded.
+;;;; The scanner does not call READ on the file it audits, and it does not use
+;;;; Eclector. Profile files are the exception: read-profile binds *read-eval*
+;;;; to NIL and reads one plist.
 ;;;;
-;;;; This tool scans source text (without READ, so unknown packages and reader
-;;;; macros don't stop it), records every #+ / #- site and every ASDF
-;;;; :if-feature, and evaluates each against a matrix of real *features* lists.
+;;;; Zero dependencies. The package uses only COMMON-LISP.
 ;;;;
-;;;; Zero dependencies. Portable Common Lisp plus a few feature-guarded lines.
+;;;; After #\ the next character is part of the character name.
+;;;;
+;;;; A site records one #+ , #- , or ASDF :if-feature.
+;;;;
+;;;; The text report's wording lives in the format strings in report-text.
 
 (defpackage #:skiptrace
   (:use #:common-lisp)
@@ -141,6 +143,7 @@ expressions are also :UNKNOWN."
 ;;;
 ;;; Walks the text the way the reader would, but never interns anything. It only
 ;;; needs to know where each object starts and ends, and where #+/#- appear.
+;;; Bound by scan-text for the duration of one file.
 
 (defvar *text*)
 (defvar *len*)
@@ -242,6 +245,7 @@ STATUS is :OBJECT, :CLOSE (a closing paren is next) or :EOF."
     (values end (if (eq status :object) :object status))))
 
 (defun read-dispatch (start parent)
+  "START is the position of #. Dispatch on the character after any numeric argument. #+ and #- become sites. An unknown macro is assumed to read one object."
   (let ((pos (1+ start)))
     (loop while (and (peek pos) (digit-char-p (peek pos))) do (incf pos))
     (let ((sub (peek pos)))
@@ -264,6 +268,7 @@ STATUS is :OBJECT, :CLOSE (a closing paren is next) or :EOF."
              (read-prefixed (1+ pos) parent))))))
 
 (defun read-conditional (hash-pos fx-start kind parent)
+  "HASH-POS is the # of a #+ or #-. Record a site when *recording* is true, then scan the guarded form under that site."
   (let* ((fx-begin (skip-ws fx-start))
          (fx-end (let ((*recording* nil)) (read-object fx-begin nil)))
          (raw (subseq *text* fx-begin fx-end))
@@ -380,6 +385,7 @@ A push written inside a comment or a string does not count."
                       :notes (nreverse *notes*))))
 
 (defun scan-file (path &optional (name (namestring path)))
+  "Scan PATH. A file whose type is asd is also scanned for :if-feature."
   (scan-text (read-file-text path) name
              :asd (string-equal (pathname-type path) "asd")))
 
@@ -401,22 +407,24 @@ A push written inside a comment or a string does not count."
   (directory (merge-pathnames "*.sexp" dir)))
 
 (defun load-profiles (dir &optional only)
-  "Load *.sexp profiles in DIR. The default matrix keeps a profile whose :source
-starts with \"captured from\", even if that text later says approximate.
-Handwritten profiles live in DIR/approximate/ and load when NAME is requested."
+  "Load *.sexp profiles in DIR.
+With no name list, keep a profile only when :source has at least 13 characters
+and the first 13 are string-equal to \"captured from\".
+With a name list, also load DIR/approximate/*.sexp and keep the requested names.
+A missing name is an error."
   (let* ((extra (when only
                   (directory (merge-pathnames "approximate/*.sexp" dir))))
-         (all (sort (mapcar #'read-profile (append (profile-files dir) extra))
-                    #'string< :key #'profile-name)))
+         (profiles (sort (mapcar #'read-profile (append (profile-files dir) extra))
+                         #'string< :key #'profile-name)))
     (if only
-        (or (remove-if-not (lambda (p) (member (profile-name p) only :test #'string-equal)) all)
+        (or (remove-if-not (lambda (p) (member (profile-name p) only :test #'string-equal))
+                           profiles)
             (error "No profiles named ~{~a~^, ~} in ~a" only dir))
         (remove-if-not (lambda (p)
                          (let ((src (string (profile-source p))))
                            (and (>= (length src) 13)
                                 (string-equal src "captured from" :end1 13))))
-                       (sort (mapcar #'read-profile (profile-files dir))
-                             #'string< :key #'profile-name)))))
+                       profiles))))
 
 ;;; Real feature names in some Lisp. A near miss against one of them is not a typo.
 (defparameter *known-features*
@@ -639,6 +647,7 @@ doesn't already have them: the push may be conditional or run after the read."
 (defun files-count (sites) (length (remove-duplicates (mapcar #'site-file sites) :test #'string=)))
 
 (defun report-text (results profiles analysis &key all (stream *standard-output*))
+  "Write the text report to STREAM."
   (declare (ignore profiles))
   (let* ((profiles (getf analysis :profiles))
          (live (getf analysis :live))
@@ -740,6 +749,7 @@ doesn't already have them: the push may be conditional or run after the read."
   (write-char #\" stream))
 
 (defun report-json (profiles analysis &key (stream *standard-output*))
+  "Write the JSON report to STREAM."
   (declare (ignore profiles))
   (let ((profiles (getf analysis :profiles))
         (contradictions (getf analysis :contradictions))
@@ -880,6 +890,7 @@ The command-line launcher passes that directory itself and does not need this."
               (as-directory dir))))))))
 
 (defun audit-paths (paths &key profile-dir only extra-known)
+  "Scan PATHS against the profiles in PROFILE-DIR. Returns the file results, the profiles, and the analysis plist."
   (let* ((profile-dir (or profile-dir
                           (system-profile-dir)
                           (error "No profile directory. Pass --profile-dir, or load skiptrace through ASDF so profiles/ can be found beside the system.")))
@@ -914,6 +925,7 @@ Options:
 "))
 
 (defun main (args &key default-profile-dir)
+  "Parse ARGS and write the text report, or JSON when --json is set. Returns 0, 1, or 2."
   (let ((paths '()) (only nil) (profile-dir default-profile-dir) (extra '())
         (all nil) (json nil) (strict nil))
     (loop while args
