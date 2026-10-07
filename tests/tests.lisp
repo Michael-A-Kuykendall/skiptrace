@@ -229,6 +229,22 @@ A container running as an unknown uid reports a home of /, which is not writable
          (nested-walk-names)
          '("sub/leaf.lisp"))
 
+  (let* ((root (test-temp "skiptrace-dotted.dir/"))
+         (leaf (merge-pathnames "a.lisp" root))
+         (nested (merge-pathnames "sub.dir/b.lisp" root))
+         (plain (string-right-trim "/\\" (namestring root))))
+    (ensure-directories-exist nested)
+    (with-open-file (out leaf :direction :output :if-exists :supersede :if-does-not-exist :create)
+      (write-string "#+sbcl (x)" out))
+    (with-open-file (out nested :direction :output :if-exists :supersede :if-does-not-exist :create)
+      (write-string "#+sbcl (y)" out))
+    (unwind-protect
+         (check "dotted directory name is scanned"
+                (sort (mapcar #'cdr (skiptrace::collect-files plain)) #'string<)
+                '("a.lisp" "sub.dir/b.lisp"))
+      (dolist (file (list leaf nested))
+        (ignore-errors (delete-file file)))))
+
   (check "default matrix is the captured profiles"
          (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles *profiles-dir*))
                #'string<)

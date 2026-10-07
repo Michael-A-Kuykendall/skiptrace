@@ -4,13 +4,41 @@ Skiptrace reads `#+`, `#-`, and ASDF `:if-feature` without loading the library.
 
 A contradiction is a guarded form whose enclosing reader conditions cannot all be true on one implementation. Operating-system kernels are mutually exclusive the same way: `#+linux` inside `#+darwin` is a contradiction. A likely typo matches a known feature after treating `-`, `_`, and `.` as the same, or is one edit away, and is not a prefix, a suffix, or a digit change.
 
+## Quicklisp 2026-01-01
+
+Pinned release index: [quicklisp/2026-01-01/releases.txt](https://beta.quicklisp.org/dist/quicklisp/2026-01-01/releases.txt). `corpus-scan.py` checked each archive's md5, extracted it, and scanned it in one SBCL process. 2,382 projects, 41,332 files, 52,442 guarded forms. Every project scanned. No archive failed.
+
+33 occurrences of 27 unique contradictions. 80 occurrences of 58 unique likely typos. A unique finding is the guard chain plus the guarded form, so one dead branch copied into another tree counts once, and the same misspelling in front of a different form stays separate.
+
+In UIOP 3.3.7, `run-program.lisp:465` is `#+mcl` inside `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)` at line 439. That `or` does not name MCL. The same form is in lisp-binary and in qlot's bundled Quicklisp client: 3 occurrences, 1 finding. `launch-program.lisp:178` is `#+lispworks` inside `#-(or lispworks abcl)` at line 176. Implementation trees that vendor these forms are in the git corpus below. They are not projects in this distribution.
+
+Closer to MOP's `closer-mop.asd` puts `:if-feature :clisp` on `closer-clisp` inside `#-clisp`. That component is never loaded. CLISP is selected by the `#+clisp` form above it.
+
+69 of the 80 typo occurrences are in 3d-math. `3d-math-no-f32`, `3d-math-no-i32`, and `3d-math-u32` differ by one letter on purpose. The one-edit rule flags them. They are not confirmed misspellings.
+
+Four occurrences are an intentional empty `(or)`. The evidence marks those `intentional`.
+
+The manifest is [evidence/quicklisp-2026-01-01.tsv](evidence/quicklisp-2026-01-01.tsv). The deduplicated contradictions and typos are [evidence/quicklisp-2026-01-01.json](evidence/quicklisp-2026-01-01.json).
+
+## Ultralisp 20261005202000
+
+Pinned release index: [ultralisp/20261005202000/releases.txt](http://dist.ultralisp.org/ultralisp/20261005202000/releases.txt). 2,141 projects, 35,868 files, 39,596 guarded forms. Every project scanned. No archive failed.
+
+33 occurrences of 26 unique contradictions. 157 occurrences of 43 unique likely typos.
+
+144 of the typo occurrences are `#+adsf3` in informatimago. The same tree spells the feature `asdf3` in `editor/macros.lisp`. `#+adsf3` guards `:in-order-to` test hooks, so those hooks are not read. Different following forms are separate fingerprints.
+
+The UIOP `#+mcl` form occurs 5 times here: qlot's Quicklisp client, lisp-binary, informatimago's bundled ASDF, the Quicklisp client, and a vendored UIOP 3.3.3.
+
+The manifest is [evidence/ultralisp-20261005202000.tsv](evidence/ultralisp-20261005202000.tsv). The deduplicated findings are [evidence/ultralisp-20261005202000.json](evidence/ultralisp-20261005202000.json).
+
 ## Hand-picked git corpus, 2026-10-07
 
 243 public Common Lisp source trees: widely used Quicklisp projects whose recorded source was a git URL, plus the SBCL, Clozure CL, and CLISP repositories. This was not the Quicklisp distribution, not a download ranking, and not a random sample. Each finding below is pinned to the revision scanned. The scan covered 10,114 files and 33,862 guarded forms. Eleven trees produced a contradiction or a likely typo.
 
 cl-base64, CLSQL, and contextl were not cloned. ECL and Maxima were not cloned. Closer to MOP came from GitLab after its GitHub path 404ed.
 
-The 243-source-tree corpus is this page. `sweep.sh` is the smaller 18-project smoke corpus and does not reproduce these results.
+These revisions are git checkouts, not the distribution tarballs above. Line numbers in this section are from those revisions. `sweep.sh` is the 18-project smoke corpus and does not reproduce this scan or the distribution scans.
 
 The README lists the best-known cases. The sections below say why each one matters.
 

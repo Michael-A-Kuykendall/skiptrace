@@ -1000,14 +1000,13 @@ dynamic guards, and one summary row per absent or other feature name."
 (defparameter *lisp-types* '("lisp" "lsp" "cl" "asd"))
 
 (defun as-directory (path)
-  "PATH interpreted as a directory pathname, whether or not it has a trailing slash."
-  (let ((p (pathname path)))
-    (if (and (null (pathname-name p)) (null (pathname-type p)))
-        p
-        (make-pathname :device (pathname-device p)
-                       :directory (append (or (pathname-directory p) '(:relative))
-                                          (list (pathname-name p)))
-                       :name nil :type nil))))
+  "PATH as a directory pathname. A trailing slash keeps a dotted final component,
+such as a Quicklisp prefix bordeaux-threads-v0.9.4, from being split into a name and a type."
+  (let* ((s (namestring path))
+         (last (and (plusp (length s)) (char s (1- (length s))))))
+    (if (or (null last) (char= last #\/) (char= last #\\))
+        (pathname s)
+        (pathname (concatenate 'string s "/")))))
 
 (defun directory-exists-p (dir)
   #+clisp (ignore-errors (ext:probe-directory dir))
@@ -1072,6 +1071,15 @@ either listing does not discard the other."
         (subseq f (length r))
         (enough-namestring file root))))
 
+(defun directory-entry-dir (path)
+  "PATH when it is a directory. A directory whose name contains a dot is otherwise
+parsed as a file name plus a type and would be skipped."
+  (cond ((subdirectory-p path) path)
+        ((and (pathname-name path) (pathname-type path))
+         (let ((dir (as-directory path)))
+           (when (directory-exists-p dir) dir)))
+        (t nil)))
+
 (defun walk-lisp-files (root)
   (let ((seen (make-hash-table :test #'equal)))
     (labels ((recurse (dir)
@@ -1079,9 +1087,10 @@ either listing does not discard the other."
                  (unless (or (gethash key seen) (git-path-p dir))
                    (setf (gethash key seen) t)
                    (loop for entry in (directory-entries dir)
-                         nconc (cond ((subdirectory-p entry) (recurse entry))
-                                     ((and (lisp-source-p entry) (not (git-path-p entry)))
-                                      (list (cons entry (relative-display entry root))))))))))
+                         nconc (let ((subdir (directory-entry-dir entry)))
+                                 (cond (subdir (recurse subdir))
+                                       ((and (lisp-source-p entry) (not (git-path-p entry)))
+                                        (list (cons entry (relative-display entry root)))))))))))
       (recurse root))))
 
 (defun collect-files (path)

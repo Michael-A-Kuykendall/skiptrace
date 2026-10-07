@@ -1,0 +1,1824 @@
+{
+  "source": "quicklisp",
+  "dist": "2026-01-01",
+  "releases": "https://beta.quicklisp.org/dist/quicklisp/2026-01-01/releases.txt",
+  "projects": 2382,
+  "scanned": 2382,
+  "failed": 0,
+  "files": 41332,
+  "guarded_forms": 52442,
+  "contradiction_occurrences": 33,
+  "contradiction_unique": 27,
+  "typo_occurrences": 80,
+  "typo_unique": 58,
+  "failures": [],
+  "findings": [
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "f32",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 6,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "dual-quaternions/types.lisp",
+          "line": 29
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 32
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 199
+        },
+        {
+          "project": "3d-math",
+          "file": "quaternions/types.lisp",
+          "line": 29
+        },
+        {
+          "project": "3d-math",
+          "file": "transforms/types.lisp",
+          "line": 32
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 48
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "info",
+      "intentional": true,
+      "guard": "#+(and ecl-weak-hash (or))",
+      "parent_guards": [],
+      "preview": "(progn",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 4,
+      "sites": [
+        {
+          "project": "gendl",
+          "file": "docker/slime-v2.27/swank/ecl.lisp",
+          "line": 1064
+        },
+        {
+          "project": "gendl",
+          "file": "docker/slime/swank/ecl.lisp",
+          "line": 1064
+        },
+        {
+          "project": "slime",
+          "file": "swank/ecl.lisp",
+          "line": 1059
+        },
+        {
+          "project": "sly",
+          "file": "slynk/backend/ecl.lisp",
+          "line": 1059
+        }
+      ],
+      "projects": 3
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mcl",
+      "parent_guards": [
+        "#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)"
+      ],
+      "preview": "(ccl::with-cstrs ((%%command %command)) (_system %%command))",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 3,
+      "sites": [
+        {
+          "project": "lisp-binary",
+          "file": "asdf.lisp",
+          "line": 6802
+        },
+        {
+          "project": "qlot",
+          "file": "quicklisp-client/asdf.lisp",
+          "line": 6763
+        },
+        {
+          "project": "uiop",
+          "file": "run-program.lisp",
+          "line": 465
+        }
+      ],
+      "projects": 3
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "i32",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 3,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 35
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 202
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 51
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+cormanlisp",
+      "parent_guards": [
+        "#-cormanlisp"
+      ],
+      "preview": ":gray-streams",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "mel-base",
+          "file": "lisp-dep/packages.lisp",
+          "line": 33
+        },
+        {
+          "project": "portableaserve",
+          "file": "acl-compat/packages.lisp",
+          "line": 189
+        }
+      ],
+      "projects": 2
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "u32",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/raw-ops.lisp",
+          "line": 952
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/raw-ops.lisp",
+          "line": 953
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "mat2",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 42
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 50
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "mat3",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 44
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 51
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "mat4",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 46
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 52
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "matn",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 48
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "vec2",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 64
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 70
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "vec3",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 66
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 71
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "vec4",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 68
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 72
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "imat2",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 42
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 50
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "imat3",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 44
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 51
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "imat4",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 46
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 52
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "imatn",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 48
+        },
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "ivec2",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 64
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 70
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "ivec3",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 66
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 71
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "ivec4",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 68
+        },
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 72
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+(and sbcl (not sb-unicode))",
+      "parent_guards": [
+        "#+(or (not sbcl) (and sbcl sb-unicode))"
+      ],
+      "preview": "(store-simple-base-string string storage nil)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "cl-binary-store",
+          "file": "src/simple-array.lisp",
+          "line": 263
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+(and sgi cmu sbcl)",
+      "parent_guards": [],
+      "preview": "(concatenate 'string",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mk-defsystem",
+          "file": "defsystem.lisp",
+          "line": 1638
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+carbon-compat",
+      "parent_guards": [
+        "#-carbon-compat"
+      ],
+      "preview": "rgn3",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "metatilities",
+          "file": "dev/contrib/mcl/appearance-mcl.lisp",
+          "line": 1663
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+carbon-compat",
+      "parent_guards": [
+        "#-carbon-compat"
+      ],
+      "preview": "(let ()",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "metatilities",
+          "file": "dev/contrib/mcl/appearance-mcl.lisp",
+          "line": 1676
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+ccl",
+      "parent_guards": [
+        "#+(and (or digitool sbcl) (not http-using-aserve))"
+      ],
+      "preview": "input-stream",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "de.setf.wilbur",
+          "file": "src/core/http.lisp",
+          "line": 878
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+ccl",
+      "parent_guards": [
+        "#-(or ccl clisp)",
+        "#+(or sbcl cmu allegro abcl ccl clisp ecl)"
+      ],
+      "preview": "ccl:*unprocessed-command-line-arguments*",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "xmls",
+          "file": "xmls.lisp",
+          "line": 905
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+clasp",
+      "parent_guards": [
+        "#+(or allegro clisp lispworks openmcl)"
+      ],
+      "preview": ":weakness",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "shop3",
+          "file": "jenkins/ext/trivial-garbage/trivial-garbage.lisp",
+          "line": 284
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+clasp",
+      "parent_guards": [
+        "#+(or allegro clisp lispworks openmcl)"
+      ],
+      "preview": ":key",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "shop3",
+          "file": "jenkins/ext/trivial-garbage/trivial-garbage.lisp",
+          "line": 284
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+clisp",
+      "parent_guards": [
+        "#-(or ccl clisp)",
+        "#+(or sbcl cmu allegro abcl ccl clisp ecl)"
+      ],
+      "preview": "ext:*args*",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "xmls",
+          "file": "xmls.lisp",
+          "line": 903
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+cmucl",
+      "parent_guards": [
+        "#+(or abcl clasp ecl)"
+      ],
+      "preview": "'#:ext",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "nontrivial-gray-streams",
+          "file": "code/packages.lisp",
+          "line": 100
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+cmucl",
+      "parent_guards": [
+        "#+(or allegro sbcl ccl clisp abcl lispworks ecl mkcl)"
+      ],
+      "preview": "pcl",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "shop3",
+          "file": "shop3/shop3.asd",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+lispworks",
+      "parent_guards": [
+        "#-lispworks"
+      ],
+      "preview": "(push (append grammar-symbols (defparser-production-to-ya...",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "snmp",
+          "file": "compiler/syntax.lisp",
+          "line": 293
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+lispworks",
+      "parent_guards": [
+        "#-(or lispworks abcl)"
+      ],
+      "preview": "*terminal-io*",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "uiop",
+          "file": "launch-program.lisp",
+          "line": 178
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mcl",
+      "parent_guards": [
+        "#+ccl"
+      ],
+      "preview": "(set-mini-buffer *top-listener* \" Busy\")",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "babylon",
+          "file": "tty/basic/t-dialog.lisp",
+          "line": 82
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mezzano",
+      "parent_guards": [
+        "#+(or abcl ccl clasp ecl sbcl)"
+      ],
+      "preview": "\"*INSPECT-HOOK*\"",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "trivial-inspector-hook",
+          "file": "lisp/interface.lisp",
+          "line": 24
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mezzano",
+      "parent_guards": [
+        "#+(or abcl ccl clasp ecl sbcl)"
+      ],
+      "preview": "\"MEZZANO.EXTENSIONS\"",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "trivial-inspector-hook",
+          "file": "lisp/interface.lisp",
+          "line": 29
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+sbcl",
+      "parent_guards": [
+        "#-sbcl"
+      ],
+      "preview": "(ignorable old)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "clml",
+          "file": "nonparametric/src/hdp-lda.lisp",
+          "line": 257
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+sbcl",
+      "parent_guards": [
+        "#-sbcl"
+      ],
+      "preview": "(ignorable hdp-lda)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "clml",
+          "file": "nonparametric/src/hdp-lda.lisp",
+          "line": 408
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+scl",
+      "parent_guards": [
+        "#+sbcl"
+      ],
+      "preview": "clos:class-slots",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "ltk",
+          "file": "ltk/ginspect.lisp",
+          "line": 222
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+scl",
+      "parent_guards": [
+        "#+sbcl"
+      ],
+      "preview": "'clos::name",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "ltk",
+          "file": "ltk/ginspect.lisp",
+          "line": 227
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+threads-not-available",
+      "parent_guards": [
+        "#-(or threads-not-available abcl (and sbcl sb-thread))"
+      ],
+      "preview": "(declare (ignore obj))",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "portable-threads",
+          "file": "portable-threads.lisp",
+          "line": 613
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+threads-not-available",
+      "parent_guards": [
+        "#-(or threads-not-available abcl (and sbcl sb-thread))"
+      ],
+      "preview": "nil",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "portable-threads",
+          "file": "portable-threads.lisp",
+          "line": 615
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+windows",
+      "parent_guards": [
+        "#-windows"
+      ],
+      "preview": "(nix:stat namestring)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "osicat",
+          "file": "src/osicat.lisp",
+          "line": 152
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": ":if-feature clisp",
+      "parent_guards": [
+        "#-clisp"
+      ],
+      "preview": "(:file \"closer-clisp\"     :if-feature :clisp)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "closer-mop",
+          "file": "closer-mop.asd",
+          "line": 20
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or freebsd free-bsd)",
+      "parent_guards": [],
+      "preview": ":FREEBSD",
+      "feature": "free-bsd",
+      "suggestion": "freebsd",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "machine-state",
+          "file": "protocol.lisp",
+          "line": 211
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or netbsd net-bsd)",
+      "parent_guards": [],
+      "preview": ":NETBSD",
+      "feature": "net-bsd",
+      "suggestion": "netbsd",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "machine-state",
+          "file": "protocol.lisp",
+          "line": 210
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or openbsd open-bsd)",
+      "parent_guards": [],
+      "preview": ":OPENBSD",
+      "feature": "open-bsd",
+      "suggestion": "openbsd",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "machine-state",
+          "file": "protocol.lisp",
+          "line": 212
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or windows ms-windows win32)",
+      "parent_guards": [],
+      "preview": "(eval-when (:load-toplevel :execute)",
+      "feature": "ms-windows",
+      "suggestion": "mswindows",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mk-defsystem",
+          "file": "defsystem.lisp",
+          "line": 5647
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec3 umat4 uvec3) uvec3 (m*4/3/u32 x m a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 268
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec3 umat4 uvec3) uvec3 (m*4/3inv/u32 x m a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 274
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "(umatn (umatn (mcols ,m) (mrows ,m)))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 310
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec2) umat3 (mtranslation/3/u32 (umat3) v))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 420
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec3) umat4 (mtranslation/4/u32 (umat4) v))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 424
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec2) umat3 (mscaling/3/u32 (umat3) v))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 430
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec3) umat4 (mscaling/4/u32 (umat4) v))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 434
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec2 uvec2) umat2 (mtensor/v/2/u32 (umat2) a b))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 474
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec3 uvec3) umat3 (mtensor/v/3/u32 (umat3) a b))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 475
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec4 uvec4) umat4 (mtensor/v/4/u32 (umat4) a b))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 476
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((umat4 uvec3) uvec3 (m*4/3/u32 (uvec3) m a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 482
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((umat4 uvec3) uvec3 (m*4/3inv/u32 (uvec3) m a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/ops.lisp",
+          "line": 488
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec2 real) (1svecop identity 2 u32) x (u32 a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/ops.lisp",
+          "line": 59
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec3 real) (1svecop identity 3 u32) x (u32 a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/ops.lisp",
+          "line": 60
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec4 real) (1svecop identity 4 u32) x (u32 a))",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/ops.lisp",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+3d-math-u32",
+      "parent_guards": [],
+      "preview": "((uvec integer) like u32)",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/ops.lisp",
+          "line": 148
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+allergro",
+      "parent_guards": [],
+      "preview": "(delimited-string-to-list substr \",\")",
+      "feature": "allergro",
+      "suggestion": "allegro",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "clml",
+          "file": "som/src/datafile.lisp",
+          "line": 72
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+cl-cffi-gtk-documenation",
+      "parent_guards": [],
+      "preview": "\"@version{2013-11-21}",
+      "feature": "cl-cffi-gtk-documenation",
+      "suggestion": "cl-cffi-gtk-documentation",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "cl-cffi-gtk",
+          "file": "gtk/gtk.drag-and-drop.lisp",
+          "line": 869
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+cl-cffi-gtk-documenation",
+      "parent_guards": [],
+      "preview": "\"@version{2013-11-20}",
+      "feature": "cl-cffi-gtk-documenation",
+      "suggestion": "cl-cffi-gtk-documentation",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "cl-cffi-gtk",
+          "file": "gtk/gtk.drag-and-drop.lisp",
+          "line": 1047
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+closure-common-lisp",
+      "parent_guards": [],
+      "preview": "'(quit 1)",
+      "feature": "closure-common-lisp",
+      "suggestion": "clozure-common-lisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "cl-nst",
+          "file": "asdf/runnable.lisp",
+          "line": 80
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+lisworks",
+      "parent_guards": [],
+      "preview": "(mp:semaphore-acquire semaphore)",
+      "feature": "lisworks",
+      "suggestion": "lispworks",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "cl-collider",
+          "file": "server.lisp",
+          "line": 247
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-(or sbcl closure-common-lisp)",
+      "parent_guards": [],
+      "preview": "'(error 'requested-error-on-test-failure)",
+      "feature": "closure-common-lisp",
+      "suggestion": "clozure-common-lisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "cl-nst",
+          "file": "asdf/runnable.lisp",
+          "line": 81
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-(or windoms darwin nx)",
+      "parent_guards": [],
+      "preview": "(setf (gethash :directory *file-type-associations*) '(\"xd...",
+      "feature": "windoms",
+      "suggestion": "windows",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "open-with",
+          "file": "toolkit.lisp",
+          "line": 20
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "quat2",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "dual-quaternions/types.lisp",
+          "line": 36
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "(define-type-alias fmat mat2 mat3 mat4 matn)",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 37
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "(push :3d-math-f32 *features*)",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "package.lisp",
+          "line": 8
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "quat",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "quaternions/types.lisp",
+          "line": 42
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "transform",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "transforms/types.lisp",
+          "line": 40
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "(define-like f32)",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/raw-ops.lisp",
+          "line": 454
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "(define-type-alias fvec vec2 vec3 vec4)",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 59
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-f32",
+      "parent_guards": [],
+      "preview": "(define-vec-constructors f32)",
+      "feature": "3d-math-no-f32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 212
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "(define-type-alias imat imat2 imat3 imat4 imatn)",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "matrices/types.lisp",
+          "line": 39
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "(push :3d-math-i32 *features*)",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "package.lisp",
+          "line": 10
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "(define-like i32)",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/raw-ops.lisp",
+          "line": 457
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "(define-type-alias ivec ivec2 ivec3 ivec4)",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-no-i32",
+      "parent_guards": [],
+      "preview": "(define-vec-constructors i32)",
+      "feature": "3d-math-no-i32",
+      "suggestion": "3d-math-no-u32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "vectors/types.lisp",
+          "line": 215
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-3d-math-u32",
+      "parent_guards": [],
+      "preview": "(push :3d-math-no-u32 *features*)",
+      "feature": "3d-math-u32",
+      "suggestion": "3d-math-f32",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "3d-math",
+          "file": "package.lisp",
+          "line": 7
+        }
+      ],
+      "projects": 1
+    }
+  ]
+}

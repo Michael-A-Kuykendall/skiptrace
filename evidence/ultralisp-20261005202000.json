@@ -1,0 +1,1995 @@
+{
+  "source": "ultralisp",
+  "dist": "20261005202000",
+  "releases": "http://dist.ultralisp.org/ultralisp/20261005202000/releases.txt",
+  "projects": 2141,
+  "scanned": 2141,
+  "failed": 0,
+  "files": 35868,
+  "guarded_forms": 39596,
+  "contradiction_occurrences": 33,
+  "contradiction_unique": 26,
+  "typo_occurrences": 157,
+  "typo_unique": 43,
+  "failures": [],
+  "findings": [
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": ":in-order-to",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 67,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.asd",
+          "line": 66
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/gitlab/com.informatimago.clext.gitlab.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/pkcs11/com.informatimago.clext.pkcs11.asd",
+          "line": 48
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/run-program/com.informatimago.clext.run-program.asd",
+          "line": 43
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "clmisc/com.informatimago.clmisc.asd",
+          "line": 62
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "com.informatimago.asd",
+          "line": 69
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/apple-file/com.informatimago.common-lisp.apple-file.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/arithmetic/com.informatimago.common-lisp.arithmetic.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/bank/com.informatimago.common-lisp.bank.asd",
+          "line": 55
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/cesarum/com.informatimago.common-lisp.cesarum.asd",
+          "line": 77
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/cesarum/com.informatimago.common-lisp.cesarum.asd",
+          "line": 141
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/com.informatimago.common-lisp.asd",
+          "line": 83
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/com.informatimago.common-lisp.test.asd",
+          "line": 61
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/csv/com.informatimago.common-lisp.csv.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/data-encoding/com.informatimago.common-lisp.data-encoding.asd",
+          "line": 72
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/diagram/com.informatimago.common-lisp.diagram.asd",
+          "line": 60
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/ed/com.informatimago.common-lisp.ed.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/file/table-file/com.informatimago.common-lisp.file.table-file.asd",
+          "line": 59
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/graphviz/com.informatimago.common-lisp.graphviz.asd",
+          "line": 54
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/heap/com.informatimago.common-lisp.heap.asd",
+          "line": 62
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-base/com.informatimago.common-lisp.html-base.asd",
+          "line": 59
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-generator/com.informatimago.common-lisp.html-generator.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-parser/com.informatimago.common-lisp.html-parser.asd",
+          "line": 59
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/http/com.informatimago.common-lisp.http.asd",
+          "line": 60
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/interactive/com.informatimago.common-lisp.interactive.asd",
+          "line": 61
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/invoice/com.informatimago.common-lisp.invoice.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-reader/com.informatimago.common-lisp.lisp-reader.asd",
+          "line": 65
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-sexp/com.informatimago.common-lisp.lisp-sexp.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-text/com.informatimago.common-lisp.lisp-text.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.ibcl.asd",
+          "line": 64
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.relative-package.asd",
+          "line": 60
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.stepper.asd",
+          "line": 62
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/parser/com.informatimago.common-lisp.parser.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/parser/com.informatimago.common-lisp.scanner.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/picture/com.informatimago.common-lisp.picture.asd",
+          "line": 55
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/regexp/com.informatimago.common-lisp.regexp.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc1035/com.informatimago.common-lisp.rfc1035.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc2822/com.informatimago.common-lisp.rfc2822.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc3548/com.informatimago.common-lisp.rfc3548.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/telnet/com.informatimago.common-lisp.telnet.asd",
+          "line": 65
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/unix/com.informatimago.common-lisp.unix.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "editor/com.informatimago.editor.asd",
+          "line": 61
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "future/com.informatimago.future.asd",
+          "line": 43
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "future/com.informatimago.future.empty.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/c11/com.informatimago.languages.c11.asd",
+          "line": 68
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/cpp/com.informatimago.languages.cpp.asd",
+          "line": 69
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/cxx/com.informatimago.languages.cxx.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/linc/com.informatimago.languages.linc.asd",
+          "line": 82
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/lua/com.informatimago.languages.lua.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "objcl/com.informatimago.objcl.asd",
+          "line": 70
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "pgl/com.informatimago.pgl.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "pgl/com.informatimago.pgl.examples.asd",
+          "line": 79
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.basic.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.basic.example.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.example.asd",
+          "line": 61
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/brainfuck/com.informatimago.small-cl-pgms.brainfuck.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.life.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.quine.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.test.asd",
+          "line": 65
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.what-implementation.asd",
+          "line": 43
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "susv3/com.informatimago.susv3.asd",
+          "line": 66
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.asd",
+          "line": 69
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.script.asd",
+          "line": 43
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.test.asd",
+          "line": 69
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "xcode/com.informatimago.xcode.asd",
+          "line": 62
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 32,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/apple-file/com.informatimago.common-lisp.apple-file.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/arithmetic/com.informatimago.common-lisp.arithmetic.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/bank/com.informatimago.common-lisp.bank.asd",
+          "line": 55
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/cesarum/com.informatimago.common-lisp.cesarum.asd",
+          "line": 141
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/com.informatimago.common-lisp.asd",
+          "line": 83
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/csv/com.informatimago.common-lisp.csv.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/data-encoding/com.informatimago.common-lisp.data-encoding.asd",
+          "line": 72
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/diagram/com.informatimago.common-lisp.diagram.asd",
+          "line": 60
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/ed/com.informatimago.common-lisp.ed.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/file/table-file/com.informatimago.common-lisp.file.table-file.asd",
+          "line": 59
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/graphviz/com.informatimago.common-lisp.graphviz.asd",
+          "line": 54
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/heap/com.informatimago.common-lisp.heap.asd",
+          "line": 62
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-base/com.informatimago.common-lisp.html-base.asd",
+          "line": 59
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-generator/com.informatimago.common-lisp.html-generator.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-parser/com.informatimago.common-lisp.html-parser.asd",
+          "line": 59
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/http/com.informatimago.common-lisp.http.asd",
+          "line": 60
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/interactive/com.informatimago.common-lisp.interactive.asd",
+          "line": 61
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/invoice/com.informatimago.common-lisp.invoice.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-reader/com.informatimago.common-lisp.lisp-reader.asd",
+          "line": 65
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-sexp/com.informatimago.common-lisp.lisp-sexp.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-text/com.informatimago.common-lisp.lisp-text.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.ibcl.asd",
+          "line": 64
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.stepper.asd",
+          "line": 62
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/parser/com.informatimago.common-lisp.parser.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/parser/com.informatimago.common-lisp.scanner.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/picture/com.informatimago.common-lisp.picture.asd",
+          "line": 55
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/regexp/com.informatimago.common-lisp.regexp.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc1035/com.informatimago.common-lisp.rfc1035.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc2822/com.informatimago.common-lisp.rfc2822.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc3548/com.informatimago.common-lisp.rfc3548.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/telnet/com.informatimago.common-lisp.telnet.asd",
+          "line": 65
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/unix/com.informatimago.common-lisp.unix.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 6,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/com.informatimago.common-lisp.test.asd",
+          "line": 61
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.asd",
+          "line": 63
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.relative-package.asd",
+          "line": 60
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "objcl/com.informatimago.objcl.asd",
+          "line": 70
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.test.asd",
+          "line": 65
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.test.asd",
+          "line": 69
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mcl",
+      "parent_guards": [
+        "#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)"
+      ],
+      "preview": "(ccl::with-cstrs ((%%command %command)) (_system %%command))",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 5,
+      "sites": [
+        {
+          "project": "fukamachi-qlot",
+          "file": "quicklisp-client/asdf.lisp",
+          "line": 6763
+        },
+        {
+          "project": "heegaiximephoomeeghahyaiseekh-lisp-binary",
+          "file": "asdf.lisp",
+          "line": 6802
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/asdf.lisp",
+          "line": 6898
+        },
+        {
+          "project": "quicklisp-quicklisp-client",
+          "file": "asdf.lisp",
+          "line": 6763
+        },
+        {
+          "project": "xh4-web-toolkit",
+          "file": "vendor/uiop-3.3.3/run-program.lisp",
+          "line": 465
+        }
+      ],
+      "projects": 5
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 5,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/brainfuck/com.informatimago.small-cl-pgms.brainfuck.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.life.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.quine.asd",
+          "line": 42
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.what-implementation.asd",
+          "line": 43
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.languages...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 4,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/c11/com.informatimago.languages.c11.asd",
+          "line": 68
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/cpp/com.informatimago.languages.cpp.asd",
+          "line": 69
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/cxx/com.informatimago.languages.cxx.asd",
+          "line": 53
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/lua/com.informatimago.languages.lua.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#-mocl"
+      ],
+      "preview": ":in-order-to",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 3,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.association.asd",
+          "line": 86
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.pipe.asd",
+          "line": 87
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.queue.asd",
+          "line": 84
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "info",
+      "intentional": true,
+      "guard": "#+(and (or) emacs)",
+      "parent_guards": [],
+      "preview": "(loop for entry in *instructions*",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/example-soft-opcodes.lisp",
+          "line": 550
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/example-soft-opcodes.lisp",
+          "line": 580
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "info",
+      "intentional": true,
+      "guard": "#+(and ecl-weak-hash (or))",
+      "parent_guards": [],
+      "preview": "(progn",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "joaotavora-sly",
+          "file": "slynk/backend/ecl.lisp",
+          "line": 1059
+        },
+        {
+          "project": "slime-slime",
+          "file": "swank/ecl.lisp",
+          "line": 1086
+        }
+      ],
+      "projects": 2
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": ":if-feature clisp",
+      "parent_guards": [
+        "#-clisp"
+      ],
+      "preview": "(:file \"closer-clisp\"     :if-feature :clisp)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "pcostanza-closer-mop",
+          "file": "closer-mop.asd",
+          "line": 20
+        },
+        {
+          "project": "xh4-web-toolkit",
+          "file": "vendor/closer-mop-20191227-git/closer-mop.asd",
+          "line": 20
+        }
+      ],
+      "projects": 2
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op  \"com.informatimago.tools.te...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/gitlab/com.informatimago.clext.gitlab.asd",
+          "line": 57
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.asd",
+          "line": 69
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.rdp.basic...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.basic.asd",
+          "line": 58
+        },
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.basic.example.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+elisp",
+      "parent_guards": [],
+      "preview": "(progn",
+      "feature": "elisp",
+      "suggestion": "clisp",
+      "occurrences": 2,
+      "sites": [
+        {
+          "project": "fstamour-breeze",
+          "file": "scratch-files/inspector.lisp",
+          "line": 37
+        },
+        {
+          "project": "fstamour-breeze",
+          "file": "src/dogfood/dogfood.lisp",
+          "line": 113
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "info",
+      "intentional": true,
+      "guard": "#+(and lse-extensions (or))",
+      "parent_guards": [],
+      "preview": "(defunction dis (a)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-nasium-lse",
+          "file": "src/functions.lisp",
+          "line": 472
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+(and sbcl (not sb-unicode))",
+      "parent_guards": [
+        "#+(or (not sbcl) (and sbcl sb-unicode))"
+      ],
+      "preview": "(store-simple-base-string string storage nil)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "ajberkley-cl-binary-store",
+          "file": "src/simple-array.lisp",
+          "line": 268
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+(and sgi cmu sbcl)",
+      "parent_guards": [],
+      "preview": "(concatenate 'string",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mantoniotti-mk-defsystem",
+          "file": "defsystem.lisp",
+          "line": 1841
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+carbon-compat",
+      "parent_guards": [
+        "#-carbon-compat"
+      ],
+      "preview": "rgn3",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "gwkkwg-metatilities",
+          "file": "dev/contrib/mcl/appearance-mcl.lisp",
+          "line": 1663
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+carbon-compat",
+      "parent_guards": [
+        "#-carbon-compat"
+      ],
+      "preview": "(let ()",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "gwkkwg-metatilities",
+          "file": "dev/contrib/mcl/appearance-mcl.lisp",
+          "line": 1676
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+ccl",
+      "parent_guards": [
+        "#-(or ccl clisp)",
+        "#+(or sbcl cmu allegro abcl ccl clisp ecl)"
+      ],
+      "preview": "ccl:*unprocessed-command-line-arguments*",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "rpgoldman-xmls",
+          "file": "xmls.lisp",
+          "line": 905
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+ccl",
+      "parent_guards": [
+        "#+(and (or digitool sbcl) (not http-using-aserve))"
+      ],
+      "preview": "input-stream",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "lisp-de.setf.wilbur",
+          "file": "src/core/http.lisp",
+          "line": 878
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+clasp",
+      "parent_guards": [
+        "#+(or allegro clisp lispworks openmcl)"
+      ],
+      "preview": ":weakness",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "xh4-web-toolkit",
+          "file": "vendor/trivial-garbage-20190521-git/trivial-garbage.lisp",
+          "line": 284
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+clasp",
+      "parent_guards": [
+        "#+(or allegro clisp lispworks openmcl)"
+      ],
+      "preview": ":key",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "xh4-web-toolkit",
+          "file": "vendor/trivial-garbage-20190521-git/trivial-garbage.lisp",
+          "line": 284
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+clisp",
+      "parent_guards": [
+        "#-(or ccl clisp)",
+        "#+(or sbcl cmu allegro abcl ccl clisp ecl)"
+      ],
+      "preview": "ext:*args*",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "rpgoldman-xmls",
+          "file": "xmls.lisp",
+          "line": 903
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+cmucl",
+      "parent_guards": [
+        "#+(or abcl clasp ecl)"
+      ],
+      "preview": "'#:ext",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "yitzchak-nontrivial-gray-streams",
+          "file": "code/packages.lisp",
+          "line": 100
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+cormanlisp",
+      "parent_guards": [
+        "#-cormanlisp"
+      ],
+      "preview": ":gray-streams",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "neonsquare-mel-base",
+          "file": "lisp-dep/packages.lisp",
+          "line": 33
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mcl",
+      "parent_guards": [
+        "#+ccl"
+      ],
+      "preview": "(set-mini-buffer *top-listener* \" Busy\")",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "thephoeron-babylon",
+          "file": "tty/basic/t-dialog.lisp",
+          "line": 82
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mezzano",
+      "parent_guards": [
+        "#+(or abcl ccl clasp ecl sbcl)"
+      ],
+      "preview": "\"*INSPECT-HOOK*\"",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "yitzchak-trivial-inspector-hook",
+          "file": "lisp/interface.lisp",
+          "line": 24
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mezzano",
+      "parent_guards": [
+        "#+(or abcl ccl clasp ecl sbcl)"
+      ],
+      "preview": "\"MEZZANO.EXTENSIONS\"",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "yitzchak-trivial-inspector-hook",
+          "file": "lisp/interface.lisp",
+          "line": 29
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+mezzano",
+      "parent_guards": [
+        "#+(or abcl allegro ccl clisp cmucl ecl sbcl)"
+      ],
+      "preview": "mezzano.clos:find-method-combination",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "melisgl-dref",
+          "file": "src/full/util.lisp",
+          "line": 489
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+sbcl",
+      "parent_guards": [
+        "#-sbcl"
+      ],
+      "preview": "(ignorable old)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mmaul-clml",
+          "file": "nonparametric/src/hdp-lda.lisp",
+          "line": 257
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+sbcl",
+      "parent_guards": [
+        "#-sbcl"
+      ],
+      "preview": "(ignorable hdp-lda)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mmaul-clml",
+          "file": "nonparametric/src/hdp-lda.lisp",
+          "line": 408
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+scl",
+      "parent_guards": [
+        "#+sbcl"
+      ],
+      "preview": "clos:class-slots",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "herth-ltk",
+          "file": "ltk/ginspect.lisp",
+          "line": 222
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+scl",
+      "parent_guards": [
+        "#+sbcl"
+      ],
+      "preview": "'clos::name",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "herth-ltk",
+          "file": "ltk/ginspect.lisp",
+          "line": 227
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#+windows",
+      "parent_guards": [
+        "#-windows"
+      ],
+      "preview": "(nix:stat namestring)",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "osicat-osicat",
+          "file": "src/osicat.lisp",
+          "line": 152
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "contradiction",
+      "severity": "high",
+      "intentional": false,
+      "guard": "#-sbcl",
+      "parent_guards": [
+        "#+sbcl"
+      ],
+      "preview": "defvar",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "qitab-ace.core",
+          "file": "etc.lisp",
+          "line": 101
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or freebsd free-bsd)",
+      "parent_guards": [],
+      "preview": ":FREEBSD",
+      "feature": "free-bsd",
+      "suggestion": "freebsd",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "Shinmera-machine-state",
+          "file": "protocol.lisp",
+          "line": 241
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or netbsd net-bsd)",
+      "parent_guards": [],
+      "preview": ":NETBSD",
+      "feature": "net-bsd",
+      "suggestion": "netbsd",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "Shinmera-machine-state",
+          "file": "protocol.lisp",
+          "line": 240
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or openbsd open-bsd)",
+      "parent_guards": [],
+      "preview": ":OPENBSD",
+      "feature": "open-bsd",
+      "suggestion": "openbsd",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "Shinmera-machine-state",
+          "file": "protocol.lisp",
+          "line": 242
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+(or windows ms-windows win32)",
+      "parent_guards": [],
+      "preview": "(eval-when (:load-toplevel :execute)",
+      "feature": "ms-windows",
+      "suggestion": "mswindows",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mantoniotti-mk-defsystem",
+          "file": "defsystem.lisp",
+          "line": 7275
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.test\")",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.asd",
+          "line": 67
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#-mocl"
+      ],
+      "preview": "((test-op (test-op \"com.informatimago.clext.association.t...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.association.asd",
+          "line": 86
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#+(or ccl clisp sbcl cmu)"
+      ],
+      "preview": ":in-order-to",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.closer-weak.asd",
+          "line": 87
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#+(or ccl clisp sbcl cmu)"
+      ],
+      "preview": "((test-op (test-op \"com.informatimago.clext.closer-weak.t...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.closer-weak.asd",
+          "line": 87
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#-mocl"
+      ],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.pip...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.pipe.asd",
+          "line": 87
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#-mocl"
+      ],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.que...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/com.informatimago.clext.queue.asd",
+          "line": 85
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.pkc...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/pkcs11/com.informatimago.clext.pkcs11.asd",
+          "line": 48
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.run...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clext/run-program/com.informatimago.clext.run-program.asd",
+          "line": 43
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#+clisp"
+      ],
+      "preview": ":in-order-to",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clisp/com.informatimago.clisp.asd",
+          "line": 93
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [
+        "#+clisp"
+      ],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clisp.tes...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clisp/com.informatimago.clisp.asd",
+          "line": 93
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clmisc.te...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "clmisc/com.informatimago.clmisc.asd",
+          "line": 62
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.test\")))",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "com.informatimago.asd",
+          "line": 69
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((test-op (test-op \"com.informatimago.common-lisp.cesarum...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/cesarum/com.informatimago.common-lisp.cesarum.asd",
+          "line": 77
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.editor.te...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "editor/com.informatimago.editor.asd",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.future.te...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "future/com.informatimago.future.asd",
+          "line": 43
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.future.em...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "future/com.informatimago.future.empty.asd",
+          "line": 42
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.linc.test...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/linc/com.informatimago.languages.linc.asd",
+          "line": 82
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.pgl.test\")))",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "pgl/com.informatimago.pgl.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.pgl.examp...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "pgl/com.informatimago.pgl.examples.asd",
+          "line": 79
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.rdp.examp...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.example.asd",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.susv3.tes...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "susv3/com.informatimago.susv3.asd",
+          "line": 66
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.tools.scr...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.script.asd",
+          "line": 43
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.xcode.tes...",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "xcode/com.informatimago.xcode.asd",
+          "line": 62
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+allego",
+      "parent_guards": [],
+      "preview": "(progn",
+      "feature": "allego",
+      "suggestion": "allegro",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "xh4-web-toolkit",
+          "file": "vendor/cl-base64-20150923-git/tests.lisp",
+          "line": 73
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+allergro",
+      "parent_guards": [],
+      "preview": "(delimited-string-to-list substr \",\")",
+      "feature": "allergro",
+      "suggestion": "allegro",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "mmaul-clml",
+          "file": "som/src/datafile.lisp",
+          "line": 72
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+xlisp",
+      "parent_guards": [],
+      "preview": "(send minfo-proto :add-method :isnew #'|minfo-isnew|)",
+      "feature": "xlisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "blindglobe-common-lisp-stat",
+          "file": "src/numerics/optimize.lisp",
+          "line": 177
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+xlisp",
+      "parent_guards": [],
+      "preview": "(send minfo-proto :add-method :maximize #'|minfo-maximize|)",
+      "feature": "xlisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "blindglobe-common-lisp-stat",
+          "file": "src/numerics/optimize.lisp",
+          "line": 178
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+xlisp",
+      "parent_guards": [],
+      "preview": "(send minfo-proto :add-method :loglaplace #'|minfo-loglap|)",
+      "feature": "xlisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "blindglobe-common-lisp-stat",
+          "file": "src/numerics/optimize.lisp",
+          "line": 179
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-xlisp",
+      "parent_guards": [],
+      "preview": "(defmeth minfo-proto :isnew (&rest args)",
+      "feature": "xlisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "blindglobe-common-lisp-stat",
+          "file": "src/numerics/optimize.lisp",
+          "line": 180
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#-xlisp",
+      "parent_guards": [],
+      "preview": "(defmeth minfo-proto :maximize (&rest args)",
+      "feature": "xlisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "blindglobe-common-lisp-stat",
+          "file": "src/numerics/optimize.lisp",
+          "line": 183
+        }
+      ],
+      "projects": 1
+    }
+  ]
+}
