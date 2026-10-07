@@ -1,5 +1,5 @@
 (defsystem "skiptrace"
-  :description "Reports which #+/#- guarded forms each Lisp implementation never reads."
+  :description "Audits Common Lisp reader conditionals across implementation feature profiles."
   :author "Michael A. Kuykendall <michaelallenkuykendall@gmail.com>"
   :license "MIT"
   :homepage "https://github.com/Michael-A-Kuykendall/skiptrace"

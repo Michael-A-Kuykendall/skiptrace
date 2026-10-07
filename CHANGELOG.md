@@ -24,12 +24,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `--profiles` now rejects a request when any named profile is missing instead of silently using the valid subset.
+- Escaped feature symbols now resume normal case folding after `|...|`, preserve escaped colons as symbol data, and handle backslash escapes inside multiple escapes.
 - SBCL `--script` again receives the arguments you pass. A path that looks like `bin/skiptrace` is no longer treated as the script name.
 - `sweep.sh` invokes `bin/skiptrace`.
 - `(asdf:test-system "skiptrace")` signals an error when a check fails, and the profile checks find `profiles/` next to the system rather than next to the compiled file.
 
 ### Changed
 
+- The README now opens with the product and its purpose, distinguishes CI-tested launchers from additional launcher support, moves sponsorship after the technical documentation, and no longer advertises Quicklisp before publication.
+- Sweep reports record the exact upstream revision scanned.
 - The system, package, command, and repository name are skiptrace.
 - License is MIT.
 

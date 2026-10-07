@@ -1,6 +1,7 @@
 #!/bin/sh
 # Reproduce the 18-library sweep. Run from the repo root (where bin/ is).
 #   sh sweep.sh            -> clones into ./corpus, writes ./sweep/<lib>.txt
+# Each report begins with the exact upstream commit that was scanned.
 set -e
 mkdir -p corpus sweep
 for r in usocket/usocket sionescu/bordeaux-threads cffi/cffi slime/slime \
@@ -11,7 +12,11 @@ for r in usocket/usocket sionescu/bordeaux-threads cffi/cffi slime/slime \
          sharplispers/chipz fukamachi/woo; do
   name=${r#*/}
   [ -d "corpus/$name" ] || git clone -q --depth 1 "https://github.com/$r.git" "corpus/$name"
-  sbcl --script bin/skiptrace "corpus/$name" > "sweep/$name.txt" || true
+  revision=$(git -C "corpus/$name" rev-parse HEAD)
+  {
+    printf 'upstream-revision: %s\n\n' "$revision"
+    sbcl --script bin/skiptrace "corpus/$name" || true
+  } > "sweep/$name.txt"
   printf '%-18s %s\n' "$name" "$(grep -E '^== (Contradictions|Likely typos)' "sweep/$name.txt" | grep -oE '\([0-9]+\)' | tr '\n' ' ')"
 done
 echo "Columns: (contradictions) (likely typos). Full reports in sweep/."
