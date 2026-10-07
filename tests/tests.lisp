@@ -241,5 +241,28 @@
            (nreverse keys)
            '("profiles" "sites" "likely_typos")))
 
+  (labels ((quiet-main (args)
+             (let (code)
+               (with-output-to-string (*standard-output*)
+                 (with-output-to-string (*error-output*)
+                   (setf code (handler-case
+                                  (skiptrace:main args :default-profile-dir *profiles-dir*)
+                                (error () 2)))))
+               code)))
+    (let ((examples (namestring (merge-pathnames "../examples/" *profiles-dir*)))
+          (lone #p"/tmp/skiptrace-untested-only.lisp"))
+      (with-open-file (out lone :direction :output :if-exists :supersede
+                           :if-does-not-exist :create)
+        (write-string "#+lispworks (foo)" out))
+      (unwind-protect
+           (check "exit codes"
+                  (list (quiet-main (list examples))
+                        (quiet-main (list "--strict" examples))
+                        (quiet-main (list "--strict" (namestring lone)))
+                        (quiet-main (list "/tmp/skiptrace-missing-path-that-does-not-exist"))
+                        (quiet-main nil))
+                  '(0 1 0 2 2))
+        (ignore-errors (delete-file lone)))))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
