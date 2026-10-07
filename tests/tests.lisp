@@ -199,7 +199,8 @@
   (check "default matrix is the captured profiles"
          (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles *profiles-dir*))
                #'string<)
-         '("clisp-linux-x86-64" "ecl-linux-x86-64" "sbcl-linux-x86-64"))
+         '("ccl-linux-x86-64" "clisp-linux-x86-64" "ecl-linux-x86-64"
+           "sbcl-linux-x86-64"))
   (check "named handwritten profile still loads"
          (mapcar #'skiptrace::profile-name
                  (skiptrace:load-profiles *profiles-dir* '("ccl-linux-x86-64")))
