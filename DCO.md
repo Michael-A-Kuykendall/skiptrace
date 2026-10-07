@@ -60,12 +60,8 @@ git config format.signoff true
 
 Leave that setting local to the clone. A commit that already exists and has not been pushed can be re-signed with `git commit --amend -s`. A range can be re-signed with `git rebase --signoff`, then updated on the remote with `--force-with-lease`.
 
+Questions about a contribution go to [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com).
+
 ## What the check looks at
 
 [.github/workflows/dco-check.yml](.github/workflows/dco-check.yml) reads non-merge commits in `origin/main..HEAD`. Each one needs a `Signed-off-by:` line. Commits already on `main` are outside that range.
-
-## Work paid for by an employer
-
-Use the email your employer expects, and be allowed to submit the work. A long-running company contribution should start with a note to [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com).
-
-Questions about a specific contribution go to the same address. Everything else goes in a GitHub discussion.
