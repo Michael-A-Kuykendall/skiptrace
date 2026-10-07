@@ -22,10 +22,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow that installs SBCL, ECL, and CLISP and runs the tests, plus a DCO check on pull requests.
 - Project docs: license, conduct, contributing, security, governance, DCO, changelog, roadmap, sponsors.
 - [EXAMPLES.md](EXAMPLES.md): contradictions and likely typos from 243 libraries. The README lists the best-known ones.
+- `--json-full` writes each finding with its file, line, parent guards, and preview, including likely-typo locations, comment idioms, dynamic guards, and scanner notes. `--json` still has only `profiles`, `sites`, and `likely_typos`.
+- `corpus-scan.py` scans a pinned Quicklisp-format distribution in one SBCL process and writes a deduplicated summary. `sweep.sh` stays the 18-project smoke corpus.
+- Evidence for Quicklisp 2026-01-01 (2,382 projects) and Ultralisp 20261005202000 (2,141 projects) is in `evidence/`. Copied findings share one fingerprint.
 
 ### Fixed
 
 - An unclosed `|` or a trailing `\` in a token stops at the end of the file. The scan of that file no longer aborts with a bounds error.
+- A directory whose name contains a dot, such as a Quicklisp prefix `bordeaux-threads-v0.9.4`, is scanned. The final component is no longer split into a file name and a type.
 - `;` comments and `#| ... |#` comments inside a feature expression are skipped. A comment word is no longer treated as a feature name.
 - `--profiles` now rejects a request when any named profile is missing instead of silently using the valid subset.
 - Escaped feature symbols now resume normal case folding after `|...|`, preserve escaped colons as symbol data, and handle backslash escapes inside multiple escapes.
@@ -35,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The text report headings now say impossible guard chains, forms the selected profiles never read, features absent from those profiles, and other feature names those profiles do not define.
+- The README and EXAMPLES state the contradiction and typo rules, how the 243 trees were chosen, and that `sweep.sh` is the 18-project smoke corpus.
 - The README now opens with the product and its purpose, distinguishes CI-tested launchers from additional launcher support, moves sponsorship after the technical documentation, and no longer advertises Quicklisp before publication.
 - Sweep reports record the exact upstream revision scanned.
 - The system, package, command, and repository name are skiptrace.

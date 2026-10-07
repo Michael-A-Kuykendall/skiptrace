@@ -44,9 +44,12 @@ sbcl --script bin/skiptrace path/to/your-system/
 sbcl --script bin/skiptrace --all src/
 sbcl --script bin/skiptrace --strict src/
 sbcl --script bin/skiptrace --json src/ > audit.json
+sbcl --script bin/skiptrace --json-full src/ > audit-full.json
 sbcl --script bin/skiptrace --profiles sbcl-linux-x86-64,ecl-linux-x86-64 src/
 sbcl --script bin/skiptrace --known my-debug,fiveam-dev src/
 ```
+
+`--json` writes `profiles`, `sites`, and `likely_typos`. `--json-full` is a separate report: each finding has a file, line, guard, parent guards, and preview, and likely typos include the place they occurred.
 
 Other launchers:
 
@@ -147,7 +150,7 @@ Capture after ASDF or Quicklisp if your application loads them; both may add fea
 
 ## What it finds in real libraries
 
-A contradiction is a form no Common Lisp can read. A likely typo is a feature name one edit from a name Skiptrace already knows. These are from libraries people load all the time. Revisions, line links, and the rest of the scan are in [EXAMPLES.md](EXAMPLES.md).
+A contradiction is a guarded form whose enclosing reader conditions cannot all be true on one implementation. Operating-system kernels are mutually exclusive the same way: `#+linux` inside `#+darwin` is a contradiction. A likely typo matches a known feature after treating `-`, `_`, and `.` as the same, or is one edit away, and is not a prefix, a suffix, or a digit change. These findings come from established Common Lisp implementations and libraries. Revisions, line links, and the rest of the scan are in [EXAMPLES.md](EXAMPLES.md).
 
 - **UIOP**, shipped with [ASDF](https://github.com/fare/asdf): `#+lispworks` inside `#-(or lispworks abcl)` in `uiop/launch-program.lisp`, and `#+mcl` inside an `or` that never names MCL in `uiop/run-program.lisp`. The MCL form is also copied into SBCL, Clozure CL, CLISP, the Quicklisp client, and lisp-binary.
 - **[SBCL](https://github.com/sbcl/sbcl)**: `#+sb-xc-xhost` in `src/compiler/globaldb.lisp`. The feature the rest of that tree uses is `:sb-xc-host`.
@@ -157,9 +160,11 @@ A contradiction is a form no Common Lisp can read. A likely typo is a feature na
 - **[LTk](https://github.com/ghollisjr/ltk)**: `#+scl` inside a function that is itself `#+sbcl`.
 - **[cl-cffi-gtk](https://github.com/sharplispers/cl-cffi-gtk)**: two guards spell the documentation feature `cl-cffi-gtk-documenation`.
 
-[Every finding from the 243-library scan](EXAMPLES.md). 232 of them had no contradiction and no likely typo, including Closer to MOP, Alexandria, cl-ppcre, CFFI, Bordeaux-Threads, Hunchentoot, and Ironclad.
+The 243-source-tree corpus is documented in [EXAMPLES.md](EXAMPLES.md). 232 of those trees had no contradiction and no likely typo, including Closer to MOP, Alexandria, cl-ppcre, CFFI, Bordeaux-Threads, Hunchentoot, and Ironclad. `sweep.sh` is the smaller 18-project smoke corpus: it clones those libraries into `./corpus` and writes `./sweep/<name>.txt`. Both directories are gitignored. It does not reproduce the 243-tree scan. The findings above used the GitHub mirror of ASDF.
 
-`sweep.sh` clones 18 of those libraries into `./corpus` and writes `./sweep/<name>.txt`. Both directories are gitignored. The scan recorded above used the GitHub mirror of ASDF.
+`corpus-scan.py` reads a pinned Quicklisp-format `releases.txt`, checks each archive's md5, and scans the extracted trees in one SBCL process. One broken archive does not stop the run. Copied findings are counted once. `python3 corpus-scan.py --self-test` checks that. Tarballs stay in `corpus/`. The committed evidence is the manifest and the deduplicated summary.
+
+Quicklisp 2026-01-01: 2,382 projects, 41,332 files, 52,442 guarded forms, 33 contradiction occurrences of 27 unique findings. Ultralisp 20261005202000: 2,141 projects, 35,868 files, 39,596 guarded forms, 33 contradiction occurrences of 26 unique findings. Both scans are in [EXAMPLES.md](EXAMPLES.md) and `evidence/`.
 
 ## Limits
 

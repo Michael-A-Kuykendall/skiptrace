@@ -687,7 +687,7 @@ doesn't already have them: the push may be conditional or run after the read."
     (when (and preview (site-preview s))
       (format stream "      ~a~%" (site-preview s))))
   (when (> (length sites) limit)
-    (format stream "  ... and ~a more (use --all or --json for everything)~%" (- (length sites) limit))))
+    (format stream "  ... and ~a more (use --all, --json, or --json-full)~%" (- (length sites) limit))))
 
 (defun hash-to-ranked-list (table)
   "((key . sites) ...) sorted by number of sites, most first."
@@ -722,7 +722,7 @@ doesn't already have them: the push may be conditional or run after the read."
                 (mapcar (lambda (p) (status-char (read-status s p))) profiles)
                 (loc s) (site-guard-string s))))
 
-    (format stream "~%== Contradictions: no Common Lisp can ever read these (~a) ==~%" (length contradictions))
+    (format stream "~%== Impossible guard chains — enclosing conditions cannot all be true (~a) ==~%" (length contradictions))
     (if contradictions
         (print-sites contradictions stream :chain t :limit (if all 100000 15))
         (format stream "  none~%"))
@@ -735,7 +735,7 @@ doesn't already have them: the push may be conditional or run after the read."
             (print-sites where stream :preview nil :limit 5)))
         (format stream "  none~%"))
 
-    (format stream "~%== Never read: each feature in the guard is in one of these implementations, and no implementation here reads the form (~a) ==~%"
+    (format stream "~%== Never read by selected profiles — all referenced features are known, but none of the selected profiles reaches these forms (~a) ==~%"
             (length matrix-dead))
     (if matrix-dead
         (print-sites matrix-dead stream :limit (if all 100000 10))
@@ -743,7 +743,7 @@ doesn't already have them: the push may be conditional or run after the read."
 
     (let ((untested (remove-if (lambda (u) (assoc (car u) typos))
                                (hash-to-ranked-list (getf analysis :untested)))))
-      (format stream "~%== Needs a feature none of these implementations have ==~%")
+      (format stream "~%== Requires features absent from the selected profiles ==~%")
       (if untested
           (dolist (u untested)
             (format stream "  :~(~30a~) ~4d form~:p in ~d file~:p~%" (car u) (length (cdr u)) (files-count (cdr u))))
@@ -753,7 +753,7 @@ doesn't already have them: the push may be conditional or run after the read."
            (known (getf analysis :known))
            (other (remove-if (lambda (o) (or (member (car o) known) (assoc (car o) typos))) outside)))
       (when other
-        (format stream "~%== Feature names none of these implementations define (~a) ==~%" (length other))
+        (format stream "~%== Other feature names not present in the selected profiles (~a) ==~%" (length other))
         (dolist (o other)
           (format stream "  :~(~30a~) ~4d site~:p~@[   (version feature of ~(~a~))~]~%"
                   (car o) (length (cdr o)) (version-feature-of (car o))))))
@@ -831,20 +831,182 @@ doesn't already have them: the push may be conditional or run after the read."
              (format stream ", \"count\": ~a}~:[~;,~]" (length where) more))
     (format stream "~%  ]~%}~%")))
 
+(defun json-strings (items stream)
+  (write-char #\[ stream)
+  (loop for (item . more) on items
+        do (json-string item stream)
+           (when more (write-string ", " stream)))
+  (write-char #\] stream))
+
+(defun parent-guard-strings (site)
+  (mapcar #'site-guard-string (rest (site-chain site))))
+
+(defun site-intentional-p (site)
+  (some (lambda (x) (has-empty-or-p (site-expr x))) (site-chain site)))
+
+(defun write-full-finding (stream finding more)
+  "One finding object. COUNT and FILES are omitted unless COUNT is a number."
+  (format stream "    {")
+  (json-string "kind" stream) (write-string ": " stream) (json-string (getf finding :kind) stream)
+  (write-string ", " stream)
+  (json-string "severity" stream) (write-string ": " stream) (json-string (getf finding :severity) stream)
+  (write-string ", " stream)
+  (json-string "intentional" stream) (write-string ": " stream)
+  (write-string (if (getf finding :intentional) "true" "false") stream)
+  (write-string ", " stream)
+  (json-string "file" stream) (write-string ": " stream)
+  (if (getf finding :file) (json-string (getf finding :file) stream) (write-string "null" stream))
+  (format stream ", \"line\": ~a, \"end_line\": ~a, " (or (getf finding :line) 0) (or (getf finding :end-line) 0))
+  (json-string "guard" stream) (write-string ": " stream)
+  (if (getf finding :guard) (json-string (getf finding :guard) stream) (write-string "null" stream))
+  (write-string ", " stream)
+  (json-string "feature" stream) (write-string ": " stream)
+  (if (getf finding :feature) (json-string (getf finding :feature) stream) (write-string "null" stream))
+  (write-string ", " stream)
+  (json-string "suggestion" stream) (write-string ": " stream)
+  (if (getf finding :suggestion) (json-string (getf finding :suggestion) stream) (write-string "null" stream))
+  (write-string ", " stream)
+  (json-string "parent_guards" stream) (write-string ": " stream)
+  (json-strings (or (getf finding :parent-guards) '()) stream)
+  (write-string ", " stream)
+  (json-string "preview" stream) (write-string ": " stream)
+  (if (getf finding :preview) (json-string (getf finding :preview) stream) (write-string "null" stream))
+  (when (numberp (getf finding :count))
+    (format stream ", \"count\": ~a, \"files\": ~a" (getf finding :count) (or (getf finding :files) 0)))
+  (format stream "}~:[~;,~]~%" more))
+
+(defun full-findings (analysis)
+  "Contradictions, typos with locations, never-read forms, risky comment idioms,
+dynamic guards, and one summary row per absent or other feature name."
+  (let ((findings '())
+        (contradictions (getf analysis :contradictions))
+        (typos (getf analysis :typos))
+        (matrix-dead (getf analysis :matrix-dead)))
+    (dolist (s contradictions)
+      (push (list :kind "contradiction"
+                  :severity (if (site-intentional-p s) "info" "high")
+                  :intentional (site-intentional-p s)
+                  :file (site-file s) :line (site-line s)
+                  :end-line (or (site-end-line s) (site-line s))
+                  :guard (site-guard-string s)
+                  :feature nil :suggestion nil
+                  :parent-guards (parent-guard-strings s)
+                  :preview (site-preview s))
+            findings))
+    (dolist (group typos)
+      (destructuring-bind (k guess where) group
+        (let ((feature (string-downcase (symbol-name k)))
+              (suggestion (string-downcase (symbol-name guess))))
+          (dolist (s where)
+            (push (list :kind "likely-typo" :severity "review" :intentional nil
+                        :file (site-file s) :line (site-line s)
+                        :end-line (or (site-end-line s) (site-line s))
+                        :guard (site-guard-string s)
+                        :feature feature :suggestion suggestion
+                        :parent-guards (parent-guard-strings s)
+                        :preview (site-preview s))
+                  findings)))))
+    (dolist (s matrix-dead)
+      (push (list :kind "never-read-in-matrix" :severity "info" :intentional nil
+                  :file (site-file s) :line (site-line s)
+                  :end-line (or (site-end-line s) (site-line s))
+                  :guard (site-guard-string s)
+                  :feature nil :suggestion nil
+                  :parent-guards (parent-guard-strings s)
+                  :preview (site-preview s))
+            findings))
+    (dolist (s (remove-if-not (lambda (site)
+                                (and (eq (site-kind site) :plus)
+                                     (member (site-expr site) '(:nil :ignore))))
+                              (getf analysis :comment-sites)))
+      (push (list :kind "comment-idiom" :severity "info" :intentional nil
+                  :file (site-file s) :line (site-line s)
+                  :end-line (or (site-end-line s) (site-line s))
+                  :guard (site-guard-string s)
+                  :feature nil :suggestion nil
+                  :parent-guards (parent-guard-strings s)
+                  :preview (site-preview s))
+            findings))
+    (dolist (s (getf analysis :dynamic))
+      (push (list :kind "dynamic" :severity "info" :intentional nil
+                  :file (site-file s) :line (site-line s)
+                  :end-line (or (site-end-line s) (site-line s))
+                  :guard (site-guard-string s)
+                  :feature nil :suggestion nil
+                  :parent-guards (parent-guard-strings s)
+                  :preview (site-preview s))
+            findings))
+    (let ((untested (remove-if (lambda (u) (assoc (car u) typos))
+                               (hash-to-ranked-list (getf analysis :untested))))
+          (known (getf analysis :known))
+          (outside (hash-to-ranked-list (getf analysis :outside))))
+      (dolist (u untested)
+        (let* ((sites (cdr u))
+               (ex (first sites)))
+          (push (list :kind "absent-feature" :severity "info" :intentional nil
+                      :file (and ex (site-file ex)) :line (and ex (site-line ex))
+                      :end-line (and ex (or (site-end-line ex) (site-line ex)))
+                      :guard (and ex (site-guard-string ex))
+                      :feature (string-downcase (symbol-name (car u)))
+                      :suggestion nil
+                      :parent-guards (and ex (parent-guard-strings ex))
+                      :preview (and ex (site-preview ex))
+                      :count (length sites) :files (files-count sites))
+                findings)))
+      (dolist (o (remove-if (lambda (item) (or (member (car item) known) (assoc (car item) typos))) outside))
+        (let* ((sites (cdr o))
+               (ex (first sites))
+               (version (version-feature-of (car o))))
+          (push (list :kind "other-feature" :severity "info" :intentional nil
+                      :file (and ex (site-file ex)) :line (and ex (site-line ex))
+                      :end-line (and ex (or (site-end-line ex) (site-line ex)))
+                      :guard (and ex (site-guard-string ex))
+                      :feature (string-downcase (symbol-name (car o)))
+                      :suggestion (and version (string-downcase version))
+                      :parent-guards (and ex (parent-guard-strings ex))
+                      :preview (and ex (site-preview ex))
+                      :count (length sites) :files (files-count sites))
+                findings))))
+    (nreverse findings)))
+
+(defun report-json-full (results profiles analysis &key (stream *standard-output*))
+  "Findings with locations. Does not change the --json keys."
+  (declare (ignore profiles))
+  (let* ((profiles (getf analysis :profiles))
+         (risky (remove-if-not (lambda (s) (and (eq (site-kind s) :plus) (member (site-expr s) '(:nil :ignore))))
+                               (getf analysis :comment-sites)))
+         (findings (full-findings analysis))
+         (notes (loop for r in results
+                      append (mapcar (lambda (n) (format nil "~a: ~a" (fr-name r) n)) (fr-notes r)))))
+    (format stream "{~%  \"profiles\": [")
+    (loop for (p . more) on profiles do (json-string (profile-name p) stream) (when more (write-string ", " stream)))
+    (format stream "],~%  \"counts\": {~%    \"files\": ~a,~%    \"guarded_forms\": ~a,~%    \"contradictions\": ~a,~%    \"likely_typos\": ~a,~%    \"never_read\": ~a,~%    \"comment_idioms\": ~a,~%    \"dynamic\": ~a~%  },~%  \"findings\": [~%"
+            (length results)
+            (length (getf analysis :sites))
+            (length (getf analysis :contradictions))
+            (length (getf analysis :typos))
+            (length (getf analysis :matrix-dead))
+            (length risky)
+            (length (getf analysis :dynamic)))
+    (loop for (f . more) on findings do (write-full-finding stream f more))
+    (format stream "  ],~%  \"notes\": [")
+    (loop for (n . more) on notes
+          do (json-string n stream) (when more (write-string ", " stream)))
+    (format stream "]~%}~%")))
+
 ;;; ------------------------------------------------------------------
 ;;; Entry point
 
 (defparameter *lisp-types* '("lisp" "lsp" "cl" "asd"))
 
 (defun as-directory (path)
-  "PATH interpreted as a directory pathname, whether or not it has a trailing slash."
-  (let ((p (pathname path)))
-    (if (and (null (pathname-name p)) (null (pathname-type p)))
-        p
-        (make-pathname :device (pathname-device p)
-                       :directory (append (or (pathname-directory p) '(:relative))
-                                          (list (pathname-name p)))
-                       :name nil :type nil))))
+  "PATH as a directory pathname. A trailing slash keeps a dotted final component,
+such as a Quicklisp prefix bordeaux-threads-v0.9.4, from being split into a name and a type."
+  (let* ((s (namestring path))
+         (last (and (plusp (length s)) (char s (1- (length s))))))
+    (if (or (null last) (char= last #\/) (char= last #\\))
+        (pathname s)
+        (pathname (concatenate 'string s "/")))))
 
 (defun directory-exists-p (dir)
   #+clisp (ignore-errors (ext:probe-directory dir))
@@ -909,6 +1071,15 @@ either listing does not discard the other."
         (subseq f (length r))
         (enough-namestring file root))))
 
+(defun directory-entry-dir (path)
+  "PATH when it is a directory. A directory whose name contains a dot is otherwise
+parsed as a file name plus a type and would be skipped."
+  (cond ((subdirectory-p path) path)
+        ((and (pathname-name path) (pathname-type path))
+         (let ((dir (as-directory path)))
+           (when (directory-exists-p dir) dir)))
+        (t nil)))
+
 (defun walk-lisp-files (root)
   (let ((seen (make-hash-table :test #'equal)))
     (labels ((recurse (dir)
@@ -916,9 +1087,10 @@ either listing does not discard the other."
                  (unless (or (gethash key seen) (git-path-p dir))
                    (setf (gethash key seen) t)
                    (loop for entry in (directory-entries dir)
-                         nconc (cond ((subdirectory-p entry) (recurse entry))
-                                     ((and (lisp-source-p entry) (not (git-path-p entry)))
-                                      (list (cons entry (relative-display entry root))))))))))
+                         nconc (let ((subdir (directory-entry-dir entry)))
+                                 (cond (subdir (recurse subdir))
+                                       ((and (lisp-source-p entry) (not (git-path-p entry)))
+                                        (list (cons entry (relative-display entry root)))))))))))
       (recurse root))))
 
 (defun collect-files (path)
@@ -972,15 +1144,17 @@ Options:
   --profile-dir DIR      Where *.sexp profiles live (default: ../profiles next to this tool)
   --known FEAT,FEAT      Extra feature names to treat as legitimate
   --all                  Print every guarded form, not only the findings
-  --json                 Machine-readable output
+  --json                 Machine-readable summary (profiles, sites, likely_typos)
+  --json-full            Findings with file, line, parent guards, and previews
   --strict               Exit 1 on contradictions or likely typos (for CI)
   -h, --help             This text
 "))
 
 (defun main (args &key default-profile-dir)
-  "Parse ARGS and write the text report, or JSON when --json is set. Returns 0, 1, or 2."
+  "Parse ARGS and write the text report, JSON, or --json-full. Returns 0, 1, or 2.
+When both --json and --json-full are set, --json-full wins. --json keys stay unchanged."
   (let ((paths '()) (only nil) (profile-dir default-profile-dir) (extra '())
-        (all nil) (json nil) (strict nil))
+        (all nil) (json nil) (json-full nil) (strict nil))
     (loop while args
           do (let ((a (pop args)))
                (cond ((member a '("-h" "--help") :test #'string=) (usage) (return-from main 0))
@@ -991,14 +1165,15 @@ Options:
                                           (split-commas (pop args)))))
                      ((string= a "--all") (setf all t))
                      ((string= a "--json") (setf json t))
+                     ((string= a "--json-full") (setf json-full t))
                      ((string= a "--strict") (setf strict t))
                      ((string= a "--") nil)
                      (t (push a paths)))))
     (when (null paths) (usage) (return-from main 2))
     (multiple-value-bind (results profiles analysis)
         (audit-paths (nreverse paths) :profile-dir profile-dir :only only :extra-known extra)
-      (if json
-          (report-json profiles analysis)
-          (report-text results profiles analysis :all all))
+      (cond (json-full (report-json-full results profiles analysis))
+            (json (report-json profiles analysis))
+            (t (report-text results profiles analysis :all all)))
       (if (and strict (or (getf analysis :contradictions) (getf analysis :typos)))
           1 0))))

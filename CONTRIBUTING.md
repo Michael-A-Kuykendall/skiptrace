@@ -41,7 +41,7 @@ git config format.signoff true
 - **Zero dependencies.** No Quicklisp library, and no Eclector.
 - **The scanner does not READ the code under audit.** A missing package must not stop a run.
 - **The same sources run on SBCL, ECL, and CLISP.** A fix that works on one of them and breaks another is not done.
-- **The report stays stable.** `--strict` exits 1 only for contradictions and likely typos. The JSON keys stay `profiles`, `sites`, and `likely_typos`. `examples/demo.lisp` is a fixture. Do not edit it to manufacture a finding.
+- **The report stays stable.** `--strict` exits 1 only for contradictions and likely typos. The `--json` keys stay `profiles`, `sites`, and `likely_typos`. `--json-full` is a separate report. `examples/demo.lisp` is a fixture. Do not edit it to manufacture a finding.
 - **Character literals stay as the reader defines them.** After `#\`, the next character is part of the character name.
 - **A profile in the default run has `:source` starting with `captured from`.**
 
