@@ -104,14 +104,16 @@ A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
 | `ecl-linux-x86-64` | captured, ECL 21.2.1 |
 | `clisp-linux-x86-64` | captured, CLISP 2.49.93+ (2018-02-18) |
 | `ccl-linux-x86-64` | captured, Clozure CL 1.13 |
+| `abcl-linux-x86-64` | captured, ABCL 1.9.3 |
 
-The default run loads every `*.sexp` directly in `profiles/`. That is the four captured files. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. The file name is the machine the list was captured on. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles abcl-linux-x86-64` still finds one there.
+The default run loads every `*.sexp` directly in `profiles/`. That is the five captured files. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. The file name is the machine the list was captured on. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles sbcl-darwin-arm64` still finds one there.
 
 ```sh
 sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
 ecl --shell dump-features.lisp > profiles/ecl-linux-x86-64.sexp
 clisp -q -norc dump-features.lisp > profiles/clisp-linux-x86-64.sexp
 ccl -b -l dump-features.lisp -e '(quit)' > profiles/ccl-linux-x86-64.sexp
+abcl --noinform --noinit --batch --load dump-features.lisp > profiles/abcl-linux-x86-64.sexp
 ```
 
 Capture them in the image you ship, after ASDF or Quicklisp if you load those. Both push features. A captured file's `:source` starts with `captured from`.

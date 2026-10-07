@@ -2,6 +2,7 @@
 ;;;;
 ;;;;   sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
 ;;;;   ccl -b -l dump-features.lisp -e '(quit)' > profiles/ccl-linux-x86-64.sexp
+;;;;   abcl --noinform --noinit --batch --load dump-features.lisp > profiles/abcl-linux-x86-64.sexp
 ;;;;   ecl --shell dump-features.lisp > profiles/ecl-linux-x86-64.sexp
 ;;;;   clisp -q -norc dump-features.lisp > profiles/clisp-linux-x86-64.sexp
 ;;;;
