@@ -280,5 +280,12 @@
                  (mapcar (lambda (x) (list (first x) (second x))) typos))
            (list 1 16 t '((:sb_thread :sb-thread)))))
 
+  (check "setf adjoin is not a recorded push"
+         (skiptrace::find-pushed-features "(setf *features* (adjoin :ghost *features*))")
+         nil)
+  (check "version>= stays unknown"
+         (list (fx "(version>= 10 1)") (ev "(version>= 10 1)" '()))
+         '((:bad "(version>= 10 1)") :unknown))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
