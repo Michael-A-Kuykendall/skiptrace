@@ -1,0 +1,3 @@
+(:name "ccl-linux-x86-64"
+ :source "captured from Clozure Common Lisp Version 1.13  Linuxx8664"
+ :features (:primary-classes :common-lisp :openmcl :ccl :ccl-1.2 :ccl-1.3 :ccl-1.4 :ccl-1.5 :ccl-1.6 :ccl-1.7 :ccl-1.8 :ccl-1.9 :ccl-1.10 :ccl-1.11 :ccl-1.12 :clozure :clozure-common-lisp :ansi-cl :ieee-floating-point :unix :openmcl-unicode-strings :ipv6 :openmcl-native-threads :openmcl-partial-mop :mcl-common-mop-subset :openmcl-mop-2 :openmcl-private-hash-tables :static-conses-should-work-with-egc-in-ccl :package-local-nicknames :x86-64 :x86_64 :x86-target :x86-host :x8664-target :x8664-host :linux-host :linux-target :linuxx86-target :linuxx8664-target :linuxx8664-host :64-bit-target :64-bit-host :linux :little-endian-target :little-endian-host))
