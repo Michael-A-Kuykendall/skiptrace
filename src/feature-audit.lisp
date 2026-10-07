@@ -1,4 +1,4 @@
-;;;; feature-audit.lisp — which source forms does each Lisp implementation never read?
+;;;; feature-audit.lisp -- which source forms does each Lisp implementation never read?
 ;;;;
 ;;;; Common Lisp's #+ and #- reader conditionals skip forms at READ time. A form
 ;;;; guarded by #+sbcl is not merely untested on CCL; CCL never sees it. No test
@@ -636,7 +636,7 @@ doesn't already have them: the push may be conditional or run after the read."
             (length results) (length (getf analysis :sites)) (length (getf analysis :comment-sites)))
     (format stream "Profiles (matrix columns, left to right):~%")
     (loop for p in profiles for i from 1
-          do (format stream "  [~a] ~a~@[  — ~a~]~%" i (profile-name p) (profile-source p)))
+          do (format stream "  [~a] ~a~@[  -- ~a~]~%" i (profile-name p) (profile-source p)))
 
     (when all
       (format stream "~%== Every guarded form ==   + read   . skipped   ? can't tell~%")
@@ -654,7 +654,7 @@ doesn't already have them: the push may be conditional or run after the read."
     (if typos
         (dolist (x typos)
           (destructuring-bind (k guess where) x
-            (format stream "  :~(~a~) — did you mean :~(~a~)?~%" k guess)
+            (format stream "  :~(~a~) -- did you mean :~(~a~)?~%" k guess)
             (print-sites where stream :preview nil :limit 5)))
         (format stream "  none~%"))
 
@@ -801,12 +801,26 @@ doesn't already have them: the push may be conditional or run after the read."
   (and (pathname-name path)
        (member (pathname-type path) *lisp-types* :test #'string-equal)))
 
+(defun subdirectory-wild (dir)
+  "Wildcard pathname matching the subdirectories of DIR."
+  (make-pathname :name nil :type nil
+                 :directory (append (pathname-directory (pathname dir)) '(:wild))
+                 :defaults dir))
+
 (defun directory-entries (dir)
-  (handler-case
-      #+clisp (append (directory (merge-pathnames #p"*.*" dir))
-                      (directory (merge-pathnames #p"*/" dir)))
-      #-clisp (directory (merge-pathnames (make-pathname :name :wild :type :wild) dir))
-    (error () '())))
+  "Files and subdirectories of DIR. ECL's DIRECTORY omits subdirectories from a
+name/type wildcard, so those are listed with a directory wildcard. A failure in
+either listing does not discard the other."
+  (labels ((safe (thunk)
+             (handler-case (funcall thunk) (error () '()))))
+    (append
+     (safe (lambda ()
+             #+clisp (directory (merge-pathnames #p"*.*" dir))
+             #-clisp (directory (merge-pathnames (make-pathname :name :wild :type :wild) dir))))
+     (remove-if-not #'subdirectory-p
+                    (safe (lambda ()
+                            #+clisp (directory (merge-pathnames #p"*/" dir))
+                            #-clisp (directory (subdirectory-wild dir))))))))
 
 (defun relative-display (file root)
   (let* ((f (namestring file))

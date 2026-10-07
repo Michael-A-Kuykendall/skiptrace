@@ -1,4 +1,10 @@
-# feature-audit
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Michael-A-Kuykendall/skiptrace/main/assets/skiptrace-logo.png" alt="skiptrace logo" width="480" />
+
+  # skiptrace
+
+  Finds Common Lisp forms the reader never reads.
+</div>
 
 Finds Common Lisp code that your implementations never read.
 
@@ -82,18 +88,23 @@ Known limits:
 - **Contradiction detection** knows that implementations (sbcl, ccl, ecl, ...) and
   OS kernels (linux, darwin, win32, ...) are mutually exclusive. It doesn't know
   every implication between features.
+- **Directory walk** lists subdirectories with a separate wildcard. ECL's
+  `DIRECTORY` omits them from a name/type wildcard; the walker used to stop at
+  the top directory on ECL.
 
 ## What it found on its first run
 
 Across 18 popular libraries (about 4,000 guarded forms), with no false positives
 after tuning:
 
-- **UIOP** `run-program.lisp`: a `#+mcl` branch inside `%system` that can never
-  run, because MCL is missing from both of the function's implementation guards.
-- **UIOP** `launch-program.lisp`: `#+lispworks *terminal-io*` nested inside
-  `#-(or lispworks abcl)`.
-- **SLIME** `swank/ecl.lisp`: `#+(and ecl-weak-hash (or))`, disabled on purpose,
-  and the tool says so.
+- **UIOP** `uiop/run-program.lisp:465`, `#+mcl` inside
+  `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)`
+  at line 439. MCL is in neither implementation guard of `%system`.
+- **UIOP** `uiop/launch-program.lisp:178`, `#+lispworks *terminal-io*` inside
+  `#-(or lispworks abcl)` at line 176.
+- **SLIME** `swank/ecl.lisp:1086`, `#+(and ecl-weak-hash (or))`. Disabled on
+  purpose. The empty `(or)` is the safe comment idiom.
 
-(Checked against the GitHub mirror of ASDF as of its 2023 snapshot; the canonical
-repository may differ.)
+Rechecked 2026-10-06 against `fare/asdf` master and `slime/slime` master on
+GitHub. Those line numbers are that checkout. The canonical ASDF repository is
+gitlab.common-lisp.net; this pass did not re-fetch it.

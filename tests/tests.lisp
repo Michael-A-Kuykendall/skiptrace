@@ -8,6 +8,8 @@
 
 (defvar *failures* 0)
 (defvar *count* 0)
+(defvar *tests-dir*
+  (make-pathname :name nil :type nil :defaults *load-truename*))
 
 (defmacro check (name form expected)
   `(let ((got (handler-case ,form (error (e) (list :error (princ-to-string e)))))
@@ -29,6 +31,18 @@
 
 (defun fx (s) (parse-feature-expression s))
 (defun ev (s features) (eval-feature-expression (fx s) features))
+
+(defun nested-walk-names ()
+  "Write a source file one directory down and collect it. ECL used to miss this."
+  (let* ((root (merge-pathnames "nest-fixture/" *tests-dir*))
+         (leaf (merge-pathnames "sub/leaf.lisp" root)))
+    (ensure-directories-exist leaf)
+    (with-open-file (out leaf :direction :output :if-exists :supersede
+                         :if-does-not-exist :create)
+      (write-string "#+sbcl (nested)" out))
+    (unwind-protect
+         (sort (mapcar #'cdr (feature-audit::collect-files root)) #'string<)
+      (ignore-errors (delete-file leaf)))))
 
 (defun run-tests ()
   (setf *failures* 0 *count* 0)
@@ -166,6 +180,10 @@
            :unknown)
     (check "maybe" (eval-feature-expression :x '() '(:x)) :unknown)
     (check "maybe under not" (eval-feature-expression '(:not :x) '() '(:x)) :unknown))
+
+  (check "walks a nested source file"
+         (nested-walk-names)
+         '("sub/leaf.lisp"))
 
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
