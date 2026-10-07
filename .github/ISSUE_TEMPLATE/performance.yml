@@ -1,0 +1,37 @@
+name: Performance
+description: A scan is slow, or it hangs on ordinary source
+labels: ["performance"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What is slow
+      description: Command, size of the tree, and how long it took.
+    validations:
+      required: true
+
+  - type: input
+    id: command
+    attributes:
+      label: Command
+      placeholder: sbcl --script bin/skiptrace src/
+    validations:
+      required: true
+
+  - type: dropdown
+    id: lisp
+    attributes:
+      label: Lisp
+      options:
+        - SBCL
+        - ECL
+        - CLISP
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything that makes it faster or slower
+      description: A single file, a directory, `--json`, a particular reader macro.

@@ -1,0 +1,24 @@
+name: Enhancement
+description: Improve something skiptrace already does
+title: "[Enhancement]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Who it helps
+      description: A command, a profile, or a report section.

@@ -6,6 +6,10 @@
   Finds Common Lisp forms the reader never reads.
 </div>
 
+**skiptrace will be free forever.** No asterisks. No "free for now." No pivot to paid.
+
+If skiptrace helps you, [sponsor it](https://github.com/sponsors/Michael-A-Kuykendall). Tiers and recognition are in [SPONSORS.md](SPONSORS.md).
+
 `#+sbcl (foo)` is not untested on Clozure. Clozure's reader skips the form, so no test suite and no coverage tool can see it. skiptrace scans source without calling `READ`, records every `#+` / `#-` and every ASDF `:if-feature`, and checks each guard against `*features*` lists from the implementations you ship.
 
 Zero dependencies. Not in Quicklisp yet. Clone the repository and run it from the checkout. Version 0.1.0. The system name is `skiptrace`.
@@ -138,6 +142,19 @@ The walker follows the standard reader: strings, `;` comments, nested `#| |#` co
 - ECL's `DIRECTORY` omits subdirectories from a name/type wildcard. The walker lists directories with a separate wildcard.
 - The Lisp sources are ASCII so CLISP can load them without a UTF-8 locale.
 
+## Community
+
+- Bugs and feature requests: [open an issue](https://github.com/Michael-A-Kuykendall/skiptrace/issues/new/choose).
+- Questions: [GitHub Discussions](https://github.com/Michael-A-Kuykendall/skiptrace/discussions).
+- Security: [private advisory](https://github.com/Michael-A-Kuykendall/skiptrace/security/advisories/new) or [SECURITY.md](SECURITY.md).
+- Contributing, including maintainer-only pull requests and the DCO: [CONTRIBUTING.md](CONTRIBUTING.md).
+- Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+- Who decides: [GOVERNANCE.md](GOVERNANCE.md).
+- Where this is going: [ROADMAP.md](ROADMAP.md).
+- What changed: [CHANGELOG.md](CHANGELOG.md).
+
+Pull requests are restricted to approved maintainers. Unsolicited pull requests are declined. Email [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com) to apply for maintainer status.
+
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE) and [NOTICE](NOTICE).

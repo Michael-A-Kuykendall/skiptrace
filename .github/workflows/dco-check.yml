@@ -1,0 +1,36 @@
+name: DCO Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  dco_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: DCO Check
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          missing=0
+          while read -r commit message; do
+            [ -z "${commit}" ] && continue
+            if git show --format="%B" -s "$commit" | grep -q "Signed-off-by:"; then
+              echo "ok $commit $message"
+            else
+              echo "missing Signed-off-by: $commit $message"
+              missing=1
+            fi
+          done < <(git log --format="%H %s" --no-merges origin/main..HEAD)
+          if [ "$missing" -ne 0 ]; then
+            echo "Sign commits with git commit -s. See DCO.md."
+            exit 1
+          fi
+          echo "All non-merge commits in origin/main..HEAD have a Signed-off-by line."

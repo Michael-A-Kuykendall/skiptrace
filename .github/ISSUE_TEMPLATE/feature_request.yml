@@ -1,0 +1,29 @@
+name: Feature request
+description: Something skiptrace does not do yet
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check [ROADMAP.md](https://github.com/Michael-A-Kuykendall/skiptrace/blob/main/ROADMAP.md) first. A dependency, a change to `--strict`, or a change to the JSON schema is outside the project.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What source, or what workflow, the tool does not cover.
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What you want it to do
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered

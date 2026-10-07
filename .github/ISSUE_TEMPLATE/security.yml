@@ -1,0 +1,23 @@
+name: Security
+description: Redirects you to private reporting
+title: "[Security]: use private reporting"
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not describe a vulnerability in this issue.
+
+        Report it here instead: https://github.com/Michael-A-Kuykendall/skiptrace/security/advisories/new
+
+        Or email michaelallenkuykendall@gmail.com with `SECURITY` in the subject. See [SECURITY.md](https://github.com/Michael-A-Kuykendall/skiptrace/blob/main/SECURITY.md).
+
+        If you opened this by mistake, close it without adding details.
+
+  - type: checkboxes
+    id: ack
+    attributes:
+      label: Acknowledgement
+      options:
+        - label: I will report this in private, and I will not paste details here
+          required: true

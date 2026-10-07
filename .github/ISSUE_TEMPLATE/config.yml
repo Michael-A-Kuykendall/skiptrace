@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General discussion
+    url: https://github.com/Michael-A-Kuykendall/skiptrace/discussions
+    about: Questions about using skiptrace, and ideas that are not a bug report
+  - name: Security vulnerability
+    url: https://github.com/Michael-A-Kuykendall/skiptrace/security/advisories/new
+    about: Report a vulnerability in private. Do not open a public issue for one.
+  - name: Maintainer contact
+    url: mailto:michaelallenkuykendall@gmail.com
+    about: Maintainer applications, licensing, and sponsorship

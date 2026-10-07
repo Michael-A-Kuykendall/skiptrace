@@ -1,0 +1,36 @@
+name: Question
+description: Help using skiptrace
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a longer back-and-forth, [GitHub Discussions](https://github.com/Michael-A-Kuykendall/skiptrace/discussions) is a better place than an issue.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you already tried
+      placeholder: |
+        sbcl --script bin/skiptrace --profiles sbcl-linux-x86-64 src/
+    validations:
+      required: true
+
+  - type: dropdown
+    id: lisp
+    attributes:
+      label: Lisp
+      options:
+        - SBCL
+        - ECL
+        - CLISP
+        - CCL
+        - ABCL
+        - Other

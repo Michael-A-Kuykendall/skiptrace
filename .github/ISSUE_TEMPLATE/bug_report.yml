@@ -1,0 +1,84 @@
+name: Bug report
+description: A wrong report, a crash, or a form the scanner missed
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this. For a vulnerability, use [private reporting](https://github.com/Michael-A-Kuykendall/skiptrace/security/advisories/new) instead of this form.
+
+        A `#+` finding you simply disagree with can still be a bug. Include the source.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: What skiptrace did, and what you expected.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        sbcl --script bin/skiptrace --strict src/
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Smallest source that shows it
+      description: Paste a few lines. A whole project is harder to re-run.
+      render: lisp
+
+  - type: dropdown
+    id: lisp
+    attributes:
+      label: Lisp
+      options:
+        - SBCL
+        - ECL
+        - CLISP
+        - CCL
+        - ABCL
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: lisp-version
+    attributes:
+      label: Lisp version
+      placeholder: SBCL 2.2.9.debian
+
+  - type: dropdown
+    id: how
+    attributes:
+      label: How you ran it
+      options:
+        - sbcl --script bin/skiptrace
+        - ecl --shell bin/skiptrace
+        - clisp bin/skiptrace
+        - ASDF (skiptrace:main)
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output
+      description: The report, or the error. Include the exit code if you used --strict.
+      render: text
