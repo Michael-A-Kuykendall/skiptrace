@@ -303,5 +303,29 @@
              '("skiptrace: 1 contradiction, 1 typo"
                "skiptrace: 0 contradictions, 0 typos"))))
 
+  (labels ((write-profile (dir name source)
+             (ensure-directories-exist (merge-pathnames "x.sexp" dir))
+             (with-open-file (out (merge-pathnames (concatenate 'string name ".sexp") dir)
+                                  :direction :output :if-exists :supersede
+                                  :if-does-not-exist :create)
+               (format out "(:name ~s :source ~s :features (:common-lisp))~%" name source))))
+    (let ((cap (merge-pathnames "skiptrace-prof-cap/"
+                                (make-pathname :directory '(:absolute "tmp"))))
+          (hand (merge-pathnames "skiptrace-prof-hand/"
+                                 (make-pathname :directory '(:absolute "tmp")))))
+      (write-profile cap "zebra" "captured from TestLisp 1.0; notes mention approximate builds")
+      (write-profile hand "hand" "approximate, written by hand")
+      (unwind-protect
+           (progn
+             (check "captured source may mention approximate"
+                    (mapcar #'skiptrace::profile-name (skiptrace:load-profiles cap))
+                    '("zebra"))
+             (check "handwritten source stays out of the default matrix"
+                    (mapcar #'skiptrace::profile-name (skiptrace:load-profiles hand))
+                    nil))
+        (dolist (dir (list cap hand))
+          (dolist (file (ignore-errors (directory (merge-pathnames "*.sexp" dir))))
+            (ignore-errors (delete-file file)))))))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))

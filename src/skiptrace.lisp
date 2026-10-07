@@ -401,8 +401,9 @@ A push written inside a comment or a string does not count."
   (directory (merge-pathnames "*.sexp" dir)))
 
 (defun load-profiles (dir &optional only)
-  "Load *.sexp profiles in DIR. Handwritten profiles live in DIR/approximate/ and
-are not in the default matrix. --profiles NAME still finds them by :name."
+  "Load *.sexp profiles in DIR. The default matrix keeps a profile whose :source
+starts with \"captured from\", even if that text later says approximate.
+Handwritten profiles live in DIR/approximate/ and load when NAME is requested."
   (let* ((extra (when only
                   (directory (merge-pathnames "approximate/*.sexp" dir))))
          (all (sort (mapcar #'read-profile (append (profile-files dir) extra))
@@ -410,10 +411,12 @@ are not in the default matrix. --profiles NAME still finds them by :name."
     (if only
         (or (remove-if-not (lambda (p) (member (profile-name p) only :test #'string-equal)) all)
             (error "No profiles named ~{~a~^, ~} in ~a" only dir))
-        (remove-if (lambda (p)
-                     (search "approximate" (namestring (profile-source p))))
-                   (sort (mapcar #'read-profile (profile-files dir))
-                         #'string< :key #'profile-name)))))
+        (remove-if-not (lambda (p)
+                         (let ((src (string (profile-source p))))
+                           (and (>= (length src) 13)
+                                (string-equal src "captured from" :end1 13))))
+                       (sort (mapcar #'read-profile (profile-files dir))
+                             #'string< :key #'profile-name)))))
 
 ;;; Feature names that exist somewhere in the Lisp world, so #+lispworks reads as
 ;;; "not in your matrix" rather than "typo".
