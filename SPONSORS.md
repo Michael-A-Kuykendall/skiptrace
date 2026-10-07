@@ -20,4 +20,4 @@ Zephyr and alistairheath sponsor my work.
 
 **Want to support the work?** [Become a sponsor](https://github.com/sponsors/Michael-A-Kuykendall)
 
-skiptrace stays free. Sponsorship is how I pay for the time: ports, captured profiles, and keeping SBCL, ECL, and CLISP in CI as they change.
+Skiptrace stays free. Sponsorship is how I pay for the time: ports, captured profiles, and keeping SBCL, ECL, and CLISP in CI as they change.

@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Michael-A-Kuykendall/skiptrace/main/assets/skiptrace-logo.png" alt="skiptrace" width="480" />
+  <img src="https://raw.githubusercontent.com/Michael-A-Kuykendall/skiptrace/main/assets/skiptrace-logo.png" alt="Skiptrace" width="480" />
 
-  # skiptrace — static analysis for Common Lisp reader conditionals
+  # Skiptrace — static analysis for Common Lisp reader conditionals
 
   Finds Common Lisp code your target implementations never read.
 
@@ -9,11 +9,11 @@
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 </div>
 
-## What is skiptrace?
+## What is Skiptrace?
 
-skiptrace audits Common Lisp reader conditionals without loading the code under review. It scans `#+`, `#-`, and ASDF `:if-feature` guards, evaluates them against captured `*features*` profiles, and reports branches that are impossible, suspicious, or never read by the implementations you selected.
+Skiptrace audits Common Lisp reader conditionals without loading the code under review. It scans `#+`, `#-`, and ASDF `:if-feature` guards, evaluates them against captured `*features*` profiles, and reports branches that are impossible, suspicious, or never read by the implementations you selected.
 
-`#+sbcl (foo)` is not merely untested on Clozure CL. Clozure's reader skips the form before compilation, so a test suite and ordinary coverage tooling cannot see it. skiptrace works on the source text instead of calling `READ`, which lets it inspect the code that an implementation would otherwise discard.
+`#+sbcl (foo)` is not merely untested on Clozure CL. Clozure's reader skips the form before compilation, so a test suite and ordinary coverage tooling cannot see it. Skiptrace works on the source text instead of calling `READ`, which lets it inspect the code that an implementation would otherwise discard.
 
 It currently reports:
 
@@ -145,25 +145,21 @@ Capture after ASDF or Quicklisp if your application loads them; both may add fea
 
 `--profiles` selects by the profile's `:name`, not by filename, and every requested name must exist.
 
-## Real-world sweep
+## What it finds in real libraries
 
-`sweep.sh` clones 18 established Common Lisp projects at depth 1 into `./corpus` and writes `./sweep/<name>.txt`. Each report records the exact upstream commit that was scanned. Both directories are gitignored. One library failing does not stop the rest. The sweep runs skiptrace under SBCL.
+A contradiction is a form no Common Lisp can read. A likely typo is a feature name one edit from a name Skiptrace already knows. These are from libraries people load all the time. Revisions, line links, and the rest of the scan are in [EXAMPLES.md](EXAMPLES.md).
 
-```sh
-sh sweep.sh
-```
+- **UIOP**, shipped with [ASDF](https://github.com/fare/asdf): `#+lispworks` inside `#-(or lispworks abcl)` in `uiop/launch-program.lisp`, and `#+mcl` inside an `or` that never names MCL in `uiop/run-program.lisp`. The MCL form is also copied into SBCL, Clozure CL, CLISP, the Quicklisp client, and lisp-binary.
+- **[SBCL](https://github.com/sbcl/sbcl)**: `#+sb-xc-xhost` in `src/compiler/globaldb.lisp`. The feature the rest of that tree uses is `:sb-xc-host`.
+- **[Clozure CL](https://github.com/Clozure/ccl)**: `#+pp32-target` and `#+ppc32=target` next to a correct `ppc32-target`; `#-x8664-target` still inside `#+x8664-target`; `#+windows-target` inside `#-windows-target`.
+- **[CLISP](https://gitlab.com/gnu-clisp/clisp)**: `#+clisp` and `#+sbcl` inside `#-(or clisp sbcl)` in `tests/mop-aux.lisp`.
+- **[osicat](https://github.com/osicat/osicat)**: `#+windows` inside `#-windows` in `%get-file-kind`.
+- **[LTk](https://github.com/ghollisjr/ltk)**: `#+scl` inside a function that is itself `#+sbcl`.
+- **[cl-cffi-gtk](https://github.com/sharplispers/cl-cffi-gtk)**: two guards spell the documentation feature `cl-cffi-gtk-documenation`.
 
-A snapshot run on 2026-10-06 found three statically unreachable reader-conditional sites and no likely feature-name typos:
+[Every finding from the 243-library scan](EXAMPLES.md). 232 of them had no contradiction and no likely typo, including Closer to MOP, Alexandria, cl-ppcre, CFFI, Bordeaux-Threads, Hunchentoot, and Ironclad.
 
-- UIOP `uiop/launch-program.lisp:178`: `#+lispworks` inside `#-(or lispworks abcl)` at line 176.
-- UIOP `uiop/run-program.lisp:465`: `#+mcl` inside `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)` at line 439.
-- SLIME `swank/ecl.lisp:1086`: `#+(and ecl-weak-hash (or))`, disabled intentionally. The empty `(or)` is the safe comment idiom.
-
-The first two demonstrate the class of branch skiptrace is designed to expose; the third demonstrates that the scanner can also encounter intentional dead source and report enough context to distinguish it.
-
-Line numbers above are from the upstream revisions checked on 2026-10-06. `sweep.sh` uses the GitHub mirror of ASDF rather than gitlab.common-lisp.net.
-
-Libraries: usocket, bordeaux-threads, cffi, slime, trivial-features, asdf, hunchentoot, ironclad, dissect, dexador, trivial-garbage, iolib, deploy, babel, split-sequence, Postmodern, chipz, woo.
+`sweep.sh` clones 18 of those libraries into `./corpus` and writes `./sweep/<name>.txt`. Both directories are gitignored. The scan recorded above used the GitHub mirror of ASDF.
 
 ## Limits
 
@@ -203,7 +199,7 @@ Pull requests are restricted to approved maintainers. Unsolicited pull requests 
 
 ## Sponsorship
 
-skiptrace stays free to use, copy, modify, and ship, including in commercial work. There is no paid build.
+Skiptrace stays free to use, copy, modify, and ship, including in commercial work. There is no paid build.
 
 Sponsorship is optional and funds ports, captured profiles, CI maintenance, and ongoing compatibility work. See [SPONSORS.md](SPONSORS.md) or [GitHub Sponsors](https://github.com/sponsors/Michael-A-Kuykendall).
 

@@ -2,7 +2,7 @@
 
 Every commit on a pull request needs a `Signed-off-by` line. That line is the signer's statement that they can submit the change under the MIT license in [LICENSE](LICENSE).
 
-skiptrace uses DCO 1.1 instead of a separate contributor license agreement. The certificate below is the Linux Foundation text. It may not be edited.
+Skiptrace uses DCO 1.1 instead of a separate contributor license agreement. The certificate below is the Linux Foundation text. It may not be edited.
 
 ## Certificate
 

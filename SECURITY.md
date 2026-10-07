@@ -12,7 +12,7 @@
 
 Do not open a public GitHub issue for a security vulnerability.
 
-skiptrace is a local source scanner. It reads the paths you give it and writes a report to standard output. It does not evaluate the code it scans. A report about a `#+` in some other project is a normal issue, not a vulnerability in this tool.
+Skiptrace is a local source scanner. It reads the paths you give it and writes a report to standard output. It does not evaluate the code it scans. A report about a `#+` in some other project is a normal issue, not a vulnerability in this tool.
 
 ### Private disclosure
 
@@ -32,7 +32,7 @@ There is no bug bounty.
 
 - What the issue is, and what an attacker could do with it
 - Steps to reproduce
-- skiptrace version (`skiptrace.asd` `:version`, or the commit)
+- Skiptrace version (`skiptrace.asd` `:version`, or the commit)
 - Lisp implementation and version
 - Operating system
 - The smallest source file that triggers it, if the issue is in the scanner
@@ -65,7 +65,7 @@ There is no bug bounty.
 
 **Out of scope**
 
-- Bugs in the code you point skiptrace at
+- Bugs in the code you point Skiptrace at
 - A `#+` finding you disagree with. That is a normal issue.
 - Handwritten profiles under `profiles/approximate/`. They are labeled approximate.
 - The third-party checkouts `sweep.sh` clones into `corpus/`. Those stay untracked.
