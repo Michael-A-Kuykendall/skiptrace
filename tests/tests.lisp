@@ -315,6 +315,9 @@ A container running as an unknown uid reports a home of /, which is not writable
   (check "unclosed escape does not abort the file"
          (progn (sites-of "#+(and sbcl |unterminated (foo)") t)
          t)
+  (check "trailing backslash does not abort the file"
+         (progn (sites-of "#+foo\\") (sites-of "token\\") t)
+         t)
 
   (let* ((demo (namestring (merge-pathnames "../examples/demo.lisp" *profiles-dir*)))
          (analysis (nth-value 2 (skiptrace:audit-paths (list demo) :profile-dir *profiles-dir*)))
@@ -371,6 +374,35 @@ A container running as an unknown uid reports a home of /, which is not writable
         (dolist (dir (list cap hand))
           (dolist (file (ignore-errors (directory (merge-pathnames "*.sexp" dir))))
             (ignore-errors (delete-file file)))))))
+
+  (let* ((result (skiptrace::scan-text "#+feature-name-that-is-not-close (foo)" "t.lisp"))
+         (profiles (skiptrace:load-profiles *profiles-dir*))
+         (analysis (skiptrace::analyze (list result) profiles nil))
+         (text (with-output-to-string (s)
+                 (skiptrace::report-text (list result) nil analysis :stream s))))
+    (check "headings name the condition"
+           (list (not (null (search "Impossible guard chains" text)))
+                 (not (null (search "Never read by selected profiles" text)))
+                 (not (null (search "Requires features absent from the selected profiles" text)))
+                 (not (null (search "Other feature names not present in the selected profiles" text)))
+                 (null (search "no Common Lisp can ever read these" text))
+                 (null (search "Needs a feature none of these implementations have" text)))
+           '(t t t t t t)))
+
+  (let* ((demo (namestring (merge-pathnames "../examples/demo.lisp" *profiles-dir*)))
+         (analysis (nth-value 2 (skiptrace:audit-paths (list demo) :profile-dir *profiles-dir*)))
+         (text (with-output-to-string (out)
+                 (skiptrace::report-json-full nil nil analysis :stream out))))
+    (check "json-full locates the demo typo"
+           (list (not (null (search "\"kind\": \"likely-typo\"" text)))
+                 (not (null (search "sb_thread" text)))
+                 (not (null (search "sb-thread" text)))
+                 (not (null (search "demo.lisp" text)))
+                 (not (null (search "\"line\": 20" text)))
+                 (not (null (search "\"parent_guards\"" text)))
+                 (not (null (search "\"kind\": \"contradiction\"" text)))
+                 (not (null (search "\"kind\": \"comment-idiom\"" text))))
+           '(t t t t t t t t)))
 
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))

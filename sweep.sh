@@ -1,5 +1,6 @@
 #!/bin/sh
-# Reproduce the 18-library sweep. Run from the repo root (where bin/ is).
+# 18-project smoke corpus. This is not the 243-tree scan in EXAMPLES.md.
+# Run from the repo root (where bin/ is).
 #   sh sweep.sh            -> clones into ./corpus, writes ./sweep/<lib>.txt
 # Each report begins with the exact upstream commit that was scanned.
 set -e
@@ -17,6 +18,6 @@ for r in usocket/usocket sionescu/bordeaux-threads cffi/cffi slime/slime \
     printf 'upstream-revision: %s\n\n' "$revision"
     sbcl --script bin/skiptrace "corpus/$name" || true
   } > "sweep/$name.txt"
-  printf '%-18s %s\n' "$name" "$(grep -E '^== (Contradictions|Likely typos)' "sweep/$name.txt" | grep -oE '\([0-9]+\)' | tr '\n' ' ')"
+  printf '%-18s %s\n' "$name" "$(grep -E '^== (Impossible guard chains|Likely typos)' "sweep/$name.txt" | grep -oE '\([0-9]+\)' | tr '\n' ' ')"
 done
 echo "Columns: (contradictions) (likely typos). Full reports in sweep/."

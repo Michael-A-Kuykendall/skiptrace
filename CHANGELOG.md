@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow that installs SBCL, ECL, and CLISP and runs the tests, plus a DCO check on pull requests.
 - Project docs: license, conduct, contributing, security, governance, DCO, changelog, roadmap, sponsors.
 - [EXAMPLES.md](EXAMPLES.md): contradictions and likely typos from 243 libraries. The README lists the best-known ones.
+- `--json-full` writes each finding with its file, line, parent guards, and preview, including likely-typo locations, comment idioms, dynamic guards, and scanner notes. `--json` still has only `profiles`, `sites`, and `likely_typos`.
+- `corpus-scan.py` scans a pinned Quicklisp-format distribution in one SBCL process and writes a deduplicated summary. `sweep.sh` stays the 18-project smoke corpus.
 
 ### Fixed
 
@@ -35,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- The text report headings now say impossible guard chains, forms the selected profiles never read, features absent from those profiles, and other feature names those profiles do not define.
+- The README and EXAMPLES state the contradiction and typo rules, how the 243 trees were chosen, and that `sweep.sh` is the 18-project smoke corpus.
 - The README now opens with the product and its purpose, distinguishes CI-tested launchers from additional launcher support, moves sponsorship after the technical documentation, and no longer advertises Quicklisp before publication.
 - Sweep reports record the exact upstream revision scanned.
 - The system, package, command, and repository name are skiptrace.

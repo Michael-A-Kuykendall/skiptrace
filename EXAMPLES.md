@@ -1,8 +1,18 @@
 # Examples
 
-Skiptrace reads `#+`, `#-`, and ASDF `:if-feature` without loading the library. On 2026-10-07 it scanned 243 libraries and implementations: 10,114 files and 33,862 guarded forms. Eleven of them produced a contradiction or a likely typo. A contradiction is a form no Common Lisp can read. A likely typo is a feature name one edit from a name Skiptrace already knows.
+Skiptrace reads `#+`, `#-`, and ASDF `:if-feature` without loading the library.
 
-The README lists the best-known cases. This page is every one of them, popular libraries first, each linked at the revision that was scanned.
+A contradiction is a guarded form whose enclosing reader conditions cannot all be true on one implementation. Operating-system kernels are mutually exclusive the same way: `#+linux` inside `#+darwin` is a contradiction. A likely typo matches a known feature after treating `-`, `_`, and `.` as the same, or is one edit away, and is not a prefix, a suffix, or a digit change.
+
+## Hand-picked git corpus, 2026-10-07
+
+243 public Common Lisp source trees: widely used Quicklisp projects whose recorded source was a git URL, plus the SBCL, Clozure CL, and CLISP repositories. This was not the Quicklisp distribution, not a download ranking, and not a random sample. Each finding below is pinned to the revision scanned. The scan covered 10,114 files and 33,862 guarded forms. Eleven trees produced a contradiction or a likely typo.
+
+cl-base64, CLSQL, and contextl were not cloned. ECL and Maxima were not cloned. Closer to MOP came from GitLab after its GitHub path 404ed.
+
+The 243-source-tree corpus is this page. `sweep.sh` is the smaller 18-project smoke corpus and does not reproduce these results.
+
+The README lists the best-known cases. The sections below say why each one matters.
 
 ## UIOP, shipped with ASDF
 
@@ -76,8 +86,17 @@ These are intentional. The empty `(or)` disables the form on every implementatio
 
 ## The other 232
 
-No contradiction and no likely typo. That includes Closer to MOP (16 files, 144 guarded forms), Alexandria, cl-ppcre, CFFI, Bordeaux-Threads, Hunchentoot, Ironclad, Iterate, Nyxt, Lem, pgloader, Coalton, StumpWM, Serapeum, Postmodern, Drakma, FiveAM, Prove, and Parenscript.
+232 source trees produced neither a contradiction nor a likely typo.
+
+Representative examples:
+Closer to MOP, Alexandria, cl-ppcre, CFFI, Bordeaux-Threads,
+Hunchentoot, Ironclad, Iterate, Nyxt, Lem, pgloader, Coalton.
+
+<details>
+<summary>All 232 clean source trees</summary>
 
 `1am`, `3bmd`, `McCLIM`, `Postmodern`, `access`, `alexandria`, `anaphora`, `april`, `archive`, `asdf-finalizers`, `asdf-system-connections`, `assoc-utils`, `atomics`, `babel`, `beirc`, `blackbird`, `bordeaux-threads`, `bt-semaphore`, `calispel`, `carrier`, `caveman`, `cepl`, `cerberus`, `cffi`, `chanl`, `check-it`, `chipz`, `chronicity`, `chunga`, `circular-streams`, `cl-annot`, `cl-annot-revisit`, `cl-async`, `cl-autowrap`, `cl-charms`, `cl-conspack`, `cl-cont`, `cl-containers`, `cl-cookie`, `cl-coveralls`, `cl-cpus`, `cl-cron`, `cl-css`, `cl-csv`, `cl-cuda`, `cl-dbi`, `cl-decimals`, `cl-fad`, `cl-fond`, `cl-gamepad`, `cl-glfw3`, `cl-html-parse`, `cl-html5-parser`, `cl-interpol`, `cl-jpeg`, `cl-json`, `cl-libuv`, `cl-log`, `cl-markdown`, `cl-markless`, `cl-markup`, `cl-memcached`, `cl-mime`, `cl-mixed`, `cl-mongo`, `cl-mpi`, `cl-oauth`, `cl-opengl`, `cl-pass`, `cl-pattern`, `cl-pdf`, `cl-plus-ssl`, `cl-ppcre`, `cl-project`, `cl-protobufs`, `cl-readline`, `cl-redis`, `cl-sdl2`, `cl-smtp`, `cl-sqlite`, `cl-store`, `cl-string-match`, `cl-strings`, `cl-syntax`, `cl-tls`, `cl-typesetting`, `cl-unicode`, `cl-vectors`, `cl-who`, `cl-yacc`, `clack`, `climacs`, `closer-mop`, `closure-common`, `closure-html`, `clunit2`, `clx`, `coalton`, `command-line-arguments`, `crane`, `croatoan`, `crypto-shortcuts`, `cxml`, `cxml-rpc`, `cxml-stp`, `datafly`, `defclass-std`, `deploy`, `dexador`, `dissect`, `djula`, `do-urlencode`, `documentation-utils`, `drakma`, `drakma-async`, `esrap`, `external-program`, `fare-mop`, `fare-quasiquote`, `fare-utils`, `fast-http`, `fast-io`, `fiasco`, `file-notify`, `fiveam`, `flexi-streams`, `function-cache`, `global-vars`, `harmony`, `http-body`, `hunchentoot`, `hunchentoot-auth`, `imago`, `inferior-shell`, `iolib`, `ironclad`, `iterate`, `jonathan`, `json-mop`, `jzon`, `lack`, `lass`, `legit`, `lem`, `let-plus`, `linedit`, `lisp-unit`, `lla`, `local-time`, `log4cl`, `lparallel`, `lquery`, `magicl`, `maxpc`, `md5`, `metabang-bind`, `mgl-pax`, `mito`, `mk-string-metrics`, `moptilities`, `myway`, `named-readtables`, `nibbles`, `ningle`, `nodgui`, `north`, `nyxt`, `one-more-re-nightmare`, `opticl`, `optima`, `parachute`, `parenscript`, `parse-float`, `parse-number`, `pathname-utils`, `petalisp`, `pgloader`, `plump`, `png-read`, `pngload`, `proc-parse`, `prove`, `puri`, `quri`, `rove`, `salza2`, `sanity-clause`, `secure-random`, `serapeum`, `series`, `shasht`, `sketch`, `skippy`, `smart-buffer`, `smug`, `spinneret`, `split-sequence`, `staple`, `static-vectors`, `stefil`, `stumpwm`, `swap-bytes`, `sxql`, `trivia`, `trivial-arguments`, `trivial-backtrace`, `trivial-benchmark`, `trivial-cltl2`, `trivial-features`, `trivial-file-size`, `trivial-garbage`, `trivial-gray-streams`, `trivial-indent`, `trivial-main-thread`, `trivial-mimes`, `trivial-package-local-nicknames`, `trivial-types`, `trivial-utf-8`, `uax-15`, `unix-opts`, `usocket`, `vecto`, `verbose`, `vom`, `woo`, `wookie`, `xsubseq`, `yason`, `zip`, `zpb-ttf`, `zpng`, `zs3`.
 
-Count of that list plus the eleven with findings is 243. cl-base64, CLSQL, and contextl were not cloned. ECL and Maxima were not cloned.
+</details>
+
+Count of that list plus the eleven with findings is 243.
