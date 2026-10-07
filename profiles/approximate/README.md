@@ -19,5 +19,9 @@ dump-features.lisp`. The dumper's raw name was `sbcl-win32-x86-64`. The
 stored name is `sbcl-windows-x86-64`, and the file is
 `profiles/sbcl-windows-x86-64.sexp`.
 
+SBCL 2.6.8 on Darwin arm64 has been captured with `sbcl --script
+dump-features.lisp`. The dumper's name was already `sbcl-darwin-arm64`.
+The file is `profiles/sbcl-darwin-arm64.sexp`.
+
 A captured file belongs in `profiles/`, and its `:source` starts with
 `captured from`.
