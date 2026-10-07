@@ -35,6 +35,17 @@ ccl -b -l bin/skiptrace -- src/
 
 A leading `--` is ignored, so `sbcl --script bin/skiptrace -- src/` is the same call. CCL still requires the `--`. That is how CCL splits its own options from the script's. ECL and CLISP accept the separator and also run without it.
 
+## Install
+
+`bin/skiptrace` finds `src/` and `profiles/` by walking up from its own file. Put a symlink to that file on your `PATH`:
+
+```sh
+ln -s "$(pwd)/bin/skiptrace" "$HOME/.local/bin/skiptrace"
+skiptrace examples/
+```
+
+A copy of the script outside the checkout cannot find `src/`. The `sbcl`, `ecl`, and `clisp` commands above keep working. The symlink runs SBCL through the shebang.
+
 Exit status: `0` clean, `1` with `--strict` when there is a contradiction or a likely typo, `2` when the path is missing or no path was given.
 
 Try the fixture first:
