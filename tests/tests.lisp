@@ -210,7 +210,8 @@ A container running as an unknown uid reports a home of /, which is not writable
          (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles *profiles-dir*))
                #'string<)
          '("abcl-linux-x86-64" "ccl-linux-x86-64" "clisp-linux-x86-64"
-           "ecl-linux-x86-64" "sbcl-linux-x86-64" "sbcl-windows-x86-64"))
+           "ecl-linux-x86-64" "sbcl-darwin-arm64" "sbcl-linux-x86-64"
+           "sbcl-windows-x86-64"))
   (check "named handwritten profile still loads"
          (mapcar #'skiptrace::profile-name
                  (skiptrace:load-profiles *profiles-dir* '("ccl-linux-x86-64")))
