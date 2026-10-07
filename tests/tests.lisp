@@ -185,5 +185,18 @@
          (nested-walk-names)
          '("sub/leaf.lisp"))
 
+  (check "default matrix is the captured profiles"
+         (let ((dir (merge-pathnames "profiles/"
+                                     (merge-pathnames "../" *tests-dir*))))
+           (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles dir))
+                 #'string<))
+         '("ecl-linux-x86-64" "sbcl-linux-x86-64"))
+  (check "named handwritten profile still loads"
+         (let ((dir (merge-pathnames "profiles/"
+                                     (merge-pathnames "../" *tests-dir*))))
+           (mapcar #'skiptrace::profile-name
+                   (skiptrace:load-profiles dir '("ccl-linux-x86-64"))))
+         '("ccl-linux-x86-64"))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))

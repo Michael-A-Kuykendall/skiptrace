@@ -396,13 +396,24 @@ A push written inside a comment or a string does not count."
                     :features (mapcar (lambda (f) (intern (string f) :keyword))
                                       (getf plist :features))))))
 
+(defun profile-files (dir)
+  "Captured profiles in DIR, not the handwritten ones under DIR/approximate/."
+  (directory (merge-pathnames "*.sexp" dir)))
+
 (defun load-profiles (dir &optional only)
-  (let ((all (sort (mapcar #'read-profile (directory (merge-pathnames "*.sexp" dir)))
-                   #'string< :key #'profile-name)))
+  "Load *.sexp profiles in DIR. Handwritten profiles live in DIR/approximate/ and
+are not in the default matrix. --profiles NAME still finds them by :name."
+  (let* ((extra (when only
+                  (directory (merge-pathnames "approximate/*.sexp" dir))))
+         (all (sort (mapcar #'read-profile (append (profile-files dir) extra))
+                    #'string< :key #'profile-name)))
     (if only
         (or (remove-if-not (lambda (p) (member (profile-name p) only :test #'string-equal)) all)
             (error "No profiles named ~{~a~^, ~} in ~a" only dir))
-        all)))
+        (remove-if (lambda (p)
+                     (search "approximate" (namestring (profile-source p))))
+                   (sort (mapcar #'read-profile (profile-files dir))
+                         #'string< :key #'profile-name)))))
 
 ;;; Feature names that exist somewhere in the Lisp world, so #+lispworks reads as
 ;;; "not in your matrix" rather than "typo".
@@ -899,6 +910,7 @@ Options:
                      ((string= a "--all") (setf all t))
                      ((string= a "--json") (setf json t))
                      ((string= a "--strict") (setf strict t))
+                     ((string= a "--") nil)
                      (t (push a paths)))))
     (when (null paths) (usage) (return-from main 2))
     (multiple-value-bind (results profiles analysis)

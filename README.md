@@ -31,7 +31,13 @@ clisp bin/skiptrace src/
 ccl -b -l bin/skiptrace -- src/
 ```
 
-`sbcl --script` does not pass a `--` argument through. Do not write `sbcl --script bin/skiptrace -- src/`. ECL and CLISP accept `--`. CCL needs it.
+`sbcl --script` keeps a `--` in the argument list. skiptrace ignores it, so this works:
+
+```sh
+sbcl --script bin/skiptrace -- src/
+```
+
+CCL still needs the `--`, because CCL uses it to split its own options from the script's. ECL and CLISP accept it.
 
 Exit status: `0` clean, `1` with `--strict` when there is a contradiction or a likely typo, `2` when the path is missing or no path was given.
 
@@ -90,12 +96,8 @@ A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
 | --- | --- |
 | `sbcl-linux-x86-64` | captured, SBCL 2.2.9.debian |
 | `ecl-linux-x86-64` | captured, ECL 21.2.1 |
-| `abcl-linux-x86-64` | handwritten |
-| `ccl-linux-x86-64` | handwritten |
-| `sbcl-darwin-arm64` | handwritten |
-| `sbcl-windows-x86-64` | handwritten |
 
-The default run loads every `*.sexp` in `profiles/`. Handwritten profiles are in that directory, so they are in the default matrix. Replace them before you trust a "never read" or "untested" result:
+The default run loads every `*.sexp` directly in `profiles/`. That is the two captured files. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles ccl-linux-x86-64` still finds one there.
 
 ```sh
 sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp
@@ -138,4 +140,4 @@ The walker follows the standard reader: strings, `;` comments, nested `#| |#` co
 
 ## License
 
-MIT. See `skiptrace.asd`.
+MIT. See [LICENSE](LICENSE).

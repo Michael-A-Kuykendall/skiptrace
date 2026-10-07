@@ -25,7 +25,8 @@
                                       (or (= (length script) (length arg))
                                           (char= (char script (- (length script) (length arg) 1)) #\/)))
                             return (rest tail)))))))
-    (let* ((args #+sbcl (rest sb-ext:*posix-argv*)
+    (let* ((args #+sbcl (let ((tail (script-tail sb-ext:*posix-argv*)))
+                           (if (and tail (string= (first tail) "--")) (rest tail) tail))
                  #+ccl (rest (member "--" ccl:*command-line-argument-list* :test #'string=))
                  #+ecl (script-tail (ext:command-args))
                  #+clisp ext:*args*

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SBCL, ECL, and CLISP
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sbcl ecl clisp
+
+      - name: SBCL tests
+        run: sbcl --script tests/run.lisp
+
+      - name: ECL tests
+        run: ecl --shell tests/run.lisp
+
+      - name: CLISP tests
+        run: clisp -q -norc tests/run.lisp
+
+      - name: Strict scan of the tool
+        run: sbcl --script bin/skiptrace --strict src/ tests/ bin/skiptrace skiptrace.asd dump-features.lisp
+
+      - name: Double dash is not a path
+        run: sbcl --script bin/skiptrace -- --strict examples/
+
+      - name: Demo still exits 1 under --strict
+        run: |
+          set +e
+          sbcl --script bin/skiptrace --strict examples/
+          code=$?
+          set -e
+          test "$code" -eq 1
