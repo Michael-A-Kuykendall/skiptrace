@@ -162,7 +162,7 @@ A contradiction is a guarded form whose enclosing reader conditions cannot all b
 
 The 243-source-tree corpus is documented in [EXAMPLES.md](EXAMPLES.md). 232 of those trees had no contradiction and no likely typo, including Closer to MOP, Alexandria, cl-ppcre, CFFI, Bordeaux-Threads, Hunchentoot, and Ironclad. `sweep.sh` is the smaller 18-project smoke corpus: it clones those libraries into `./corpus` and writes `./sweep/<name>.txt`. Both directories are gitignored. It does not reproduce the 243-tree scan. The findings above used the GitHub mirror of ASDF.
 
-`corpus-scan.py` reads a pinned Quicklisp-format `releases.txt`, checks each archive's md5, and scans the extracted trees in one SBCL process. One broken archive does not stop the run. Copied findings are counted once. `python3 corpus-scan.py --self-test` checks that. Tarballs stay in `corpus/`. The committed evidence is the manifest and the deduplicated summary.
+`corpus-scan.py` reads a pinned Quicklisp-format `releases.txt`, checks each archive's file md5 and content sha1, and scans the extracted trees in one SBCL process. One broken archive does not stop the run. The evidence counts a download, extract, or scan failure, and `scanned + failed` is the project count. Copied findings are counted once. `python3 corpus-scan.py --self-test` checks that. Tarballs stay in `corpus/`. The committed evidence is the manifest and the deduplicated summary.
 
 Quicklisp 2026-01-01: 2,382 projects, 41,332 files, 52,442 guarded forms, 33 contradiction occurrences of 27 unique findings. Ultralisp 20261005202000: 2,141 projects, 35,868 files, 39,596 guarded forms, 33 contradiction occurrences of 27 unique findings. Both scans are in [EXAMPLES.md](EXAMPLES.md) and `evidence/`.
 

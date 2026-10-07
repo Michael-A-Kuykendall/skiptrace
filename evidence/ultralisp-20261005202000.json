@@ -561,7 +561,7 @@
       "guard": "#+(and lse-extensions (or))",
       "parent_guards": [],
       "preview": "(defunction dis (a)",
-      "form_hash": "b2c52f04a7dc92fc16528eb5bc7137bd4ba737748b076b8d51a42873962f4577",
+      "form_hash": "fcf4a487b863a1a8478b69259a9972395d08b310553eb7c00b39174ddcbeb987",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,

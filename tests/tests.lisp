@@ -437,6 +437,36 @@ A container running as an unknown uid reports a home of /, which is not writable
                  (equal (skiptrace::site-form-hash a) (skiptrace::site-form-hash spaced)))
            '(t t t)))
 
+  (let ((norm #'skiptrace::normalize-form-text))
+    (check "form hash keeps whitespace inside strings"
+           (list (equal (funcall norm "(print \"a b\")")
+                        (funcall norm "(print \"a  b\")"))
+                 (equal (funcall norm "(print \"a b\")")
+                        (funcall norm "(print  \"a b\")")))
+           '(nil t))
+    (check "form hash keeps whitespace inside bar names"
+           (equal (funcall norm "(list |a b|)")
+                  (funcall norm "(list |a  b|)"))
+           nil)
+    (check "form hash keeps a backslash escape"
+           (equal (funcall norm "(list a\\ b)")
+                  (funcall norm "(list a\\ \\ b)"))
+           nil)
+    (check "form hash keeps whitespace inside comments"
+           (list (equal (funcall norm "(list ; a b
+x)")
+                        (funcall norm "(list ; a  b
+x)"))
+                 (equal (funcall norm "(list #| a b |# x)")
+                        (funcall norm "(list #| a  b |# x)")))
+           '(nil nil))
+    (check "form hash keeps the space after #\\"
+           (list (equal (funcall norm "(list #\\ a)")
+                        (funcall norm "(list #\\a)"))
+                 (equal (funcall norm "(list #\\ a)")
+                        (funcall norm "(list #\\  a)")))
+           '(nil t)))
+
   (let* ((text "#+sb_thread (a) #+sb_thread (b)")
          (result (skiptrace::scan-text text "t.lisp"))
          (profiles (skiptrace:load-profiles *profiles-dir*))
