@@ -420,5 +420,34 @@ A container running as an unknown uid reports a home of /, which is not writable
                  (not (null (search "\"kind\": \"comment-idiom\"" text))))
            '(t t t t t t t t)))
 
+  (check "sha256 of the empty string"
+         (skiptrace::sha256-hex "")
+         "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+  (check "sha256 of abc"
+         (skiptrace::sha256-hex "abc")
+         "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
+
+  (let* ((pad (make-string 70 :initial-element #\x))
+         (a (first (sites-of (format nil "#+ccl (widget ~a alpha)" pad))))
+         (b (first (sites-of (format nil "#+ccl (widget ~a beta)" pad))))
+         (spaced (first (sites-of (format nil "#+ccl (widget  ~a  alpha)" pad)))))
+    (check "full form hash ignores the preview cutoff"
+           (list (equal (site-preview a) (site-preview b))
+                 (not (equal (skiptrace::site-form-hash a) (skiptrace::site-form-hash b)))
+                 (equal (skiptrace::site-form-hash a) (skiptrace::site-form-hash spaced)))
+           '(t t t)))
+
+  (let* ((text "#+sb_thread (a) #+sb_thread (b)")
+         (result (skiptrace::scan-text text "t.lisp"))
+         (profiles (skiptrace:load-profiles *profiles-dir*))
+         (analysis (skiptrace::analyze (list result) profiles nil))
+         (out (with-output-to-string (s)
+                (skiptrace::report-json-full (list result) nil analysis :stream s))))
+    (check "json-full counts typo features and occurrences apart"
+           (list (not (null (search "\"likely_typo_features\": 1" out)))
+                 (not (null (search "\"likely_typo_occurrences\": 2" out)))
+                 (null (search "\"likely_typos\"" out)))
+           '(t t t)))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))

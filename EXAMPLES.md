@@ -2,13 +2,13 @@
 
 Skiptrace reads `#+`, `#-`, and ASDF `:if-feature` without loading the library.
 
-A contradiction is a guarded form whose enclosing reader conditions cannot all be true on one implementation. Operating-system kernels are mutually exclusive the same way: `#+linux` inside `#+darwin` is a contradiction. A likely typo matches a known feature after treating `-`, `_`, and `.` as the same, or is one edit away, and is not a prefix, a suffix, or a digit change.
+A contradiction is a guarded form whose enclosing reader conditions cannot all be true in one Lisp image. Operating-system kernels are mutually exclusive the same way: `#+linux` inside `#+darwin` is a contradiction. A likely typo matches a known feature after treating `-`, `_`, and `.` as the same, or is one edit away, and is not a prefix, a suffix, or a digit change.
 
 ## Quicklisp 2026-01-01
 
 Pinned release index: [quicklisp/2026-01-01/releases.txt](https://beta.quicklisp.org/dist/quicklisp/2026-01-01/releases.txt). `corpus-scan.py` checked each archive's md5, extracted it, and scanned it in one SBCL process. 2,382 projects, 41,332 files, 52,442 guarded forms. Every project scanned. No archive failed.
 
-33 occurrences of 27 unique contradictions. 80 occurrences of 58 unique likely typos. A unique finding is the guard chain plus the guarded form, so one dead branch copied into another tree counts once, and the same misspelling in front of a different form stays separate.
+33 occurrences of 27 unique contradictions. 80 occurrences of 58 unique likely typos. A unique finding is the guard chain plus a SHA-256 of the whole guarded form, with whitespace collapsed. A likely typo also includes the misspelled feature and the suggestion. The same form copied into another tree counts once. A different form does not. The human preview is only the first line.
 
 In UIOP 3.3.7, `run-program.lisp:465` is `#+mcl` inside `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)` at line 439. That `or` does not name MCL. The same form is in lisp-binary and in qlot's bundled Quicklisp client: 3 occurrences, 1 finding. `launch-program.lisp:178` is `#+lispworks` inside `#-(or lispworks abcl)` at line 176. Implementation trees that vendor these forms are in the git corpus below. They are not projects in this distribution.
 
@@ -24,9 +24,9 @@ The manifest is [evidence/quicklisp-2026-01-01.tsv](evidence/quicklisp-2026-01-0
 
 Pinned release index: [ultralisp/20261005202000/releases.txt](http://dist.ultralisp.org/ultralisp/20261005202000/releases.txt). 2,141 projects, 35,868 files, 39,596 guarded forms. Every project scanned. No archive failed.
 
-33 occurrences of 26 unique contradictions. 157 occurrences of 43 unique likely typos.
+33 occurrences of 27 unique contradictions. 157 occurrences of 88 unique likely typos. Hashing the whole form left the Quicklisp unique counts unchanged and raised these: one more contradiction, and 45 more typo findings that had shared a truncated first line.
 
-144 of the typo occurrences are `#+adsf3` in informatimago. The same tree spells the feature `asdf3` in `editor/macros.lisp`. `#+adsf3` guards `:in-order-to` test hooks, so those hooks are not read. Different following forms are separate fingerprints.
+144 of the typo occurrences are `#+adsf3` in informatimago, and they are 75 unique findings. The same tree spells the feature `asdf3` in `editor/macros.lisp`. `#+adsf3` guards `:in-order-to` test hooks, so those hooks are not read. Hooks whose first line matches and whose body differs stay separate.
 
 The UIOP `#+mcl` form occurs 5 times here: qlot's Quicklisp client, lisp-binary, informatimago's bundled ASDF, the Quicklisp client, and a vendored UIOP 3.3.3.
 

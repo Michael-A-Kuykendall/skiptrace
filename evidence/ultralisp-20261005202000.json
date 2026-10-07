@@ -8,9 +8,9 @@
   "files": 35868,
   "guarded_forms": 39596,
   "contradiction_occurrences": 33,
-  "contradiction_unique": 26,
+  "contradiction_unique": 27,
   "typo_occurrences": 157,
-  "typo_unique": 43,
+  "typo_unique": 88,
   "failures": [],
   "findings": [
     {
@@ -20,6 +20,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": ":in-order-to",
+      "form_hash": "4186b51c79a18757c4b955e3835b10ee9fb4b7d539cedaf5f674b3251cb3ba3c",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 67,
@@ -363,224 +364,6 @@
       "projects": 1
     },
     {
-      "kind": "likely-typo",
-      "severity": "review",
-      "intentional": false,
-      "guard": "#+adsf3",
-      "parent_guards": [],
-      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
-      "feature": "adsf3",
-      "suggestion": "asdf3",
-      "occurrences": 32,
-      "sites": [
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/apple-file/com.informatimago.common-lisp.apple-file.asd",
-          "line": 58
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/arithmetic/com.informatimago.common-lisp.arithmetic.asd",
-          "line": 57
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/bank/com.informatimago.common-lisp.bank.asd",
-          "line": 55
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/cesarum/com.informatimago.common-lisp.cesarum.asd",
-          "line": 141
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/com.informatimago.common-lisp.asd",
-          "line": 83
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/csv/com.informatimago.common-lisp.csv.asd",
-          "line": 53
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/data-encoding/com.informatimago.common-lisp.data-encoding.asd",
-          "line": 72
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/diagram/com.informatimago.common-lisp.diagram.asd",
-          "line": 60
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/ed/com.informatimago.common-lisp.ed.asd",
-          "line": 63
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/file/table-file/com.informatimago.common-lisp.file.table-file.asd",
-          "line": 59
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/graphviz/com.informatimago.common-lisp.graphviz.asd",
-          "line": 54
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/heap/com.informatimago.common-lisp.heap.asd",
-          "line": 62
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/html-base/com.informatimago.common-lisp.html-base.asd",
-          "line": 59
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/html-generator/com.informatimago.common-lisp.html-generator.asd",
-          "line": 58
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/html-parser/com.informatimago.common-lisp.html-parser.asd",
-          "line": 59
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/http/com.informatimago.common-lisp.http.asd",
-          "line": 60
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/interactive/com.informatimago.common-lisp.interactive.asd",
-          "line": 61
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/invoice/com.informatimago.common-lisp.invoice.asd",
-          "line": 53
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp-reader/com.informatimago.common-lisp.lisp-reader.asd",
-          "line": 65
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp-sexp/com.informatimago.common-lisp.lisp-sexp.asd",
-          "line": 53
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp-text/com.informatimago.common-lisp.lisp-text.asd",
-          "line": 53
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.ibcl.asd",
-          "line": 64
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.stepper.asd",
-          "line": 62
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/parser/com.informatimago.common-lisp.parser.asd",
-          "line": 57
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/parser/com.informatimago.common-lisp.scanner.asd",
-          "line": 57
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/picture/com.informatimago.common-lisp.picture.asd",
-          "line": 55
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/regexp/com.informatimago.common-lisp.regexp.asd",
-          "line": 58
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/rfc1035/com.informatimago.common-lisp.rfc1035.asd",
-          "line": 57
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/rfc2822/com.informatimago.common-lisp.rfc2822.asd",
-          "line": 57
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/rfc3548/com.informatimago.common-lisp.rfc3548.asd",
-          "line": 53
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/telnet/com.informatimago.common-lisp.telnet.asd",
-          "line": 65
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/unix/com.informatimago.common-lisp.unix.asd",
-          "line": 58
-        }
-      ],
-      "projects": 1
-    },
-    {
-      "kind": "likely-typo",
-      "severity": "review",
-      "intentional": false,
-      "guard": "#+adsf3",
-      "parent_guards": [],
-      "preview": "((asdf:test-op",
-      "feature": "adsf3",
-      "suggestion": "asdf3",
-      "occurrences": 6,
-      "sites": [
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/com.informatimago.common-lisp.test.asd",
-          "line": 61
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.asd",
-          "line": 63
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.relative-package.asd",
-          "line": 60
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "objcl/com.informatimago.objcl.asd",
-          "line": 70
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.test.asd",
-          "line": 65
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "tools/com.informatimago.tools.test.asd",
-          "line": 69
-        }
-      ],
-      "projects": 1
-    },
-    {
       "kind": "contradiction",
       "severity": "high",
       "intentional": false,
@@ -589,6 +372,7 @@
         "#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)"
       ],
       "preview": "(ccl::with-cstrs ((%%command %command)) (_system %%command))",
+      "form_hash": "06cf09865c43fd7c77744aae5fa2d86da9f449c19f240400a46facacabbfcbe7",
       "feature": null,
       "suggestion": null,
       "occurrences": 5,
@@ -626,83 +410,11 @@
       "severity": "review",
       "intentional": false,
       "guard": "#+adsf3",
-      "parent_guards": [],
-      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
-      "feature": "adsf3",
-      "suggestion": "asdf3",
-      "occurrences": 5,
-      "sites": [
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/brainfuck/com.informatimago.small-cl-pgms.brainfuck.asd",
-          "line": 42
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.asd",
-          "line": 58
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.life.asd",
-          "line": 42
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.quine.asd",
-          "line": 42
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.what-implementation.asd",
-          "line": 43
-        }
-      ],
-      "projects": 1
-    },
-    {
-      "kind": "likely-typo",
-      "severity": "review",
-      "intentional": false,
-      "guard": "#+adsf3",
-      "parent_guards": [],
-      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.languages...",
-      "feature": "adsf3",
-      "suggestion": "asdf3",
-      "occurrences": 4,
-      "sites": [
-        {
-          "project": "informatimago-lisp",
-          "file": "languages/c11/com.informatimago.languages.c11.asd",
-          "line": 68
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "languages/cpp/com.informatimago.languages.cpp.asd",
-          "line": 69
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "languages/cxx/com.informatimago.languages.cxx.asd",
-          "line": 53
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "languages/lua/com.informatimago.languages.lua.asd",
-          "line": 63
-        }
-      ],
-      "projects": 1
-    },
-    {
-      "kind": "likely-typo",
-      "severity": "review",
-      "intentional": false,
-      "guard": "#+adsf3",
       "parent_guards": [
         "#-mocl"
       ],
       "preview": ":in-order-to",
+      "form_hash": "4186b51c79a18757c4b955e3835b10ee9fb4b7d539cedaf5f674b3251cb3ba3c",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 3,
@@ -729,33 +441,10 @@
       "kind": "contradiction",
       "severity": "info",
       "intentional": true,
-      "guard": "#+(and (or) emacs)",
-      "parent_guards": [],
-      "preview": "(loop for entry in *instructions*",
-      "feature": null,
-      "suggestion": null,
-      "occurrences": 2,
-      "sites": [
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/example-soft-opcodes.lisp",
-          "line": 550
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "small-cl-pgms/example-soft-opcodes.lisp",
-          "line": 580
-        }
-      ],
-      "projects": 1
-    },
-    {
-      "kind": "contradiction",
-      "severity": "info",
-      "intentional": true,
       "guard": "#+(and ecl-weak-hash (or))",
       "parent_guards": [],
       "preview": "(progn",
+      "form_hash": "8275f7bc4b869e829786e611fe4404de954c39ee001b1a42dd257c9f9190f997",
       "feature": null,
       "suggestion": null,
       "occurrences": 2,
@@ -782,6 +471,7 @@
         "#-clisp"
       ],
       "preview": "(:file \"closer-clisp\"     :if-feature :clisp)",
+      "form_hash": "8a871a29771882bdb0f5e64e71f2354ff29d33d6c018257b96094fb697542c44",
       "feature": null,
       "suggestion": null,
       "occurrences": 2,
@@ -806,6 +496,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op  \"com.informatimago.tools.te...",
+      "form_hash": "80aa16a458d166059d81189b5e2f2bc81f8dd328701d4ed03e072c0edc7244d4",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 2,
@@ -824,49 +515,41 @@
       "projects": 1
     },
     {
-      "kind": "likely-typo",
-      "severity": "review",
-      "intentional": false,
-      "guard": "#+adsf3",
+      "kind": "contradiction",
+      "severity": "info",
+      "intentional": true,
+      "guard": "#+(and (or) emacs)",
       "parent_guards": [],
-      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.rdp.basic...",
-      "feature": "adsf3",
-      "suggestion": "asdf3",
-      "occurrences": 2,
+      "preview": "(loop for entry in *instructions*",
+      "form_hash": "5fae1fe77e31addc405380af7f164eaa0d0791927fdf42b3868e01b8a235a951",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
       "sites": [
         {
           "project": "informatimago-lisp",
-          "file": "rdp/com.informatimago.rdp.basic.asd",
-          "line": 58
-        },
-        {
-          "project": "informatimago-lisp",
-          "file": "rdp/com.informatimago.rdp.basic.example.asd",
-          "line": 63
+          "file": "small-cl-pgms/example-soft-opcodes.lisp",
+          "line": 550
         }
       ],
       "projects": 1
     },
     {
-      "kind": "likely-typo",
-      "severity": "review",
-      "intentional": false,
-      "guard": "#+elisp",
+      "kind": "contradiction",
+      "severity": "info",
+      "intentional": true,
+      "guard": "#+(and (or) emacs)",
       "parent_guards": [],
-      "preview": "(progn",
-      "feature": "elisp",
-      "suggestion": "clisp",
-      "occurrences": 2,
+      "preview": "(loop for entry in *instructions*",
+      "form_hash": "37ba913ee35f3ad3c0931d6bafaa6e1891b8a8fae80ee076b4bdfbe19e9274b1",
+      "feature": null,
+      "suggestion": null,
+      "occurrences": 1,
       "sites": [
         {
-          "project": "fstamour-breeze",
-          "file": "scratch-files/inspector.lisp",
-          "line": 37
-        },
-        {
-          "project": "fstamour-breeze",
-          "file": "src/dogfood/dogfood.lisp",
-          "line": 113
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/example-soft-opcodes.lisp",
+          "line": 580
         }
       ],
       "projects": 1
@@ -878,6 +561,7 @@
       "guard": "#+(and lse-extensions (or))",
       "parent_guards": [],
       "preview": "(defunction dis (a)",
+      "form_hash": "b2c52f04a7dc92fc16528eb5bc7137bd4ba737748b076b8d51a42873962f4577",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -899,6 +583,7 @@
         "#+(or (not sbcl) (and sbcl sb-unicode))"
       ],
       "preview": "(store-simple-base-string string storage nil)",
+      "form_hash": "20115d4255c7db04d1e6899c3ea2ee882425a984626872d10f7b493d13537d8a",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -918,6 +603,7 @@
       "guard": "#+(and sgi cmu sbcl)",
       "parent_guards": [],
       "preview": "(concatenate 'string",
+      "form_hash": "2470cf99e87fb6792b7a36fc87339cebf5c6df7850fcafeab094b012063b3a4e",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -939,6 +625,7 @@
         "#-carbon-compat"
       ],
       "preview": "rgn3",
+      "form_hash": "9a9e105cc4f491851497ec10176d45d3e26d26775a731f09e53e58637166929a",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -960,6 +647,7 @@
         "#-carbon-compat"
       ],
       "preview": "(let ()",
+      "form_hash": "e6a0dadf84be507c4617e887c0d7c38ca5a67e30b95acc15f8113131242dae19",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -982,6 +670,7 @@
         "#+(or sbcl cmu allegro abcl ccl clisp ecl)"
       ],
       "preview": "ccl:*unprocessed-command-line-arguments*",
+      "form_hash": "64638fe8028c95c3703c164cadea0c5be1c0996026f62995d05951053e23f816",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1003,6 +692,7 @@
         "#+(and (or digitool sbcl) (not http-using-aserve))"
       ],
       "preview": "input-stream",
+      "form_hash": "4989ea413ae64aedc2a2f09ba4a863102325b46363d14f24d428409652bbb8af",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1024,6 +714,7 @@
         "#+(or allegro clisp lispworks openmcl)"
       ],
       "preview": ":weakness",
+      "form_hash": "3d01a25e202106e32f857523418fa58034874ef1a6e3385b8bb7c783372b3a9b",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1045,6 +736,7 @@
         "#+(or allegro clisp lispworks openmcl)"
       ],
       "preview": ":key",
+      "form_hash": "b901a226e24fdfc5ebfc72d07d6bb261d165682ffbb15e45019315d04ad18e25",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1067,6 +759,7 @@
         "#+(or sbcl cmu allegro abcl ccl clisp ecl)"
       ],
       "preview": "ext:*args*",
+      "form_hash": "c5ca44e525370873afdaf20d0fa3c142e601ddf250989d80f56067244873a908",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1088,6 +781,7 @@
         "#+(or abcl clasp ecl)"
       ],
       "preview": "'#:ext",
+      "form_hash": "a3867c27abe46ca153f4f03385b8c5923aa47bdccb8a70cfc34e81112b17790b",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1109,6 +803,7 @@
         "#-cormanlisp"
       ],
       "preview": ":gray-streams",
+      "form_hash": "efc82539a2fadc5f2b1f66ea1df5b389e645a51fec475341d9ca38866c4a821c",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1130,6 +825,7 @@
         "#+ccl"
       ],
       "preview": "(set-mini-buffer *top-listener* \" Busy\")",
+      "form_hash": "212c98512e4577d68988f070bfcf8794be46865a2140b61fa90c3201b3d5ed4a",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1151,6 +847,7 @@
         "#+(or abcl ccl clasp ecl sbcl)"
       ],
       "preview": "\"*INSPECT-HOOK*\"",
+      "form_hash": "69c279e3d05895cd1ee328f6438f9da8a694daff35a44b9a630aa3fa0dd537cf",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1172,6 +869,7 @@
         "#+(or abcl ccl clasp ecl sbcl)"
       ],
       "preview": "\"MEZZANO.EXTENSIONS\"",
+      "form_hash": "b4837191b47007720630cf9ff097ceb5d71a529c3d0a075614e0dff0cdb19248",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1193,6 +891,7 @@
         "#+(or abcl allegro ccl clisp cmucl ecl sbcl)"
       ],
       "preview": "mezzano.clos:find-method-combination",
+      "form_hash": "8e93ae7f57de8682577b240e423714318743a04d27f8deddca92ee35ffb1b35f",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1214,6 +913,7 @@
         "#-sbcl"
       ],
       "preview": "(ignorable old)",
+      "form_hash": "cafa492929942ff2225514a61c68122ce0e8ea28c6d6247db0c2c00ee1c2bbf9",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1235,6 +935,7 @@
         "#-sbcl"
       ],
       "preview": "(ignorable hdp-lda)",
+      "form_hash": "13cb5490636fde19f780370e05f1f18976b881ad440b182949f782e7fe586d60",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1256,6 +957,7 @@
         "#+sbcl"
       ],
       "preview": "clos:class-slots",
+      "form_hash": "cf20e2c57feb15776acec08f12ca8c6ed4d7282ebac27150d03e6bdca75ec1d0",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1277,6 +979,7 @@
         "#+sbcl"
       ],
       "preview": "'clos::name",
+      "form_hash": "5a7195a456eeef60b4749dfc565ad3e1a13ad3a97d70a711676e4368690be6ec",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1298,6 +1001,7 @@
         "#-windows"
       ],
       "preview": "(nix:stat namestring)",
+      "form_hash": "3ec42382c911a6609b2a57869d2686aa43148270fa52b59dbda2d694d186f866",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1319,6 +1023,7 @@
         "#+sbcl"
       ],
       "preview": "defvar",
+      "form_hash": "df90fcb9af0f1f12930f1d71007b78b86b9a3da9da3c2987e723a79275d973ee",
       "feature": null,
       "suggestion": null,
       "occurrences": 1,
@@ -1338,6 +1043,7 @@
       "guard": "#+(or freebsd free-bsd)",
       "parent_guards": [],
       "preview": ":FREEBSD",
+      "form_hash": "23517d3bb434bf9c61842bd601769f55612dc2f55d02baaa1b203835123a0352",
       "feature": "free-bsd",
       "suggestion": "freebsd",
       "occurrences": 1,
@@ -1357,6 +1063,7 @@
       "guard": "#+(or netbsd net-bsd)",
       "parent_guards": [],
       "preview": ":NETBSD",
+      "form_hash": "dcfeb47db1b8eeb9949a96231b5f072f42d7748086714006958a0a2da343cac3",
       "feature": "net-bsd",
       "suggestion": "netbsd",
       "occurrences": 1,
@@ -1376,6 +1083,7 @@
       "guard": "#+(or openbsd open-bsd)",
       "parent_guards": [],
       "preview": ":OPENBSD",
+      "form_hash": "7c0efb6b6393e4275949858fcfb4e627ffd6bd4a6705345f364b17bf43ef2a39",
       "feature": "open-bsd",
       "suggestion": "openbsd",
       "occurrences": 1,
@@ -1395,6 +1103,7 @@
       "guard": "#+(or windows ms-windows win32)",
       "parent_guards": [],
       "preview": "(eval-when (:load-toplevel :execute)",
+      "form_hash": "12dc4ca3c7204e5ceac96d15bbcb38ca58ed5c80fdde5f40cf05285f66b382ee",
       "feature": "ms-windows",
       "suggestion": "mswindows",
       "occurrences": 1,
@@ -1414,6 +1123,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.test\")",
+      "form_hash": "0a14ad51e89616be024cc64c5fb7c96e1ee332a962315b3871f21504441d321b",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1435,6 +1145,7 @@
         "#-mocl"
       ],
       "preview": "((test-op (test-op \"com.informatimago.clext.association.t...",
+      "form_hash": "1bc095a75930437007cc68e1bb52708f19c63084e006b4fd5722859bf5c642b2",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1456,6 +1167,7 @@
         "#+(or ccl clisp sbcl cmu)"
       ],
       "preview": ":in-order-to",
+      "form_hash": "4186b51c79a18757c4b955e3835b10ee9fb4b7d539cedaf5f674b3251cb3ba3c",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1477,6 +1189,7 @@
         "#+(or ccl clisp sbcl cmu)"
       ],
       "preview": "((test-op (test-op \"com.informatimago.clext.closer-weak.t...",
+      "form_hash": "884a05d65afb30bf38c0c8d82b3f1c34c38aef0dd5f3bb6b8c6ed61dcc46a2b9",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1498,6 +1211,7 @@
         "#-mocl"
       ],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.pip...",
+      "form_hash": "7fd2cbe37a1e578ca5a43e8dcb69094242dc7532d582c6ef86d31daadba8b99b",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1519,6 +1233,7 @@
         "#-mocl"
       ],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.que...",
+      "form_hash": "7bfa5c7ac72ff9cae63167d20b6f7c9b18a935ef20cac6373084ea4dce0b6d89",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1538,6 +1253,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.pkc...",
+      "form_hash": "47c534ad3fe184ec2818da02873bdde5e773ff70ddbfb3e1e4b5bd77e30839d2",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1557,6 +1273,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clext.run...",
+      "form_hash": "40952ff2860fb01415876a561fd8f3c3fcd471289259d06decff39d3271bddec",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1578,6 +1295,7 @@
         "#+clisp"
       ],
       "preview": ":in-order-to",
+      "form_hash": "4186b51c79a18757c4b955e3835b10ee9fb4b7d539cedaf5f674b3251cb3ba3c",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1599,6 +1317,7 @@
         "#+clisp"
       ],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clisp.tes...",
+      "form_hash": "23a93d5cf6a72eec8eb29f44d2de7ee60607db4ac3dfb0d6b94aa5cf45af4f92",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1618,6 +1337,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.clmisc.te...",
+      "form_hash": "c73feae7324ad8f007b23c8f8b40f46328fdd4a4d64bce10a6f6d7a44bddb872",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1637,6 +1357,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.test\")))",
+      "form_hash": "1c6d8161da117755520dab68439f8d79d14449e5c4cb0e4bc103ff71f1a70690",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1655,7 +1376,68 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "b9bff0cafbfb412bc8c1c2d4901f0b57eba76e77cdc4597192fb2c41f093075d",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/apple-file/com.informatimago.common-lisp.apple-file.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "c58e2b9c7fed500c60852637f79b110f444402ab11f7d4bba23329bd5110ca32",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/arithmetic/com.informatimago.common-lisp.arithmetic.asd",
+          "line": 57
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "c213cde718e188f3ff2f6152f261145ada0b7379207abd0a44d9e153f9dffdf4",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/bank/com.informatimago.common-lisp.bank.asd",
+          "line": 55
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((test-op (test-op \"com.informatimago.common-lisp.cesarum...",
+      "form_hash": "cd3631449c88ce0f8746ea40c3b5ad46b791b004fbbf065ab8b51897b371c164",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1674,7 +1456,648 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "18be0e926a71998add1067786aeb0893a04bb71398bfe52ab9e4f9107bc3ecf4",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/cesarum/com.informatimago.common-lisp.cesarum.asd",
+          "line": 141
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "fdacfcfdca81168bef9859d6e419ddf3ce529dcf4249354bae1bf0300a7f74fa",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/com.informatimago.common-lisp.asd",
+          "line": 83
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "form_hash": "62535f78ebb4e9bd6924b6e78b6144f126e776f2aa4780a77b100beb11dc7505",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/com.informatimago.common-lisp.test.asd",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "633a0de1cb89a2e979bd6e9dc5775ab73be5db725eff5eccfa03800745d21ecb",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/csv/com.informatimago.common-lisp.csv.asd",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "d1d3f84fdbcd856b73093cda019801606f9fbc25bdfa1151e251f9a614c133a3",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/data-encoding/com.informatimago.common-lisp.data-encoding.asd",
+          "line": 72
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "ac6db46ccb52ad0b24d6e2d5300477758ef5517b25ecc6e68091ed5bf1866e86",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/diagram/com.informatimago.common-lisp.diagram.asd",
+          "line": 60
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "74d1786a1a5fab408ef346397a2115197278d8e96317a265c309d6f9d195772a",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/ed/com.informatimago.common-lisp.ed.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "a2c9a8687b16cb336b94397c736ee4c64f2a6aff0f7450a67f13be6ca65d0ae4",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/file/table-file/com.informatimago.common-lisp.file.table-file.asd",
+          "line": 59
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "14dac91b3ac9d720be0ad5c311a007f2ac59f7a0ac813cf9fa9533b9185b1aed",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/graphviz/com.informatimago.common-lisp.graphviz.asd",
+          "line": 54
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "b3224be0ce246226068735235f42932936d06c58ec23b495ce47c3ca7ff5f4b0",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/heap/com.informatimago.common-lisp.heap.asd",
+          "line": 62
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "1a826d4247bbd41cc8ab1b9bb5d6f542a44ec01809c57c19f948222da11aeb63",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-base/com.informatimago.common-lisp.html-base.asd",
+          "line": 59
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "761c10ad9d37b61577f24f37c2b4a3289b4538d3707b702cdcc8cb053933b778",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-generator/com.informatimago.common-lisp.html-generator.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "d534d670a3523bab3a41e2f3e1bd36f1e98ce95daca6cbdcafcde7cf9931bdd7",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/html-parser/com.informatimago.common-lisp.html-parser.asd",
+          "line": 59
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "6187350d9b931c130b9764418a7c0e1ff26ca1be3b26a0b5da5f2ed6dc076db4",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/http/com.informatimago.common-lisp.http.asd",
+          "line": 60
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "7d4ab258bd250a285d2a87dd356ba1bce8b49d4985c76ea10ac9f694f14a4bfb",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/interactive/com.informatimago.common-lisp.interactive.asd",
+          "line": 61
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "33bde813a980382cf57ba5a54039bd05c0b27f980087bc445bff92125f39a9b5",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/invoice/com.informatimago.common-lisp.invoice.asd",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "af246feee1cc7bd4aec839d648528505c72f4debdee7b3f0dc293520fa1c095d",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-reader/com.informatimago.common-lisp.lisp-reader.asd",
+          "line": 65
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "48f36b8e6f35f40595e27660c4258a2c97af9921c0401f0b67207fb345c21c46",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-sexp/com.informatimago.common-lisp.lisp-sexp.asd",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "7d5f73694dba72989e1f8040f206c53e590ca79b84fa68ed27b0547f60b589ad",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp-text/com.informatimago.common-lisp.lisp-text.asd",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "form_hash": "f51f78fe5225999953de086568b94346871abcdbbdcfe51030a36222b844d65e",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "326c9fd3809f899fd66bb56e093825803e7c0ee4b77374a705ab007cb9841705",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.ibcl.asd",
+          "line": 64
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "form_hash": "a5d6313a341dd32250b7addc93fa784d1144eed2d8057635e744111450c6a112",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.relative-package.asd",
+          "line": 60
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "8b38a5da374942f065572c5de683129f4e2aa782e631b02f154fc24367a8ea53",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/lisp/com.informatimago.common-lisp.lisp.stepper.asd",
+          "line": 62
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "313da297ef88e31bf3f8284456813072885b8939a1641315b6f47da08d8f44b0",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/parser/com.informatimago.common-lisp.parser.asd",
+          "line": 57
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "ae2fa11aa2417c5560e2cea6e9b7a1c4d0c34aad9321e45980a69aa0f142878e",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/parser/com.informatimago.common-lisp.scanner.asd",
+          "line": 57
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "91fdcd9f5e466fe0a6faad0ba45944452ead8954d39084cce774b222d8248cb7",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/picture/com.informatimago.common-lisp.picture.asd",
+          "line": 55
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "ab1bb63eb9b7940d6b73e9accaa7ab24a9013c96fda0fc7f1a039977851f6903",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/regexp/com.informatimago.common-lisp.regexp.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "8ac75b0bd968eec73a1e3a6980e4065f7b308a275e7be7e7468721ebb82eccb8",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc1035/com.informatimago.common-lisp.rfc1035.asd",
+          "line": 57
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "9c634219dc846a7984a0468bfa1e2c3edc717e49a88e7624c8c13c158c442d2a",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc2822/com.informatimago.common-lisp.rfc2822.asd",
+          "line": 57
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "e607518aa3c71e2bf7785c3f60ffba28635f843cabd783682f159d99dfd0604e",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/rfc3548/com.informatimago.common-lisp.rfc3548.asd",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "0e6157624a3390ee5edfe592a26ffbc42f2a2b6066fe36ac861f6ded0a0ce560",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/telnet/com.informatimago.common-lisp.telnet.asd",
+          "line": 65
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.common-li...",
+      "form_hash": "49541cbd4a4c8dc7b9d5810efd6ed412640e3ab3a383f03991166d6d074469f2",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "common-lisp/unix/com.informatimago.common-lisp.unix.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.editor.te...",
+      "form_hash": "077593410ae8c1e9d12ef3d17049804b575b27f9a9e63470bde2e4e951e69f9f",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1694,6 +2117,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.future.te...",
+      "form_hash": "a902006fd028afdf4e17ea320279532a8904e497efe32f73161741df5490056e",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1713,6 +2137,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.future.em...",
+      "form_hash": "27b266af91fd91a012ae1f8eeaf5ad6e11ca23b104be49e3beb652e9855ce256",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1731,7 +2156,68 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.languages...",
+      "form_hash": "6ed296667154a516c745a2065e9652a2549cfc20b63116e3216b611008e7e2a9",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/c11/com.informatimago.languages.c11.asd",
+          "line": 68
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.languages...",
+      "form_hash": "76b9dccb861c2514df5502de5aa9d76c627962732fb3d8f0a13d1c8fb908bb78",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/cpp/com.informatimago.languages.cpp.asd",
+          "line": 69
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.languages...",
+      "form_hash": "1beef40ffdc7799019b8d4ef4ddf16c1db81d67af5daf2bc9096d1e05b8ddf0f",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/cxx/com.informatimago.languages.cxx.asd",
+          "line": 53
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.linc.test...",
+      "form_hash": "727d6cc39c7036cedd6d3522184d61fa717dcbcc356c9000ab2a63edbd5e8c7f",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1750,7 +2236,48 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.languages...",
+      "form_hash": "c00490c22160f2c0152eefb98ad66fdbb76d2f9a793f07bf027bc1cfa68b7529",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "languages/lua/com.informatimago.languages.lua.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "form_hash": "9c5c8f4ab0bcec303e41e21eaa55684d829e54e40069abc4d9df2dc87b63061b",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "objcl/com.informatimago.objcl.asd",
+          "line": 70
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.pgl.test\")))",
+      "form_hash": "eb2d4f8ae7d2dbca15a3a867e89fb13db2ff2986feff44ea56b097dec0bebea7",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1770,6 +2297,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.pgl.examp...",
+      "form_hash": "8794a6da37ef89e666d3a8f6da7174ae43a5e59afc4cd1fb18f055242385d656",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1788,7 +2316,48 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.rdp.basic...",
+      "form_hash": "7cf24ac2fb39e949e60ffcb51006ada66de600cddcae171a21e102d82687b959",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.basic.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.rdp.basic...",
+      "form_hash": "bf44789baf29fe60a55dbbc948f00fb8e9de6c197cec34a821a1198758216d70",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "rdp/com.informatimago.rdp.basic.example.asd",
+          "line": 63
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.rdp.examp...",
+      "form_hash": "5f52dea89b061444e99000dd246554f0728b1d225738c42c4825b02f6744e29e",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1807,7 +2376,128 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
+      "form_hash": "a916c807e36758fb2a536134897d84769ef4eaa38944593fe89433d927f359f4",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/brainfuck/com.informatimago.small-cl-pgms.brainfuck.asd",
+          "line": 42
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
+      "form_hash": "30e74b5e9630c3e206234ef5ff6007f900977eecf0712504ae188e2c0b25ecdf",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.asd",
+          "line": 58
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
+      "form_hash": "03e0a14f937b45e006e11293d7ed471deb9c825920463b74fe493deebffa0688",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.life.asd",
+          "line": 42
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
+      "form_hash": "b04cb05e4eaa4a9dbb47c791ab24c04d68a5d06623de5111d84c29d12865181f",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.quine.asd",
+          "line": 42
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "form_hash": "5d1690fc4af4552b53dbd3b6b13699f8981716d66a71ab8bee3254b2b2c6f3e0",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.test.asd",
+          "line": 65
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
+      "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.small-cl-...",
+      "form_hash": "386882a72cb76860abab310a8fdd0daccf7f4dd5a483933f559ec1a28a4aa546",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "small-cl-pgms/com.informatimago.small-cl-pgms.what-implementation.asd",
+          "line": 43
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.susv3.tes...",
+      "form_hash": "02fb8ab4f03b8298ef8a823f9eec0de6d5f91fe1660eb74fc5aac5481a59a8db",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1827,6 +2517,7 @@
       "guard": "#+adsf3",
       "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.tools.scr...",
+      "form_hash": "ffc16da3b96432a4107ea6d4e40d91bdac6ef8e8706d80b127388d6ba29834d5",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1845,7 +2536,28 @@
       "intentional": false,
       "guard": "#+adsf3",
       "parent_guards": [],
+      "preview": "((asdf:test-op",
+      "form_hash": "d0320b93daf267f19c810786f317f78aa97c65aaf77a545f29887a609d3cf5f0",
+      "feature": "adsf3",
+      "suggestion": "asdf3",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "informatimago-lisp",
+          "file": "tools/com.informatimago.tools.test.asd",
+          "line": 69
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+adsf3",
+      "parent_guards": [],
       "preview": "((asdf:test-op (asdf:test-op \"com.informatimago.xcode.tes...",
+      "form_hash": "14347f293e956f8d68bce38435ae740eef434826d60a056c85b446e31eb2c390",
       "feature": "adsf3",
       "suggestion": "asdf3",
       "occurrences": 1,
@@ -1865,6 +2577,7 @@
       "guard": "#+allego",
       "parent_guards": [],
       "preview": "(progn",
+      "form_hash": "01193edd274484b2b6df6f1742efadc21daa6c8003955edd6e6ae5b1185c1c87",
       "feature": "allego",
       "suggestion": "allegro",
       "occurrences": 1,
@@ -1884,6 +2597,7 @@
       "guard": "#+allergro",
       "parent_guards": [],
       "preview": "(delimited-string-to-list substr \",\")",
+      "form_hash": "fc853a40904950b6b612b0b5f1135fdfeb5c938673f91f4cbb417f95ac21616f",
       "feature": "allergro",
       "suggestion": "allegro",
       "occurrences": 1,
@@ -1900,9 +2614,50 @@
       "kind": "likely-typo",
       "severity": "review",
       "intentional": false,
+      "guard": "#+elisp",
+      "parent_guards": [],
+      "preview": "(progn",
+      "form_hash": "2b0a0f39ab6b1bff84065e2b486bbb49d55dc808c9eea7b889513224c0523846",
+      "feature": "elisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "fstamour-breeze",
+          "file": "scratch-files/inspector.lisp",
+          "line": 37
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
+      "guard": "#+elisp",
+      "parent_guards": [],
+      "preview": "(progn",
+      "form_hash": "10d0c97ac0dab7ef93ba342cd0482e0824d84bc7771dbbd99ee165bf7428ea65",
+      "feature": "elisp",
+      "suggestion": "clisp",
+      "occurrences": 1,
+      "sites": [
+        {
+          "project": "fstamour-breeze",
+          "file": "src/dogfood/dogfood.lisp",
+          "line": 113
+        }
+      ],
+      "projects": 1
+    },
+    {
+      "kind": "likely-typo",
+      "severity": "review",
+      "intentional": false,
       "guard": "#+xlisp",
       "parent_guards": [],
       "preview": "(send minfo-proto :add-method :isnew #'|minfo-isnew|)",
+      "form_hash": "4c9f0b809c56df039e883032bdb9dcd554423d4db776a35ed8380d404fab4f0b",
       "feature": "xlisp",
       "suggestion": "clisp",
       "occurrences": 1,
@@ -1922,6 +2677,7 @@
       "guard": "#+xlisp",
       "parent_guards": [],
       "preview": "(send minfo-proto :add-method :maximize #'|minfo-maximize|)",
+      "form_hash": "a133f2af12f157bee5e87cca05c9b54f5af43252fa8c58448eb46b887234903a",
       "feature": "xlisp",
       "suggestion": "clisp",
       "occurrences": 1,
@@ -1941,6 +2697,7 @@
       "guard": "#+xlisp",
       "parent_guards": [],
       "preview": "(send minfo-proto :add-method :loglaplace #'|minfo-loglap|)",
+      "form_hash": "10567b3c84dae4f3404a68599035145165a4776e505cd6ad823df666ef633078",
       "feature": "xlisp",
       "suggestion": "clisp",
       "occurrences": 1,
@@ -1960,6 +2717,7 @@
       "guard": "#-xlisp",
       "parent_guards": [],
       "preview": "(defmeth minfo-proto :isnew (&rest args)",
+      "form_hash": "257ecb13979a51ad4c5404e7076eab6c8522f38eb2ce869b47561ebb6a04c8bc",
       "feature": "xlisp",
       "suggestion": "clisp",
       "occurrences": 1,
@@ -1979,6 +2737,7 @@
       "guard": "#-xlisp",
       "parent_guards": [],
       "preview": "(defmeth minfo-proto :maximize (&rest args)",
+      "form_hash": "d1dc8bd4e178b48f0b9404f193f3c7b93f4f7a78ac46b6cc7f7569cf94e2431b",
       "feature": "xlisp",
       "suggestion": "clisp",
       "occurrences": 1,
