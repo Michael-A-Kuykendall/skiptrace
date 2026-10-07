@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/Michael-A-Kuykendall/skiptrace/main/assets/skiptrace-logo.png" alt="skiptrace logo" width="480" />
+  <img src="assets/skiptrace-logo.png" alt="skiptrace logo" width="480" />
 
   # skiptrace
 
