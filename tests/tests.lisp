@@ -264,5 +264,10 @@
                   '(0 1 0 2 2))
         (ignore-errors (delete-file lone)))))
 
+  (check "character literal hides sharpsign" (summary "(list #\\ #+sbcl x)") '())
+  (check "character literal ends at one character"
+         (summary "(list #\\  #+sbcl x)")
+         '((1 "#+sbcl" "x" nil)))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
