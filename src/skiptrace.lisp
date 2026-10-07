@@ -643,6 +643,8 @@ doesn't already have them: the push may be conditional or run after the read."
          (contradictions (getf analysis :contradictions))
          (matrix-dead (getf analysis :matrix-dead))
          (typos (getf analysis :typos)))
+    (format stream "skiptrace: ~a contradiction~:p, ~a typo~:p~%"
+            (length contradictions) (length typos))
     (format stream "skiptrace: ~a file~:p, ~a guarded form~:p (~a commented out with #+(or)/#+nil/#+ignore)~%~%"
             (length results) (length (getf analysis :sites)) (length (getf analysis :comment-sites)))
     (format stream "Profiles (matrix columns, left to right):~%")
