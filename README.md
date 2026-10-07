@@ -105,8 +105,9 @@ A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
 | `clisp-linux-x86-64` | captured, CLISP 2.49.93+ (2018-02-18) |
 | `ccl-linux-x86-64` | captured, Clozure CL 1.13 |
 | `abcl-linux-x86-64` | captured, ABCL 1.9.3 |
+| `sbcl-windows-x86-64` | captured, SBCL 2.6.9 |
 
-The default run loads every `*.sexp` directly in `profiles/`. That is the five captured files. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. The file name is the machine the list was captured on. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles sbcl-darwin-arm64` still finds one there.
+The default run loads every `*.sexp` directly in `profiles/`. That is the six captured files. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. The file name is the machine the list was captured on. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles sbcl-darwin-arm64` still finds one there.
 
 ```sh
 sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp

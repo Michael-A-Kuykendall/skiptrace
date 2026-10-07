@@ -14,5 +14,10 @@ captured. Those files are `profiles/ccl-linux-x86-64.sexp` and
 names are `ccl-linux-x86-64` and `abcl-linux-x86-64`. The ABCL command is
 `abcl --noinform --noinit --batch --load dump-features.lisp`.
 
+SBCL 2.6.9 on Windows x86-64 has been captured with `sbcl --script
+dump-features.lisp`. The dumper's raw name was `sbcl-win32-x86-64`. The
+stored name is `sbcl-windows-x86-64`, and the file is
+`profiles/sbcl-windows-x86-64.sexp`.
+
 A captured file belongs in `profiles/`, and its `:source` starts with
 `captured from`.
