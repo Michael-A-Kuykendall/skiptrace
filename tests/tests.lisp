@@ -221,5 +221,25 @@
                (cl-user::skiptrace-dump-name "ECL" "Linux" "x86_64"))
          '("sbcl-linux-x86-64" "ecl-linux-x86-64"))
 
+  (let* ((demo (namestring (merge-pathnames "../examples/demo.lisp" *profiles-dir*)))
+         (analysis (nth-value 2 (skiptrace:audit-paths (list demo) :profile-dir *profiles-dir*)))
+         (text (with-output-to-string (out)
+                 (skiptrace::report-json nil analysis :stream out)))
+         (keys '()))
+    (let ((start 0))
+      (loop
+        (let* ((nl (position #\Newline text :start start))
+               (line (subseq text start (or nl (length text)))))
+          (when (and (>= (length line) 4)
+                     (char= (char line 0) #\Space)
+                     (char= (char line 1) #\Space)
+                     (char= (char line 2) #\"))
+            (push (subseq line 3 (position #\" line :start 3)) keys))
+          (unless nl (return))
+          (setf start (1+ nl)))))
+    (check "json schema stays thin"
+           (nreverse keys)
+           '("profiles" "sites" "likely_typos")))
+
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)
   (zerop *failures*))
