@@ -6,9 +6,9 @@ A contradiction is a guarded form whose enclosing reader conditions cannot all b
 
 ## Quicklisp 2026-01-01
 
-Pinned release index: [quicklisp/2026-01-01/releases.txt](https://beta.quicklisp.org/dist/quicklisp/2026-01-01/releases.txt). `corpus-scan.py` checked each archive's md5, extracted it, and scanned it in one SBCL process. 2,382 projects, 41,332 files, 52,442 guarded forms. Every project scanned. No archive failed.
+Pinned release index: [quicklisp/2026-01-01/releases.txt](https://beta.quicklisp.org/dist/quicklisp/2026-01-01/releases.txt). `corpus-scan.py` checked each archive's file md5 and content sha1, extracted it, and scanned it in one SBCL process. 2,382 projects, 41,332 files, 52,442 guarded forms. Every project scanned. No archive failed.
 
-33 occurrences of 27 unique contradictions. 80 occurrences of 58 unique likely typos. A unique finding is the guard chain plus a SHA-256 of the whole guarded form, with whitespace collapsed. A likely typo also includes the misspelled feature and the suggestion. The same form copied into another tree counts once. A different form does not. The human preview is only the first line.
+33 occurrences of 27 unique contradictions. 80 occurrences of 58 unique likely typos. A unique finding is the guard chain plus a SHA-256 of the whole guarded form. Whitespace between tokens is collapsed. Whitespace inside strings, vertical-bar names, comments, and the character after a backslash is kept. A likely typo also includes the misspelled feature and the suggestion. The same form copied into another tree counts once. A different form does not. The human preview is only the first line.
 
 In UIOP 3.3.7, `run-program.lisp:465` is `#+mcl` inside `#+(or abcl clasp clisp cormanlisp ecl gcl genera (and lispworks os-windows) mkcl xcl)` at line 439. That `or` does not name MCL. The same form is in lisp-binary and in qlot's bundled Quicklisp client: 3 occurrences, 1 finding. `launch-program.lisp:178` is `#+lispworks` inside `#-(or lispworks abcl)` at line 176. Implementation trees that vendor these forms are in the git corpus below. They are not projects in this distribution.
 

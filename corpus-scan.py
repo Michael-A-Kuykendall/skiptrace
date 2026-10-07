@@ -2,8 +2,9 @@
 """Scan a pinned Quicklisp-format distribution.
 
 sweep.sh stays the 18-project smoke corpus. This script downloads a
-releases.txt snapshot, checks md5, extracts, and scans every tree in one
-SBCL process. One project failing does not stop the run. The committed
+releases.txt snapshot, checks the file md5 and the content sha1, extracts,
+and scans every tree in one SBCL process. One project failing does not stop
+the run. The committed
 evidence is a manifest plus a deduplicated contradiction and typo summary.
 Tarballs and per-project output stay in the cache directory, which is
 gitignored when it lives under corpus/.
@@ -19,11 +20,13 @@ gitignored when it lives under corpus/.
 
 import argparse
 import hashlib
+import io
 import json
 import os
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -36,12 +39,78 @@ BATCH = ROOT / "bin" / "corpus-batch.lisp"
 PROFILES = ROOT / "profiles"
 
 
-def md5_file(path):
-    digest = hashlib.md5()
+# quicklisp-controller skips these directories when it hashes member bytes.
+IGNORED_CONTENT_DIRS = ("/_darcs/", "/CVS/", "/.git/", "/.hg/")
+
+
+def file_digest(path, algo):
+    digest = hashlib.new(algo)
     with open(path, "rb") as handle:
         for chunk in iter(lambda: handle.read(1 << 20), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def md5_file(path):
+    return file_digest(path, "md5")
+
+
+def content_sha1(path, mode):
+    """SHA1 of the archive's file bytes.
+
+    The releases.txt column is content-sha1, not the sha1 of the gzip.
+    Quicklisp sorts regular files by name and skips VCS directories.
+    Ultralisp hashes GNU tar -xO output, which is archive order.
+    """
+    if mode == "ultralisp":
+        proc = subprocess.Popen(
+            ["tar", "-xOzf", str(path)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        digest = hashlib.sha1()
+        assert proc.stdout is not None
+        for chunk in iter(lambda: proc.stdout.read(1 << 20), b""):
+            digest.update(chunk)
+        stderr = proc.stderr.read() if proc.stderr is not None else b""
+        if proc.wait() != 0:
+            raise OSError(stderr.decode("utf-8", "replace")[:200])
+        return digest.hexdigest()
+    if mode != "quicklisp":
+        raise ValueError(f"unknown content-sha1 mode {mode}")
+    digest = hashlib.sha1()
+    members = []
+    with tarfile.open(path, "r:gz") as archive:
+        for member in archive.getmembers():
+            if not member.isreg():
+                continue
+            if any(piece in member.name for piece in IGNORED_CONTENT_DIRS):
+                continue
+            members.append(member)
+        members.sort(key=lambda member: member.name)
+        for member in members:
+            extracted = archive.extractfile(member)
+            digest.update(extracted.read() if extracted is not None else b"")
+    return digest.hexdigest()
+
+
+def classify_archive(path, row, mode):
+    """Return how PATH compares with ROW.
+
+    ok: file md5 and content-sha1 both match.
+    legacy: file md5 matches, but Quicklisp's published content-sha1 does not
+    equal the member hash. Some older release rows predate the current
+    hasher, so that is not a corrupt download.
+    sha: Ultralisp content-sha1 does not match. The download is rejected.
+    md5: the gzip md5 does not match.
+    """
+    if md5_file(path) != row["md5"]:
+        return "md5"
+    if content_sha1(path, mode) == row["sha1"]:
+        return "ok"
+    if mode == "quicklisp":
+        return "legacy"
+    return "sha"
 
 
 def parse_releases(text):
@@ -83,12 +152,19 @@ def ensure_releases(path, url):
     return text
 
 
-def download_one(row, tarball_dir):
+def download_one(row, tarball_dir, content_mode):
     dest = tarball_dir / f"{row['prefix']}.tgz"
     try:
-        if dest.is_file() and md5_file(dest) == row["md5"]:
-            return "have"
-    except OSError:
+        if dest.is_file():
+            status = classify_archive(dest, row, content_mode)
+            if status == "ok":
+                return "have"
+            if status == "legacy":
+                return "legacy"
+            if status == "sha":
+                dest.unlink()
+                return "fail"
+    except (OSError, tarfile.TarError):
         return "fail"
     part = dest.with_suffix(".tgz.part")
     result = subprocess.run(
@@ -98,11 +174,16 @@ def download_one(row, tarball_dir):
     if result.returncode != 0 or not part.exists():
         part.unlink(missing_ok=True)
         return "fail"
-    if md5_file(part) != row["md5"]:
+    try:
+        status = classify_archive(part, row, content_mode)
+    except (OSError, tarfile.TarError):
+        part.unlink(missing_ok=True)
+        return "fail"
+    if status in ("md5", "sha"):
         part.unlink(missing_ok=True)
         return "fail"
     part.replace(dest)
-    return "ok"
+    return "legacy" if status == "legacy" else "ok"
 
 
 def extract_marker(src_root, prefix):
@@ -153,7 +234,7 @@ def extract_one(row, tarball_dir, src_root):
 
 
 def run_pool(rows, workers, fn):
-    counts = {"ok": 0, "have": 0, "fail": 0}
+    counts = {"ok": 0, "have": 0, "legacy": 0, "fail": 0}
     failed = []
     with ThreadPoolExecutor(max(1, workers)) as pool:
         futures = {pool.submit(fn, row): row for row in rows}
@@ -170,7 +251,8 @@ def run_pool(rows, workers, fn):
                 failed.append(row["project"])
             if done % 200 == 0 or done == len(rows):
                 print(
-                    f"progress {done} ok={counts['ok']} have={counts['have']} fail={counts['fail']}",
+                    f"progress {done} ok={counts['ok']} have={counts['have']} "
+                    f"legacy={counts['legacy']} fail={counts['fail']}",
                     flush=True,
                 )
     return counts, failed
@@ -202,6 +284,8 @@ def fingerprint(finding):
 def aggregate(jsonl_path):
     groups = {}
     failures = []
+    failed_names = set()
+    scanned_projects = set()
     files = 0
     forms = 0
     scanned = 0
@@ -214,9 +298,14 @@ def aggregate(jsonl_path):
                 obj = json.loads(line)
             except json.JSONDecodeError as exc:
                 raise SystemExit(f"bad json on line {number}: {exc}") from exc
+            name = obj.get("project")
             if obj.get("error"):
-                failures.append({"project": obj.get("project"), "error": obj["error"][:500]})
+                failures.append({"project": name, "error": obj["error"][:500]})
+                failed_names.add(name)
+                scanned_projects.discard(name)
                 continue
+            if name not in failed_names:
+                scanned_projects.add(name)
             scanned += 1
             files += obj.get("files") or 0
             forms += obj.get("forms") or 0
@@ -273,8 +362,44 @@ def aggregate(jsonl_path):
         "files": files,
         "guarded_forms": forms,
         "failures": failures,
+        "scanned_projects": sorted(scanned_projects),
         "findings": findings,
     }
+
+
+def account_rows(rows, download_failed, extract_failed, summary):
+    """Every release row is scanned or failed.
+
+    Download and extract failures never reach scan.jsonl, so the scan summary
+    alone can report failed=0 while a project is missing. A project that is
+    in none of the three failure sets and was not scanned is recorded too.
+    """
+    download_set = set(download_failed)
+    extract_set = set(extract_failed)
+    scan_errors = {}
+    for item in summary.get("failures") or []:
+        scan_errors.setdefault(item.get("project"), item.get("error") or "scan failed")
+    success = set(summary.get("scanned_projects") or [])
+    records = []
+    scanned = 0
+    for row in rows:
+        name = row["project"]
+        if name in download_set:
+            records.append({"project": name, "stage": "download", "error": "download failed"})
+        elif name in extract_set:
+            records.append({"project": name, "stage": "extract", "error": "extract failed"})
+        elif name in scan_errors:
+            records.append({"project": name, "stage": "scan", "error": scan_errors[name]})
+        elif name in success:
+            scanned += 1
+        else:
+            records.append({"project": name, "stage": "missing", "error": "not scanned"})
+    failed = len(records)
+    if scanned + failed != len(rows):
+        raise SystemExit(
+            f"project accounting failed: scanned={scanned} failed={failed} projects={len(rows)}"
+        )
+    return scanned, failed, records
 
 
 def write_evidence(prefix, source, dist, releases_url, rows, statuses, summary):
@@ -388,12 +513,67 @@ def self_test_extract():
     return True
 
 
+def self_test_account():
+    """A download failure counts even when the scan summary says failed=0."""
+    rows = [{"project": "a"}, {"project": "b"}, {"project": "c"}]
+    summary = {"failed": 0, "failures": [], "scanned_projects": ["a", "b"]}
+    scanned, failed, records = account_rows(rows, ["c"], [], summary)
+    if (scanned, failed) != (2, 1) or records[0]["stage"] != "download":
+        print(f"SELF_TEST_FAIL account download scanned={scanned} failed={failed} {records}", file=sys.stderr)
+        return False
+    if summary["failed"] != 0 or scanned + failed != len(rows):
+        print("SELF_TEST_FAIL account still trusts the scan summary", file=sys.stderr)
+        return False
+    rows = [{"project": "a"}, {"project": "b"}, {"project": "d"}, {"project": "e"}]
+    summary = {
+        "failures": [{"project": "b", "error": "boom"}],
+        "scanned_projects": ["a"],
+    }
+    scanned, failed, records = account_rows(rows, [], ["d"], summary)
+    stages = {item["project"]: item["stage"] for item in records}
+    if (scanned, failed) != (1, 3) or stages != {"b": "scan", "d": "extract", "e": "missing"}:
+        print(f"SELF_TEST_FAIL account union scanned={scanned} failed={failed} {records}", file=sys.stderr)
+        return False
+    return True
+
+
+def self_test_content_sha1():
+    """Quicklisp and Ultralisp do not hash the gzip, and they do not hash alike."""
+    with tempfile.TemporaryDirectory(prefix="skiptrace-sha1-") as tmp:
+        archive = Path(tmp) / "sample.tgz"
+        with tarfile.open(archive, "w:gz") as handle:
+            for name, payload in (("b.txt", b"b"), ("a.txt", b"a"), ("pkg/.git/config", b"secret")):
+                info = tarfile.TarInfo(name)
+                info.size = len(payload)
+                handle.addfile(info, io.BytesIO(payload))
+        md5 = md5_file(archive)
+        quicklisp = hashlib.sha1(b"a" + b"b").hexdigest()
+        ultralisp = hashlib.sha1(b"b" + b"a" + b"secret").hexdigest()
+        row = {"md5": md5, "sha1": quicklisp}
+        if classify_archive(archive, row, "quicklisp") != "ok":
+            print("SELF_TEST_FAIL quicklisp rejected its own content-sha1", file=sys.stderr)
+            return False
+        if classify_archive(archive, {"md5": md5, "sha1": ultralisp}, "quicklisp") != "legacy":
+            print("SELF_TEST_FAIL quicklisp treated a different content-sha1 as ok", file=sys.stderr)
+            return False
+        if classify_archive(archive, {"md5": "0" * 32, "sha1": quicklisp}, "quicklisp") != "md5":
+            print("SELF_TEST_FAIL a wrong md5 was accepted", file=sys.stderr)
+            return False
+        if classify_archive(archive, {"md5": md5, "sha1": ultralisp}, "ultralisp") != "ok":
+            print("SELF_TEST_FAIL ultralisp rejected its own content-sha1", file=sys.stderr)
+            return False
+        if classify_archive(archive, row, "ultralisp") != "sha":
+            print("SELF_TEST_FAIL ultralisp accepted the Quicklisp content-sha1", file=sys.stderr)
+            return False
+    return True
+
+
 def self_test():
     source = "#+sbcl\n(defun fast-path ()\n  #+ccl (ccl::%fast-thing)\n  :slow)\n"
     pad = "x" * 70
     long_alpha = f"#+sbcl\n#+ccl (widget {pad} alpha)\n"
     long_beta = f"#+sbcl\n#+ccl (widget {pad} beta)\n"
-    if not self_test_extract():
+    if not self_test_account() or not self_test_content_sha1() or not self_test_extract():
         return 1
     with tempfile.TemporaryDirectory(prefix="skiptrace-corpus-") as tmp:
         root = Path(tmp)
@@ -440,7 +620,8 @@ def self_test():
             return 1
     print(
         "self-test ok: 2 copies are 1 finding; 2 forms with the same preview stay distinct; "
-        "a partial extract is redone; 1 project failure did not stop the run"
+        "a partial extract is redone; 1 project failure did not stop the run; "
+        "a download failure is counted; content-sha1 follows the dist"
     )
     return 0
 
@@ -470,13 +651,16 @@ def main(argv):
     rows = parse_releases(text)
     if not rows:
         raise SystemExit("releases.txt has no projects")
+    if args.source not in ("quicklisp", "ultralisp"):
+        parser.error("--source must be quicklisp or ultralisp")
     print(f"projects {len(rows)}", flush=True)
     print("download", flush=True)
     download_counts, download_failed = run_pool(
-        rows, args.workers, lambda row: download_one(row, tarball_dir)
+        rows, args.workers, lambda row: download_one(row, tarball_dir, args.source)
     )
     print(
-        f"DOWNLOAD_DONE ok={download_counts['ok']} have={download_counts['have']} fail={download_counts['fail']}",
+        f"DOWNLOAD_DONE ok={download_counts['ok']} have={download_counts['have']} "
+        f"legacy={download_counts['legacy']} fail={download_counts['fail']}",
         flush=True,
     )
     print("extract", flush=True)
@@ -501,16 +685,14 @@ def main(argv):
     out_path = cache / "scan.jsonl"
     scan_jobs(jobs_path, out_path)
     summary = aggregate(out_path)
+    scanned, failed, records = account_rows(rows, download_failed, extract_failed, summary)
+    summary["scanned"] = scanned
+    summary["failed"] = failed
+    summary["failures"] = records
+    failed_names = {item["project"] for item in records}
     statuses = {}
-    failed_names = {item["project"] for item in summary["failures"]}
-    ready_names = {row["project"] for row in ready}
     for row in rows:
-        if row["project"] in failed_projects or row["project"] in failed_names:
-            statuses[row["project"]] = "failed"
-        elif row["project"] in ready_names and row["project"] not in failed_names:
-            statuses[row["project"]] = "scanned"
-        else:
-            statuses[row["project"]] = "skipped"
+        statuses[row["project"]] = "failed" if row["project"] in failed_names else "scanned"
     releases_url = args.releases_url or str(releases_path)
     write_evidence(args.evidence, args.source, args.dist, releases_url, rows, statuses, summary)
     return 0

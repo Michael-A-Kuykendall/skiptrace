@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-07
+
 ### Added
 
 - Static scanner for `#+` / `#-` and ASDF `:if-feature`. It does not `READ` the files it audits.
@@ -31,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - An unclosed `|` or a trailing `\` in a token stops at the end of the file. The scan of that file no longer aborts with a bounds error.
 - A directory whose name contains a dot, such as a Quicklisp prefix `bordeaux-threads-v0.9.4`, is scanned. The final component is no longer split into a file name and a type.
 - A distribution extract is kept only when a marker matches the archive md5 and sha1. A nonempty directory left by an interrupted extract is extracted again.
+- The form fingerprint keeps whitespace inside strings, vertical-bar names, comments, and backslash escapes. Whitespace between tokens is still collapsed.
+- Evidence `failed` counts download, extract, and scan failures. `scanned + failed` is the number of projects in the release index.
+- A download is checked against the file md5 and the content sha1. Ultralisp's content sha1 is the archive-order member hash. A Quicklisp row whose published content sha1 does not match that hasher is kept when the file md5 matches.
 - `;` comments and `#| ... |#` comments inside a feature expression are skipped. A comment word is no longer treated as a feature name.
 - `--profiles` now rejects a request when any named profile is missing instead of silently using the valid subset.
 - Escaped feature symbols now resume normal case folding after `|...|`, preserve escaped colons as symbol data, and handle backslash escapes inside multiple escapes.
@@ -46,5 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sweep reports record the exact upstream revision scanned.
 - The system, package, command, and repository name are skiptrace.
 - License is MIT.
+- Quicklisp 2026-01-01 and Ultralisp 20261005202000 evidence was regenerated with the whitespace-preserving fingerprint. Occurrence and unique counts are unchanged.
 
-[Unreleased]: https://github.com/Michael-A-Kuykendall/skiptrace/commits/main
+[Unreleased]: https://github.com/Michael-A-Kuykendall/skiptrace/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Michael-A-Kuykendall/skiptrace/releases/tag/v0.1.0
