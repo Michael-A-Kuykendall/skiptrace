@@ -75,6 +75,15 @@ A container running as an unknown uid reports a home of /, which is not writable
   (check "package-qualified operator" (fx "(cl:or :ccl :ecl)") '(:or :ccl :ecl))
   (check "empty or" (fx "(or)") '(:or))
   (check "escaped case" (fx "|Foo|") (intern "Foo" :keyword))
+  (check "escaped segment resumes case folding"
+         (fx "foo|Bar|baz")
+         (intern "FOOBarBAZ" :keyword))
+  (check "escaped colon is symbol data"
+         (fx "|foo:bar|")
+         (intern "foo:bar" :keyword))
+  (check "backslash escape inside multiple escape"
+         (fx "|foo\\|bar|")
+         (intern "foo|bar" :keyword))
   (check "read-eval" (fx "#.(cl:if t '(and) '(or))") '(:dynamic))
   (check "garbage" (fx "(sbcl ccl)") '(:bad "(sbcl ccl)"))
   (check "not arity" (fx "(not a b)") '(:bad "(not a b)"))
@@ -216,6 +225,15 @@ A container running as an unknown uid reports a home of /, which is not writable
          (mapcar #'skiptrace::profile-name
                  (skiptrace:load-profiles *profiles-dir* '("ccl-linux-x86-64")))
          '("ccl-linux-x86-64"))
+  (check "every requested profile name must exist"
+         (handler-case
+             (progn
+               (skiptrace:load-profiles
+                *profiles-dir*
+                '("sbcl-linux-x86-64" "profile-that-does-not-exist"))
+               nil)
+           (error () t))
+         t)
 
   ;; dump-features.lisp prints a profile when loaded as a script.
   (let ((*skiptrace-dump-quiet* t)

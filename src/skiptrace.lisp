@@ -72,29 +72,50 @@
                         (throw 'dynamic nil))
                        (t (symbol-item)))))
              (symbol-item ()
-               (let ((start pos) (out (make-string-output-stream)) (escaped nil))
-                 ;; FOR after WHILE is not portable; CLISP rejects it.
-                 (loop
-                   (unless (< pos len) (return))
-                   (let ((c (char text pos)))
-                     (when (or (whitespacep c) (member c '(#\( #\)))) (return))
-                     (cond ((char= c #\|)
-                            (setf escaped t) (incf pos)
-                            (loop while (and (< pos len) (char/= (char text pos) #\|))
-                                  do (write-char (char text pos) out) (incf pos))
-                            (incf pos))
-                           ((char= c #\\)
-                            (setf escaped t)
-                            (when (< (1+ pos) len) (write-char (char text (1+ pos)) out))
-                            (incf pos 2))
-                           (t (write-char (if escaped c (char-upcase c)) out) (incf pos)))))
-                 (when (= start pos) (throw 'bad nil))
-                 (let* ((name (get-output-stream-string out))
-                        (colon (position #\: name :from-end t)))
-                   ;; :sbcl, sbcl, keyword:sbcl, cl:and all mean the same thing here
-                   (when colon (setf name (subseq name (1+ colon))))
-                   (when (zerop (length name)) (throw 'bad nil))
-                   (intern name :keyword)))))
+               (let ((start pos)
+                     (out (make-string-output-stream))
+                     (count 0)
+                     (last-package-colon nil))
+                 (labels ((emit (c escaped-p)
+                            (when (and (not escaped-p) (char= c #\:))
+                              (setf last-package-colon count))
+                            (write-char (if escaped-p c (char-upcase c)) out)
+                            (incf count)))
+                   ;; FOR after WHILE is not portable; CLISP rejects it.
+                   (loop
+                     (unless (< pos len) (return))
+                     (let ((c (char text pos)))
+                       (when (or (whitespacep c) (member c '(#\( #\)))) (return))
+                       (cond ((char= c #\|)
+                              (incf pos)
+                              (loop
+                                (when (>= pos len) (throw 'bad nil))
+                                (let ((d (char text pos)))
+                                  (cond ((char= d #\|)
+                                         (incf pos)
+                                         (return))
+                                        ((char= d #\\)
+                                         (when (>= (1+ pos) len) (throw 'bad nil))
+                                         (emit (char text (1+ pos)) t)
+                                         (incf pos 2))
+                                        (t
+                                         (emit d t)
+                                         (incf pos))))))
+                             ((char= c #\\)
+                              (when (>= (1+ pos) len) (throw 'bad nil))
+                              (emit (char text (1+ pos)) t)
+                              (incf pos 2))
+                             (t
+                              (emit c nil)
+                              (incf pos)))))
+                   (when (= start pos) (throw 'bad nil))
+                   (let ((name (get-output-stream-string out)))
+                     ;; :sbcl, sbcl, keyword:sbcl, cl:and all mean the same thing here.
+                     ;; A colon protected by |...| or \ is symbol data, not a package marker.
+                     (when last-package-colon
+                       (setf name (subseq name (1+ last-package-colon))))
+                     (when (zerop (length name)) (throw 'bad nil))
+                     (intern name :keyword))))))
       (catch 'dynamic
         (catch 'bad
           (let ((result (item)))
@@ -141,8 +162,8 @@ expressions are also :UNKNOWN."
 ;;; ------------------------------------------------------------------
 ;;; Source scanner
 ;;;
-;;; Walks the text the way the reader would, but never interns anything. It only
-;;; needs to know where each object starts and ends, and where #+/#- appear.
+;;; Walks the text the way the reader would without calling READ on audited source.
+;;; It only needs to know where each object starts and ends, and where #+/#- appear.
 ;;; Bound by scan-text for the duration of one file.
 
 (defvar *text*)
@@ -410,16 +431,23 @@ A push written inside a comment or a string does not count."
   "Load *.sexp profiles in DIR.
 With no name list, keep a profile only when :source has at least 13 characters
 and the first 13 are string-equal to \"captured from\".
-With a name list, also load DIR/approximate/*.sexp and keep the requested names.
+With a name list, also load DIR/approximate/*.sexp and require every requested name.
 A missing name is an error."
   (let* ((extra (when only
                   (directory (merge-pathnames "approximate/*.sexp" dir))))
          (profiles (sort (mapcar #'read-profile (append (profile-files dir) extra))
                          #'string< :key #'profile-name)))
     (if only
-        (or (remove-if-not (lambda (p) (member (profile-name p) only :test #'string-equal))
-                           profiles)
-            (error "No profiles named ~{~a~^, ~} in ~a" only dir))
+        (let* ((selected (remove-if-not
+                          (lambda (p) (member (profile-name p) only :test #'string-equal))
+                          profiles))
+               (missing (remove-if
+                         (lambda (name)
+                           (find name selected :key #'profile-name :test #'string-equal))
+                         only)))
+          (when missing
+            (error "No profiles named ~{~a~^, ~} in ~a" missing dir))
+          selected)
         (remove-if-not (lambda (p)
                          (let ((src (string (profile-source p))))
                            (and (>= (length src) 13)
