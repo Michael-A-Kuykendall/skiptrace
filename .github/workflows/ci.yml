@@ -28,6 +28,12 @@ jobs:
       - name: CLISP tests
         run: clisp -q -norc tests/run.lisp
 
+      - name: ECL asdf:test-system
+        run: ecl --shell tests/run-asdf.lisp
+
+      - name: CLISP asdf:test-system
+        run: clisp -q -norc tests/run-asdf.lisp
+
       - name: SBCL launcher receives its arguments
         run: sbcl --script bin/skiptrace examples/
 
