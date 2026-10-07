@@ -15,21 +15,20 @@ skiptrace scans source. It does not load the system under audit, and it does not
 
 ## Where it is
 
-- Scanner runs on SBCL, ECL, and CLISP, from the shell and from ASDF
-- Captured profiles for SBCL, ECL, and CLISP on linux x86-64
-- Handwritten profiles for CCL, ABCL, SBCL on macOS arm64, and SBCL on Windows, available by name and excluded from the default matrix
-- `--strict` is suitable for CI. The workflow in this repo runs the three Lisps.
-- `sweep.sh` can re-check a fixed list of upstream libraries locally
+- The scanner runs on SBCL, ECL, and CLISP, from the shell and from ASDF
+- `profiles/` ships captured `*features*` lists for SBCL, ECL, and CLISP on linux x86-64, Clozure CL 1.13 and ABCL 1.9.3 on linux x86-64, SBCL 2.6.9 on Windows x86-64, and SBCL 2.6.8 on Darwin arm64
+- `--strict` is for CI. The workflow in this repo runs the three Lisps.
+- `sweep.sh` re-checks a fixed list of upstream libraries on your machine
 
 ## Next
 
-- [ ] Tag 0.1.0 and make the GitHub repository public, after the tree is confirmed
+- [ ] Tag 0.1.0
+- [ ] Make the GitHub repository public
 - [ ] Submit to Quicklisp
-- [ ] Replace each file in `profiles/approximate/` with a capture from a real image
-- [ ] Captures beyond linux x86-64: macOS, Windows, and a second architecture where someone can run the Lisp
+- [ ] Further captures, where someone can run the Lisp
 - [ ] Keep the SBCL, ECL, and CLISP ports working as those implementations change
 
-A new profile is a capture, with `:source` starting `captured from`. A guessed `*features*` list stays in `profiles/approximate/`.
+A new profile is a capture, with `:source` starting `captured from`. A list that is not part of the default run stays in `profiles/approximate/`.
 
 ## Out of scope
 
