@@ -12,6 +12,14 @@ sweep/
 *.fas
 *.lib
 
+# Local agent steering and the beads database. Not part of the project.
+AGENTS.md
+CLAUDE.md
+.agents/
+.beads/
+.claude/
+.codex/
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db
