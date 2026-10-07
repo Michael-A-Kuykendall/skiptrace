@@ -864,8 +864,24 @@ either listing does not discard the other."
           (dir (sort (walk-lisp-files dir) #'string< :key #'cdr))
           (t (error "No such file or directory: ~a" path)))))
 
+(defun system-profile-dir ()
+  "profiles/ beside the skiptrace system, once ASDF knows the system.
+The command-line launcher passes that directory itself and does not need this."
+  (unless (find-package :asdf)
+    (ignore-errors (require :asdf)))
+  (let ((asdf (find-package :asdf)))
+    (when asdf
+      (let ((fn (find-symbol "SYSTEM-RELATIVE-PATHNAME" asdf)))
+        (when (fboundp fn)
+          (let ((dir (ignore-errors (funcall fn :skiptrace "profiles/"))))
+            (when (and dir (directory-exists-p (as-directory dir)))
+              (as-directory dir))))))))
+
 (defun audit-paths (paths &key profile-dir only extra-known)
-  (let* ((profiles (load-profiles profile-dir only))
+  (let* ((profile-dir (or profile-dir
+                          (system-profile-dir)
+                          (error "No profile directory. Pass --profile-dir, or load skiptrace through ASDF so profiles/ can be found beside the system.")))
+         (profiles (load-profiles profile-dir only))
          (results (loop for path in paths
                         append (loop for (file . name) in (collect-files path)
                                      collect (handler-case (scan-file file name)

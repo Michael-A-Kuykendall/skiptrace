@@ -16,7 +16,7 @@ skiptrace scans source. It does not load the system under audit, and it does not
 ## Where it is
 
 - Scanner runs on SBCL, ECL, and CLISP, from the shell and from ASDF
-- Captured profiles for SBCL and ECL on linux x86-64. CLISP runs the tool. A CLISP profile is not captured yet.
+- Captured profiles for SBCL, ECL, and CLISP on linux x86-64
 - Handwritten profiles for CCL, ABCL, SBCL on macOS arm64, and SBCL on Windows, available by name and excluded from the default matrix
 - `--strict` is suitable for CI. The workflow in this repo runs the three Lisps.
 - `sweep.sh` can re-check a fixed list of upstream libraries locally
@@ -25,7 +25,6 @@ skiptrace scans source. It does not load the system under audit, and it does not
 
 - [ ] Tag 0.1.0 and make the GitHub repository public, after the tree is confirmed
 - [ ] Submit to Quicklisp
-- [ ] Capture a real CLISP profile into `profiles/`
 - [ ] Replace each file in `profiles/approximate/` with a capture from a real image
 - [ ] Captures beyond linux x86-64: macOS, Windows, and a second architecture where someone can run the Lisp
 - [ ] Keep the SBCL, ECL, and CLISP ports working as those implementations change

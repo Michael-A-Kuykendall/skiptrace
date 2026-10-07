@@ -1,25 +1,16 @@
-# These people make skiptrace possible
+# Sponsors
 
-## Infrastructure Partners ($500+/month)
-*Your logo could be here*
+Nobody is listed yet. This page is where a sponsor's name goes after they ask for it.
 
-## Corporate Backers ($100+/month)
-*Your logo could be here*
+The amounts match the GitHub Sponsors tiers for this maintainer:
 
-## Bug Prioritizers ($25+/month)
+| Amount | What is listed here |
+| --- | --- |
+| $5 a month | Name |
+| $25 a month | Name, and a reported bug moves up the queue |
+| $100 a month | Name and a logo |
+| $500 a month | Name, a logo, and a say in which capture or port comes next |
 
-## Coffee Tier Heroes ($5+/month)
-*Your support could be here*
+[Sponsor skiptrace](https://github.com/sponsors/Michael-A-Kuykendall).
 
----
-
-**Want to support skiptrace?** [Become a sponsor](https://github.com/sponsors/Michael-A-Kuykendall)
-
-skiptrace is free forever. Sponsorship helps pay for the time to:
-
-- Fix bugs faster
-- Add real profiles for Lisps that are not captured yet
-- Keep SBCL, ECL, and CLISP working as they change
-- Keep the project alive
-
-Every dollar matters. Every sponsor gets my thanks.
+The scanner does not get a reduced free edition. Money pays for time: porting, new captured profiles, and keeping the three Lisps in CI working as they change.

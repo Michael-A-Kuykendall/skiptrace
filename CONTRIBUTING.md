@@ -1,12 +1,12 @@
 # Contributing to skiptrace
 
-Thanks for your interest in skiptrace.
+skiptrace is maintained by one person. Code changes land through that maintainer.
 
-## Maintainer-only pull requests
+## Who can open a pull request
 
-**Pull requests are restricted to approved maintainers.** Unsolicited pull requests will be declined. To contribute code, apply for maintainer status by emailing [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com).
+A pull request needs prior approval. Send mail to [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com) with your GitHub username, what you want to take on, and how much time you have. A pull request opened without that approval is closed.
 
-Anyone can:
+People who are not maintainers still help by:
 
 - Open an issue for a bug or a feature request
 - Join [GitHub Discussions](https://github.com/Michael-A-Kuykendall/skiptrace/discussions)
@@ -85,8 +85,8 @@ With ASDF already loaded in the image:
 A `--strict` scan of the tool itself must exit 0. The demo must exit 1:
 
 ```bash
-sbcl --script bin/skiptrace -- --strict src/ tests/ skiptrace.asd dump-features.lisp
-sbcl --script bin/skiptrace -- --strict examples/
+sbcl --script bin/skiptrace --strict src/ tests/ bin/skiptrace skiptrace.asd dump-features.lisp
+sbcl --script bin/skiptrace --strict examples/
 ```
 
 ## Maintainers

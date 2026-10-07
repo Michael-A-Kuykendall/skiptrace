@@ -8,4 +8,6 @@
 (defsystem "skiptrace/tests"
   :depends-on ("skiptrace")
   :components ((:module "tests" :components ((:file "tests"))))
-  :perform (test-op (o c) (symbol-call :skiptrace-tests :run-tests)))
+  :perform (test-op (o c)
+             (unless (symbol-call :skiptrace-tests :run-tests)
+               (error "skiptrace tests failed."))))

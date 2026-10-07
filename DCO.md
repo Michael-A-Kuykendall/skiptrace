@@ -1,14 +1,10 @@
-# Developer Certificate of Origin (DCO)
+# Developer Certificate of Origin
 
-## Overview
+Every commit on a pull request needs a `Signed-off-by` line. That line is the signer's statement that they can submit the change under the MIT license in [LICENSE](LICENSE).
 
-skiptrace uses the Developer Certificate of Origin (DCO) so contributions are licensed and contributors have the right to submit them.
+skiptrace uses DCO 1.1 instead of a separate contributor license agreement. The certificate below is the Linux Foundation text. It may not be edited.
 
-## What is DCO?
-
-The DCO is a lightweight way for contributors to certify that they wrote or otherwise have the right to submit their contribution. It is the industry-standard alternative to a Contributor License Agreement, used by projects such as the Linux kernel, Docker, and GitLab.
-
-## DCO text
+## Certificate
 
 By making a contribution to this project, you certify that:
 
@@ -48,49 +44,28 @@ By making a contribution to this project, I certify that:
     this project or the open source license(s) involved.
 ```
 
-## How to sign your commits
-
-Add `-s` when you commit:
+## Signing a commit
 
 ```bash
-git commit -s -m "Add new feature"
+git commit -s -m "Describe the change"
 ```
 
-That appends:
+Git appends `Signed-off-by:` using the name and email on that commit. Sign your own commits. Do not add the line for someone else.
 
-```
-Signed-off-by: Your Name <your.email@example.com>
-```
-
-The name and email come from `user.name` and `user.email` in the repository or your environment. Set those for the commit. Do not rewrite someone else's git identity to make a sign-off.
-
-To sign off every commit in one clone:
+One clone can sign every commit:
 
 ```bash
 git config format.signoff true
 ```
 
-To add a sign-off to the latest commit you have not pushed:
+Leave that setting local to the clone. A commit that already exists and has not been pushed can be re-signed with `git commit --amend -s`. A range can be re-signed with `git rebase --signoff`, then updated on the remote with `--force-with-lease`.
 
-```bash
-git commit --amend --signoff
-```
+## What the check looks at
 
-For several unpushed commits, `git rebase --signoff` over that range, then push with `--force-with-lease` if the branch was already on the remote.
+[.github/workflows/dco-check.yml](.github/workflows/dco-check.yml) reads non-merge commits in `origin/main..HEAD`. Each one needs a `Signed-off-by:` line. Commits already on `main` are outside that range.
 
-## Check
+## Work paid for by an employer
 
-Pull requests are checked by [.github/workflows/dco-check.yml](.github/workflows/dco-check.yml). The check looks at non-merge commits in `origin/main..HEAD`. Each one needs a `Signed-off-by:` line. The root commit already on `main` is outside that range.
+Use the email your employer expects, and be allowed to submit the work. A long-running company contribution should start with a note to [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com).
 
-If the check fails, add the sign-off and push the branch again with `--force-with-lease`.
-
-## Work from a company
-
-Use the email your employer expects on the commit, and make sure your employment terms allow the contribution. Each person signs off their own commits. You cannot sign off for someone else.
-
-For a large or ongoing corporate contribution, email [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com) before starting.
-
-## Questions
-
-- General questions: a GitHub discussion
-- Licensing of a contribution: [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com)
+Questions about a specific contribution go to the same address. Everything else goes in a GitHub discussion.

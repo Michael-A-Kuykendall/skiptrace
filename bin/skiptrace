@@ -25,7 +25,11 @@
                                       (or (= (length script) (length arg))
                                           (char= (char script (- (length script) (length arg) 1)) #\/)))
                             return (rest tail)))))))
-    (let* ((args #+sbcl (let ((tail (script-tail sb-ext:*posix-argv*)))
+    ;; SBCL --script removes --script and the script name from *posix-argv*,
+    ;; leaving ("sbcl" . user-args). Do not search that list for the script
+    ;; path: a later path such as bin/skiptrace matches the truename's suffix
+    ;; and everything before it, including --strict, is dropped.
+    (let* ((args #+sbcl (let ((tail (rest sb-ext:*posix-argv*)))
                            (if (and tail (string= (first tail) "--")) (rest tail) tail))
                  #+ccl (rest (member "--" ccl:*command-line-argument-list* :test #'string=))
                  #+ecl (script-tail (ext:command-args))

@@ -24,8 +24,8 @@ What changed, and why.
 - [ ] `sbcl --script tests/run.lisp`
 - [ ] `ecl --shell tests/run.lisp`
 - [ ] `clisp -q -norc tests/run.lisp`
-- [ ] `sbcl --script bin/skiptrace -- --strict src/ tests/ skiptrace.asd dump-features.lisp` exits 0
-- [ ] `sbcl --script bin/skiptrace -- --strict examples/` exits 1
+- [ ] `sbcl --script bin/skiptrace --strict src/ tests/ bin/skiptrace skiptrace.asd dump-features.lisp` exits 0
+- [ ] `sbcl --script bin/skiptrace --strict examples/` exits 1
 
 ## Legal
 - [ ] Every commit is signed off (`git commit -s`). See [DCO.md](../DCO.md).

@@ -6,9 +6,7 @@
   Finds Common Lisp forms the reader never reads.
 </div>
 
-**skiptrace will be free forever.** No asterisks. No "free for now." No pivot to paid.
-
-If skiptrace helps you, [sponsor it](https://github.com/sponsors/Michael-A-Kuykendall). Tiers and recognition are in [SPONSORS.md](SPONSORS.md).
+skiptrace stays free to use, copy, and ship, including in commercial work. There is no paid build. Sponsorship is optional: [GitHub Sponsors](https://github.com/sponsors/Michael-A-Kuykendall), with the amounts listed in [SPONSORS.md](SPONSORS.md).
 
 `#+sbcl (foo)` is not untested on Clozure. Clozure's reader skips the form, so no test suite and no coverage tool can see it. skiptrace scans source without calling `READ`, records every `#+` / `#-` and every ASDF `:if-feature`, and checks each guard against `*features*` lists from the implementations you ship.
 
@@ -35,13 +33,7 @@ clisp bin/skiptrace src/
 ccl -b -l bin/skiptrace -- src/
 ```
 
-`sbcl --script` keeps a `--` in the argument list. skiptrace ignores it, so this works:
-
-```sh
-sbcl --script bin/skiptrace -- src/
-```
-
-CCL still needs the `--`, because CCL uses it to split its own options from the script's. ECL and CLISP accept it.
+A leading `--` is ignored, so `sbcl --script bin/skiptrace -- src/` is the same call. CCL still requires the `--`. That is how CCL splits its own options from the script's. ECL and CLISP accept the separator and also run without it.
 
 Exit status: `0` clean, `1` with `--strict` when there is a contradiction or a likely typo, `2` when the path is missing or no path was given.
 
@@ -59,11 +51,10 @@ That exits 0. The same command with `--strict` exits 1. `examples/demo.lisp` has
 (asdf:load-asd (truename "skiptrace.asd"))
 (asdf:load-system "skiptrace")
 
-(skiptrace:audit-paths '("src/")
-                       :profile-dir (merge-pathnames "profiles/"))
+(skiptrace:audit-paths '("src/"))
 ```
 
-`audit-paths` returns three values: file results, the profiles it loaded, and the analysis plist. The exported entry points are `main`, `audit-paths`, `scan-file`, `parse-feature-expression`, `eval-feature-expression`, and `load-profiles`.
+With the system loaded and no `:profile-dir`, `audit-paths` uses `asdf:system-relative-pathname` to find `profiles/` next to `skiptrace.asd`. `audit-paths` returns three values: file results, the profiles it loaded, and the analysis plist. The exported entry points are `main`, `audit-paths`, `scan-file`, `parse-feature-expression`, `eval-feature-expression`, and `load-profiles`.
 
 ```lisp
 (asdf:test-system "skiptrace")
@@ -100,8 +91,9 @@ A profile is one image's `*features*`, a plist in `profiles/*.sexp`.
 | --- | --- |
 | `sbcl-linux-x86-64` | captured, SBCL 2.2.9.debian |
 | `ecl-linux-x86-64` | captured, ECL 21.2.1 |
+| `clisp-linux-x86-64` | captured, CLISP 2.49.93+ (2018-02-18) |
 
-The default run loads every `*.sexp` directly in `profiles/`. That is the two captured files. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles ccl-linux-x86-64` still finds one there.
+The default run loads every `*.sexp` directly in `profiles/`. That is the three captured files. CLISP records this host as `:pc386` and `:word-size=64`. It does not put `:linux` or `:x86-64` on `*features*`. The file name is the machine the list was captured on. Handwritten profiles live in `profiles/approximate/` and stay out of the default matrix. `--profiles ccl-linux-x86-64` still finds one there.
 
 ```sh
 sbcl --script dump-features.lisp > profiles/sbcl-linux-x86-64.sexp

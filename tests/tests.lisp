@@ -8,8 +8,17 @@
 
 (defvar *failures* 0)
 (defvar *count* 0)
-(defvar *tests-dir*
-  (make-pathname :name nil :type nil :defaults *load-truename*))
+(defvar *profiles-dir*
+  (or (let ((asdf (find-package :asdf)))
+        (when asdf
+          (let ((fn (find-symbol "SYSTEM-RELATIVE-PATHNAME" asdf)))
+            (when (fboundp fn)
+              (let ((dir (ignore-errors (funcall fn :skiptrace "profiles/"))))
+                (when (and dir
+                           (probe-file (merge-pathnames "sbcl-linux-x86-64.sexp" dir)))
+                  dir))))))
+      (merge-pathnames "../profiles/"
+                       (make-pathname :name nil :type nil :defaults *load-truename*))))
 
 (defmacro check (name form expected)
   `(let ((got (handler-case ,form (error (e) (list :error (princ-to-string e)))))
@@ -34,7 +43,8 @@
 
 (defun nested-walk-names ()
   "Write a source file one directory down and collect it. ECL used to miss this."
-  (let* ((root (merge-pathnames "nest-fixture/" *tests-dir*))
+  (let* ((root (merge-pathnames "skiptrace-nest-fixture/"
+                                (make-pathname :directory '(:absolute "tmp"))))
          (leaf (merge-pathnames "sub/leaf.lisp" root)))
     (ensure-directories-exist leaf)
     (with-open-file (out leaf :direction :output :if-exists :supersede
@@ -186,16 +196,12 @@
          '("sub/leaf.lisp"))
 
   (check "default matrix is the captured profiles"
-         (let ((dir (merge-pathnames "profiles/"
-                                     (merge-pathnames "../" *tests-dir*))))
-           (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles dir))
-                 #'string<))
-         '("ecl-linux-x86-64" "sbcl-linux-x86-64"))
+         (sort (mapcar #'skiptrace::profile-name (skiptrace:load-profiles *profiles-dir*))
+               #'string<)
+         '("clisp-linux-x86-64" "ecl-linux-x86-64" "sbcl-linux-x86-64"))
   (check "named handwritten profile still loads"
-         (let ((dir (merge-pathnames "profiles/"
-                                     (merge-pathnames "../" *tests-dir*))))
-           (mapcar #'skiptrace::profile-name
-                   (skiptrace:load-profiles dir '("ccl-linux-x86-64"))))
+         (mapcar #'skiptrace::profile-name
+                 (skiptrace:load-profiles *profiles-dir* '("ccl-linux-x86-64")))
          '("ccl-linux-x86-64"))
 
   (format t "~a/~a checks passed~%" (- *count* *failures*) *count*)

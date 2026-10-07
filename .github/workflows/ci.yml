@@ -28,11 +28,14 @@ jobs:
       - name: CLISP tests
         run: clisp -q -norc tests/run.lisp
 
+      - name: SBCL launcher receives its arguments
+        run: sbcl --script bin/skiptrace examples/
+
+      - name: A leading double dash is not a path
+        run: sbcl --script bin/skiptrace -- examples/
+
       - name: Strict scan of the tool
         run: sbcl --script bin/skiptrace --strict src/ tests/ bin/skiptrace skiptrace.asd dump-features.lisp
-
-      - name: Double dash is not a path
-        run: sbcl --script bin/skiptrace -- --strict examples/
 
       - name: Demo still exits 1 under --strict
         run: |

@@ -1,78 +1,21 @@
 # Code of Conduct
 
-## Our Pledge
+skiptrace is a small tool and a small conversation around it. The bar below is this project's own. It follows the intent of the [Contributor Covenant](https://www.contributor-covenant.org), version 2.0. The pledge text from that covenant is not reprinted here.
 
-We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+## What we expect
 
-## Our Standards
+Talk about the scanner, the profiles, and the report. Disagree about a finding by showing the source. Criticism of a patch stays on the patch.
 
-Examples of behavior that contributes to a positive environment:
+Do not insult people, hound them, or publish private information they did not share. Do not use the issue tracker for advertising or for topics that have nothing to do with skiptrace.
 
-* Being respectful and inclusive in discussions
-* Focusing on technical merit and project goals
-* Providing constructive feedback on contributions
-* Accepting criticism gracefully and learning from mistakes
-* Focusing on what is best for the community and project
+## Where this applies
 
-Examples of unacceptable behavior:
+GitHub issues, pull requests, and discussions. Mail to the maintainer about the project. Anywhere someone is speaking for skiptrace.
 
-* Harassment, trolling, or discriminatory language
-* Personal attacks or inflammatory comments
-* Publishing others' private information without permission
-* Spam, off-topic discussions, or promotion of unrelated projects
-* Any conduct that would be inappropriate in a professional setting
+## What happens
 
-## Project Focus
+Report a problem to [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com). The maintainer reads it, keeps the reporter's identity private, and answers.
 
-This project keeps a narrow technical focus:
+A first incident gets a direct note about what crossed the line. A repeat, or something more serious, gets a warning that names the next step. Harassment, doxxing, or a threat ends access to the project's spaces. Someone who keeps it up after a removal stays removed.
 
-- **Stay on topic.** Discussion is about skiptrace: the scanner, the profiles, and the report.
-- **Respect the design.** Zero dependencies, a static scan, and a stable `--strict` / JSON / demo contract.
-- **Quality over quantity.** A small accurate change beats a wide one.
-- **Technical merit.** Decisions follow from what the Lisps actually do.
-
-## Enforcement Responsibilities
-
-The project maintainer is responsible for clarifying and enforcing standards of acceptable behavior and will take appropriate corrective action in response to any behavior deemed inappropriate, threatening, offensive, or harmful.
-
-## Scope
-
-This Code of Conduct applies within all project spaces, including:
-
-- GitHub repository (issues, pull requests, discussions)
-- Project communications
-- Public representation of the project
-
-## Enforcement
-
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com).
-
-All complaints will be reviewed and investigated promptly and fairly. The maintainer is obligated to respect the privacy and security of the reporter.
-
-## Enforcement Guidelines
-
-The maintainer will follow these Community Impact Guidelines:
-
-### 1. Correction
-
-**Community Impact**: Minor inappropriate behavior or technical disagreement.
-**Consequence**: Private clarification about the nature of the violation and an explanation of why the behavior was inappropriate.
-
-### 2. Warning
-
-**Community Impact**: A moderate violation, or a pattern of inappropriate behavior.
-**Consequence**: A warning with consequences for continued behavior.
-
-### 3. Temporary Ban
-
-**Community Impact**: A serious violation of community standards.
-**Consequence**: A temporary ban from project interaction.
-
-### 4. Permanent Ban
-
-**Community Impact**: Sustained inappropriate behavior, or a severe violation.
-**Consequence**: A permanent ban from all project interaction.
-
-## Attribution
-
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 2.0.
+The maintainer decides. There is no separate committee.

@@ -1,5 +1,5 @@
 ;;;; A file with one of each problem skiptrace looks for.
-;;;; sbcl --script bin/skiptrace.lisp examples/
+;;;; sbcl --script bin/skiptrace examples/
 
 (defpackage #:demo (:use #:cl))
 (in-package #:demo)
