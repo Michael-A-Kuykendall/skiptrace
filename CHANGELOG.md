@@ -22,14 +22,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub Actions workflow that installs SBCL, ECL, and CLISP and runs the tests, plus a DCO check on pull requests.
 - Project docs: license, conduct, contributing, security, governance, DCO, changelog, roadmap, sponsors.
 - [EXAMPLES.md](EXAMPLES.md): contradictions and likely typos from 243 libraries. The README lists the best-known ones.
-- `--json-full` writes each finding with its file, line, parent guards, and preview, including likely-typo locations, comment idioms, dynamic guards, and scanner notes. `--json` still has only `profiles`, `sites`, and `likely_typos`.
+- `--json-full` writes each finding with its file, line, parent guards, preview, and a SHA-256 of the whole guarded form. Counts distinguish `likely_typo_features` from `likely_typo_occurrences`. `--json` still has only `profiles`, `sites`, and `likely_typos`.
 - `corpus-scan.py` scans a pinned Quicklisp-format distribution in one SBCL process and writes a deduplicated summary. `sweep.sh` stays the 18-project smoke corpus.
-- Evidence for Quicklisp 2026-01-01 (2,382 projects) and Ultralisp 20261005202000 (2,141 projects) is in `evidence/`. Copied findings share one fingerprint.
+- Evidence for Quicklisp 2026-01-01 (2,382 projects) and Ultralisp 20261005202000 (2,141 projects) is in `evidence/`. A copied form shares one fingerprint. The fingerprint is a SHA-256 of the whole guarded form, not the first-line preview.
 
 ### Fixed
 
 - An unclosed `|` or a trailing `\` in a token stops at the end of the file. The scan of that file no longer aborts with a bounds error.
 - A directory whose name contains a dot, such as a Quicklisp prefix `bordeaux-threads-v0.9.4`, is scanned. The final component is no longer split into a file name and a type.
+- A distribution extract is kept only when a marker matches the archive md5 and sha1. A nonempty directory left by an interrupted extract is extracted again.
 - `;` comments and `#| ... |#` comments inside a feature expression are skipped. A comment word is no longer treated as a feature name.
 - `--profiles` now rejects a request when any named profile is missing instead of silently using the valid subset.
 - Escaped feature symbols now resume normal case folding after `|...|`, preserve escaped colons as symbol data, and handle backslash escapes inside multiple escapes.

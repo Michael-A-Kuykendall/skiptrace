@@ -43,6 +43,9 @@ jobs:
       - name: Strict scan of the tool
         run: sbcl --script bin/skiptrace --strict src/ tests/ bin/skiptrace skiptrace.asd dump-features.lisp
 
+      - name: Corpus scanner self-test
+        run: python3 corpus-scan.py --self-test
+
       - name: Demo still exits 1 under --strict
         run: |
           set +e

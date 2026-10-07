@@ -33,7 +33,8 @@
   parent        ; nearest enclosing site, or NIL
   preview       ; first line of the guarded form
   (end-line nil)
-  (comment-p nil)) ; #+(or) / #-(and) / #+nil idioms
+  (comment-p nil) ; #+(or) / #-(and) / #+nil idioms
+  (form-hash nil)) ; SHA-256 of the whitespace-collapsed guarded form
 
 (defstruct profile name source features (maybe '()))
 
@@ -266,6 +267,98 @@ expressions are also :UNKNOWN."
         do (incf pos (if (char= c #\\) 2 1)))
   (min *len* (1+ pos)))
 
+(defparameter *sha256-k*
+  #(#x428a2f98 #x71374491 #xb5c0fbcf #xe9b5dba5 #x3956c25b #x59f111f1 #x923f82a4 #xab1c5ed5
+    #xd807aa98 #x12835b01 #x243185be #x550c7dc3 #x72be5d74 #x80deb1fe #x9bdc06a7 #xc19bf174
+    #xe49b69c1 #xefbe4786 #x0fc19dc6 #x240ca1cc #x2de92c6f #x4a7484aa #x5cb0a9dc #x76f988da
+    #x983e5152 #xa831c66d #xb00327c8 #xbf597fc7 #xc6e00bf3 #xd5a79147 #x06ca6351 #x14292967
+    #x27b70a85 #x2e1b2138 #x4d2c6dfc #x53380d13 #x650a7354 #x766a0abb #x81c2c92e #x92722c85
+    #xa2bfe8a1 #xa81a664b #xc24b8b70 #xc76c51a3 #xd192e819 #xd6990624 #xf40e3585 #x106aa070
+    #x19a4c116 #x1e376c08 #x2748774c #x34b0bcb5 #x391c0cb3 #x4ed8aa4a #x5b9cca4f #x682e6ff3
+    #x748f82ee #x78a5636f #x84c87814 #x8cc70208 #x90befffa #xa4506ceb #xbef9a3f7 #xc67178f2))
+
+(defun u32 (n) (logand n #xffffffff))
+
+(defun not32 (n) (logxor (u32 n) #xffffffff))
+
+(defun rotr32 (x n)
+  (setf x (u32 x))
+  (u32 (logior (ash x (- n)) (ash x (- 32 n)))))
+
+(defun string-utf8-octets (string)
+  (let ((out (make-array (length string) :element-type '(unsigned-byte 8) :adjustable t :fill-pointer 0)))
+    (loop for c across string
+          for code = (char-code c)
+          do (cond ((< code #x80) (vector-push-extend code out))
+                   ((< code #x800)
+                    (vector-push-extend (logior #xc0 (ash code -6)) out)
+                    (vector-push-extend (logior #x80 (logand code #x3f)) out))
+                   ((< code #x10000)
+                    (vector-push-extend (logior #xe0 (ash code -12)) out)
+                    (vector-push-extend (logior #x80 (logand (ash code -6) #x3f)) out)
+                    (vector-push-extend (logior #x80 (logand code #x3f)) out))
+                   (t
+                    (vector-push-extend (logior #xf0 (ash code -18)) out)
+                    (vector-push-extend (logior #x80 (logand (ash code -12) #x3f)) out)
+                    (vector-push-extend (logior #x80 (logand (ash code -6) #x3f)) out)
+                    (vector-push-extend (logior #x80 (logand code #x3f)) out))))
+    out))
+
+(defun sha256-hex (string)
+  "Lowercase SHA-256 of the UTF-8 bytes of STRING."
+  (let* ((msg (string-utf8-octets string))
+         (bit-len (* (length msg) 8))
+         (h0 #x6a09e667) (h1 #xbb67ae85) (h2 #x3c6ef372) (h3 #xa54ff53a)
+         (h4 #x510e527f) (h5 #x9b05688c) (h6 #x1f83d9ab) (h7 #x5be0cd19))
+    (vector-push-extend #x80 msg)
+    (loop while (/= (mod (+ (length msg) 8) 64) 0)
+          do (vector-push-extend 0 msg))
+    (loop for shift from 56 downto 0 by 8
+          do (vector-push-extend (logand (ash bit-len (- shift)) #xff) msg))
+    (loop for chunk from 0 below (length msg) by 64
+          do (let ((w (make-array 64 :element-type '(unsigned-byte 32))))
+               (loop for i from 0 below 16
+                     do (setf (aref w i)
+                              (logior (ash (aref msg (+ chunk (* i 4))) 24)
+                                      (ash (aref msg (+ chunk (* i 4) 1)) 16)
+                                      (ash (aref msg (+ chunk (* i 4) 2)) 8)
+                                      (aref msg (+ chunk (* i 4) 3)))))
+               (loop for i from 16 below 64
+                     do (let* ((x (aref w (- i 15)))
+                               (y (aref w (- i 2)))
+                               (s0 (logxor (rotr32 x 7) (rotr32 x 18) (ash x -3)))
+                               (s1 (logxor (rotr32 y 17) (rotr32 y 19) (ash y -10))))
+                          (setf (aref w i)
+                                (u32 (+ (aref w (- i 16)) s0 (aref w (- i 7)) s1)))))
+               (let ((a h0) (b h1) (c h2) (d h3) (e h4) (f h5) (g h6) (h h7))
+                 (loop for i from 0 below 64
+                       do (let* ((s1 (logxor (rotr32 e 6) (rotr32 e 11) (rotr32 e 25)))
+                                 (ch (logxor (logand e f) (logand (not32 e) g)))
+                                 (temp1 (u32 (+ h s1 (u32 ch) (aref *sha256-k* i) (aref w i))))
+                                 (s0 (logxor (rotr32 a 2) (rotr32 a 13) (rotr32 a 22)))
+                                 (maj (logxor (logand a b) (logand a c) (logand b c)))
+                                 (temp2 (u32 (+ s0 (u32 maj)))))
+                            (setf h g g f f e e (u32 (+ d temp1))
+                                  d c c b b a a (u32 (+ temp1 temp2)))))
+                 (setf h0 (u32 (+ h0 a)) h1 (u32 (+ h1 b)) h2 (u32 (+ h2 c)) h3 (u32 (+ h3 d))
+                       h4 (u32 (+ h4 e)) h5 (u32 (+ h5 f)) h6 (u32 (+ h6 g)) h7 (u32 (+ h7 h))))))
+    (string-downcase
+     (format nil "~8,'0x~8,'0x~8,'0x~8,'0x~8,'0x~8,'0x~8,'0x~8,'0x" h0 h1 h2 h3 h4 h5 h6 h7))))
+
+(defun normalize-form-text (text)
+  "Collapse whitespace so copied forms that differ only by spacing share a hash."
+  (with-output-to-string (out)
+    (let ((started nil) (gap nil))
+      (loop for c across text
+            do (cond ((whitespacep c) (when started (setf gap t)))
+                     (t (when gap (write-char #\Space out))
+                        (setf gap nil started t)
+                        (write-char c out)))))))
+
+(defun form-hash (start end)
+  (when (and start end (<= 0 start end *len*))
+    (sha256-hex (normalize-form-text (subseq *text* start end)))))
+
 (defun preview-at (pos &optional (limit *len*))
   (let* ((end (min limit (or (position #\Newline *text* :start pos) *len*)))
          (s (string-trim '(#\Space #\Tab #\Return) (subseq *text* pos end))))
@@ -332,6 +425,7 @@ STATUS is :OBJECT, :CLOSE (a closing paren is next) or :EOF."
         (when site
           (if (eq status :object)
               (setf (site-preview site) (preview-at form-start end)
+                    (site-form-hash site) (form-hash form-start end)
                     (site-end-line site) (line-of (max form-start (1- end))))
               (setf (site-preview site) "<guards nothing>")))
         (values end :object)))))
@@ -356,9 +450,12 @@ STATUS is :OBJECT, :CLOSE (a closing paren is next) or :EOF."
           (case status
             (:close
              (when pending-if-feature
-               (setf (site-end-line pending-if-feature) (line-of end)))
+               (setf (site-end-line pending-if-feature) (line-of end)
+                     (site-form-hash pending-if-feature) (form-hash open-pos (1+ end))))
              (return (1+ end)))
             (:eof
+             (when pending-if-feature
+               (setf (site-form-hash pending-if-feature) (form-hash open-pos end)))
              (note "unterminated list starting on line ~a" (line-of open-pos))
              (return end))
             (t
@@ -871,6 +968,9 @@ doesn't already have them: the push may be conditional or run after the read."
   (write-string ", " stream)
   (json-string "preview" stream) (write-string ": " stream)
   (if (getf finding :preview) (json-string (getf finding :preview) stream) (write-string "null" stream))
+  (write-string ", " stream)
+  (json-string "form_hash" stream) (write-string ": " stream)
+  (if (getf finding :form-hash) (json-string (getf finding :form-hash) stream) (write-string "null" stream))
   (when (numberp (getf finding :count))
     (format stream ", \"count\": ~a, \"files\": ~a" (getf finding :count) (or (getf finding :files) 0)))
   (format stream "}~:[~;,~]~%" more))
@@ -891,7 +991,8 @@ dynamic guards, and one summary row per absent or other feature name."
                   :guard (site-guard-string s)
                   :feature nil :suggestion nil
                   :parent-guards (parent-guard-strings s)
-                  :preview (site-preview s))
+                  :preview (site-preview s)
+                  :form-hash (site-form-hash s))
             findings))
     (dolist (group typos)
       (destructuring-bind (k guess where) group
@@ -904,7 +1005,8 @@ dynamic guards, and one summary row per absent or other feature name."
                         :guard (site-guard-string s)
                         :feature feature :suggestion suggestion
                         :parent-guards (parent-guard-strings s)
-                        :preview (site-preview s))
+                        :preview (site-preview s)
+                  :form-hash (site-form-hash s))
                   findings)))))
     (dolist (s matrix-dead)
       (push (list :kind "never-read-in-matrix" :severity "info" :intentional nil
@@ -913,7 +1015,8 @@ dynamic guards, and one summary row per absent or other feature name."
                   :guard (site-guard-string s)
                   :feature nil :suggestion nil
                   :parent-guards (parent-guard-strings s)
-                  :preview (site-preview s))
+                  :preview (site-preview s)
+                  :form-hash (site-form-hash s))
             findings))
     (dolist (s (remove-if-not (lambda (site)
                                 (and (eq (site-kind site) :plus)
@@ -925,7 +1028,8 @@ dynamic guards, and one summary row per absent or other feature name."
                   :guard (site-guard-string s)
                   :feature nil :suggestion nil
                   :parent-guards (parent-guard-strings s)
-                  :preview (site-preview s))
+                  :preview (site-preview s)
+                  :form-hash (site-form-hash s))
             findings))
     (dolist (s (getf analysis :dynamic))
       (push (list :kind "dynamic" :severity "info" :intentional nil
@@ -934,7 +1038,8 @@ dynamic guards, and one summary row per absent or other feature name."
                   :guard (site-guard-string s)
                   :feature nil :suggestion nil
                   :parent-guards (parent-guard-strings s)
-                  :preview (site-preview s))
+                  :preview (site-preview s)
+                  :form-hash (site-form-hash s))
             findings))
     (let ((untested (remove-if (lambda (u) (assoc (car u) typos))
                                (hash-to-ranked-list (getf analysis :untested))))
@@ -951,6 +1056,7 @@ dynamic guards, and one summary row per absent or other feature name."
                       :suggestion nil
                       :parent-guards (and ex (parent-guard-strings ex))
                       :preview (and ex (site-preview ex))
+                      :form-hash (and ex (site-form-hash ex))
                       :count (length sites) :files (files-count sites))
                 findings)))
       (dolist (o (remove-if (lambda (item) (or (member (car item) known) (assoc (car item) typos))) outside))
@@ -965,6 +1071,7 @@ dynamic guards, and one summary row per absent or other feature name."
                       :suggestion (and version (string-downcase version))
                       :parent-guards (and ex (parent-guard-strings ex))
                       :preview (and ex (site-preview ex))
+                      :form-hash (and ex (site-form-hash ex))
                       :count (length sites) :files (files-count sites))
                 findings))))
     (nreverse findings)))
@@ -980,11 +1087,12 @@ dynamic guards, and one summary row per absent or other feature name."
                       append (mapcar (lambda (n) (format nil "~a: ~a" (fr-name r) n)) (fr-notes r)))))
     (format stream "{~%  \"profiles\": [")
     (loop for (p . more) on profiles do (json-string (profile-name p) stream) (when more (write-string ", " stream)))
-    (format stream "],~%  \"counts\": {~%    \"files\": ~a,~%    \"guarded_forms\": ~a,~%    \"contradictions\": ~a,~%    \"likely_typos\": ~a,~%    \"never_read\": ~a,~%    \"comment_idioms\": ~a,~%    \"dynamic\": ~a~%  },~%  \"findings\": [~%"
+    (format stream "],~%  \"counts\": {~%    \"files\": ~a,~%    \"guarded_forms\": ~a,~%    \"contradictions\": ~a,~%    \"likely_typo_features\": ~a,~%    \"likely_typo_occurrences\": ~a,~%    \"never_read\": ~a,~%    \"comment_idioms\": ~a,~%    \"dynamic\": ~a~%  },~%  \"findings\": [~%"
             (length results)
             (length (getf analysis :sites))
             (length (getf analysis :contradictions))
             (length (getf analysis :typos))
+            (loop for group in (getf analysis :typos) sum (length (third group)))
             (length (getf analysis :matrix-dead))
             (length risky)
             (length (getf analysis :dynamic)))

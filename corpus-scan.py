@@ -21,9 +21,11 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.request import urlopen
@@ -103,21 +105,51 @@ def download_one(row, tarball_dir):
     return "ok"
 
 
+def extract_marker(src_root, prefix):
+    return src_root.parent / "extracted" / prefix
+
+
 def extract_one(row, tarball_dir, src_root):
+    """Extract ROW into src_root / prefix.
+
+    A nonempty directory is not enough. The extract is written in a temporary
+    directory and renamed into place, and a marker records the archive md5 and
+    sha1. A rerun trusts the directory only when that marker matches.
+    """
     dest = src_root / row["prefix"]
-    if dest.is_dir() and any(dest.iterdir()):
-        return "have"
+    marker = extract_marker(src_root, row["prefix"])
+    expected = f"{row['md5']} {row['sha1']}\n"
+    try:
+        if dest.is_dir() and marker.is_file() and marker.read_text(encoding="utf-8") == expected:
+            return "have"
+    except OSError:
+        pass
     archive = tarball_dir / f"{row['prefix']}.tgz"
     if not archive.is_file():
         return "fail"
-    dest.mkdir(parents=True, exist_ok=True)
-    result = subprocess.run(
-        ["tar", "-xzf", str(archive), "-C", str(src_root)],
-        capture_output=True,
-    )
-    if result.returncode != 0 or not dest.is_dir():
+    tmp_root = src_root.parent / "partial" / f"{row['prefix']}.{os.getpid()}.{threading.get_ident()}"
+    try:
+        if tmp_root.exists():
+            shutil.rmtree(tmp_root)
+        tmp_root.mkdir(parents=True)
+        result = subprocess.run(
+            ["tar", "-xzf", str(archive), "-C", str(tmp_root)],
+            capture_output=True,
+        )
+        extracted = tmp_root / row["prefix"]
+        if result.returncode != 0 or not extracted.is_dir():
+            return "fail"
+        if dest.exists():
+            shutil.rmtree(dest)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        extracted.rename(dest)
+        marker.parent.mkdir(parents=True, exist_ok=True)
+        marker.write_text(expected, encoding="utf-8")
+        return "ok"
+    except OSError:
         return "fail"
-    return "ok"
+    finally:
+        shutil.rmtree(tmp_root, ignore_errors=True)
 
 
 def run_pool(rows, workers, fn):
@@ -149,6 +181,11 @@ def norm(text):
 
 
 def fingerprint(finding):
+    """Guard chain plus the whole-form hash.
+
+    feature and suggestion stay in the identity so two different typo
+    suggestions do not collapse. preview is display text and is not hashed.
+    """
     chain = [norm(item) for item in finding.get("parent_guards") or []]
     chain.append(norm(finding.get("guard")))
     return "|".join(
@@ -157,7 +194,7 @@ def fingerprint(finding):
             finding.get("feature") or "",
             finding.get("suggestion") or "",
             " >> ".join(chain),
-            norm(finding.get("preview")),
+            finding.get("form_hash") or "",
         ]
     )
 
@@ -197,6 +234,7 @@ def aggregate(jsonl_path):
                         "guard": finding.get("guard"),
                         "parent_guards": finding.get("parent_guards") or [],
                         "preview": finding.get("preview"),
+                        "form_hash": finding.get("form_hash"),
                         "feature": finding.get("feature"),
                         "suggestion": finding.get("suggestion"),
                         "occurrences": 0,
@@ -308,18 +346,70 @@ def scan_jobs(jobs_path, out_path):
         raise SystemExit(f"corpus-batch exited {result.returncode}")
 
 
+def self_test_extract():
+    """A nonempty directory without a matching marker is extracted again."""
+    with tempfile.TemporaryDirectory(prefix="skiptrace-extract-") as tmp:
+        root = Path(tmp)
+        src = root / "src"
+        tarballs = root / "tarballs"
+        build = root / "build" / "sample-1.0"
+        src.mkdir()
+        tarballs.mkdir()
+        (build / "sub").mkdir(parents=True)
+        (build / "a.lisp").write_text(";; a\n", encoding="utf-8")
+        (build / "sub" / "b.lisp").write_text(";; b\n", encoding="utf-8")
+        archive = tarballs / "sample-1.0.tgz"
+        result = subprocess.run(
+            ["tar", "-czf", str(archive), "-C", str(root / "build"), "sample-1.0"],
+            capture_output=True,
+        )
+        if result.returncode != 0:
+            print("SELF_TEST_FAIL could not build the sample archive", file=sys.stderr)
+            return False
+        data = archive.read_bytes()
+        row = {
+            "project": "sample",
+            "prefix": "sample-1.0",
+            "md5": hashlib.md5(data).hexdigest(),
+            "sha1": hashlib.sha1(data).hexdigest(),
+        }
+        if extract_one(row, tarballs, src) != "ok":
+            print("SELF_TEST_FAIL first extract", file=sys.stderr)
+            return False
+        kept = src / "sample-1.0" / "sub" / "b.lisp"
+        kept.unlink()
+        extract_marker(src, "sample-1.0").unlink()
+        if extract_one(row, tarballs, src) != "ok" or not kept.is_file():
+            print("SELF_TEST_FAIL partial extract was trusted", file=sys.stderr)
+            return False
+        if extract_one(row, tarballs, src) != "have":
+            print("SELF_TEST_FAIL marked extract was repeated", file=sys.stderr)
+            return False
+    return True
+
+
 def self_test():
     source = "#+sbcl\n(defun fast-path ()\n  #+ccl (ccl::%fast-thing)\n  :slow)\n"
+    pad = "x" * 70
+    long_alpha = f"#+sbcl\n#+ccl (widget {pad} alpha)\n"
+    long_beta = f"#+sbcl\n#+ccl (widget {pad} beta)\n"
+    if not self_test_extract():
+        return 1
     with tempfile.TemporaryDirectory(prefix="skiptrace-corpus-") as tmp:
         root = Path(tmp)
+        files = {
+            "one": source,
+            "two": source,
+            "long-alpha": long_alpha,
+            "long-beta": long_beta,
+        }
         jobs = []
-        for name in ("one", "two"):
+        for name, text in files.items():
             directory = root / name
             directory.mkdir()
-            (directory / "a.lisp").write_text(source, encoding="utf-8")
+            (directory / "a.lisp").write_text(text, encoding="utf-8")
             jobs.append((name, directory))
-        missing = root / "no-such"
-        jobs.append(("missing", missing))
+        jobs.append(("missing", root / "no-such"))
         jobs_path = root / "jobs.tsv"
         out_path = root / "out.jsonl"
         with jobs_path.open("w", encoding="utf-8") as handle:
@@ -328,20 +418,30 @@ def self_test():
         scan_jobs(jobs_path, out_path)
         summary = aggregate(out_path)
         contradictions = [item for item in summary["findings"] if item["kind"] == "contradiction"]
-        if len(contradictions) != 1 or contradictions[0]["occurrences"] != 2:
+        copied = [item for item in contradictions if item["occurrences"] == 2]
+        distinct = [item for item in contradictions if item["occurrences"] == 1]
+        if len(copied) != 1 or len(distinct) != 2:
             print(
-                f"SELF_TEST_FAIL unique={len(contradictions)} "
-                f"occurrences={contradictions[0]['occurrences'] if contradictions else 0}",
+                f"SELF_TEST_FAIL copied={len(copied)} distinct={len(distinct)} total={len(contradictions)}",
                 file=sys.stderr,
             )
+            return 1
+        if distinct[0].get("form_hash") == distinct[1].get("form_hash"):
+            print("SELF_TEST_FAIL different forms shared a hash", file=sys.stderr)
+            return 1
+        if distinct[0].get("preview") != distinct[1].get("preview"):
+            print("SELF_TEST_FAIL the preview fixture no longer shares a first line", file=sys.stderr)
             return 1
         if summary["failed"] != 1 or summary["failures"][0]["project"] != "missing":
             print(f"SELF_TEST_FAIL failures={summary['failures']}", file=sys.stderr)
             return 1
-        if summary["scanned"] != 2:
+        if summary["scanned"] != 4:
             print(f"SELF_TEST_FAIL scanned={summary['scanned']}", file=sys.stderr)
             return 1
-    print("self-test ok: 2 occurrences of 1 unique contradiction; 1 project failure did not stop the run")
+    print(
+        "self-test ok: 2 copies are 1 finding; 2 forms with the same preview stay distinct; "
+        "a partial extract is redone; 1 project failure did not stop the run"
+    )
     return 0
 
 
