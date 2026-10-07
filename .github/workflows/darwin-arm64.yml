@@ -1,0 +1,37 @@
+# Dispatch this by hand. It is not part of the push CI.
+# One run is a macOS minute, which bills at ten times a Linux minute.
+# macos-15 is Apple Silicon. macos-15-intel is the Intel image. macos-14 is retiring.
+name: Capture darwin arm64
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Confirm Apple Silicon
+        run: |
+          set -eu
+          echo "uname -s: $(uname -s)"
+          echo "uname -m: $(uname -m)"
+          test "$(uname -s)" = Darwin
+          test "$(uname -m)" = arm64
+
+      - name: Install SBCL
+        run: brew install sbcl
+
+      - name: SBCL version
+        run: sbcl --version
+
+      - name: SBCL tests
+        run: sbcl --script tests/run.lisp
+
+      - name: Dump the profile
+        run: sbcl --script dump-features.lisp
