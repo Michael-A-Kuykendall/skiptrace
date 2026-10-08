@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The README names the Quicklisp submission, [quicklisp-projects#2621](https://github.com/quicklisp/quicklisp-projects/issues/2621).
+
 ## [0.1.0] - 2026-10-07
 
 ### Added

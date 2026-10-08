@@ -80,7 +80,7 @@ skiptrace examples/
 
 A copied script outside the checkout cannot find `src/` and `profiles/`. The explicit `sbcl`, `ecl`, `clisp`, and `ccl` commands above continue to work from the checkout.
 
-Quicklisp publication is planned for the 0.1.0 release but is not yet an available install path. See [ROADMAP.md](ROADMAP.md).
+Submitted to Quicklisp: [quicklisp-projects#2621](https://github.com/quicklisp/quicklisp-projects/issues/2621). Skiptrace is not in a Quicklisp distribution yet.
 
 ## From Lisp
 
