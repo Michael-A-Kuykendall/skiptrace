@@ -23,9 +23,9 @@ Skiptrace scans source. It does not load the system under audit, and it does not
 
 ## Next
 
-- [ ] Tag 0.1.0
-- [ ] Make the GitHub repository public
-- [ ] Submit to Quicklisp
+- [x] Tag 0.1.0
+- [x] Make the GitHub repository public
+- [x] Submit to Quicklisp ([quicklisp-projects#2621](https://github.com/quicklisp/quicklisp-projects/issues/2621))
 - [ ] Further captures, where someone can run the Lisp
 - [ ] Keep the SBCL, ECL, and CLISP ports working as those implementations change
 
