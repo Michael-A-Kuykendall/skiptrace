@@ -202,11 +202,18 @@ The tests cover feature-expression parsing, escaped symbols, strings and comment
 
 Pull requests are restricted to approved maintainers. Unsolicited pull requests are declined. Email [michaelallenkuykendall@gmail.com](mailto:michaelallenkuykendall@gmail.com) to apply for maintainer status.
 
-## Sponsorship
+## Support
 
-Skiptrace stays free to use, copy, modify, and ship, including in commercial work. There is no paid build.
+This project is independently maintained and free forever. Sponsorship helps fund ongoing development, certification, compatibility work, and releases.
 
-Sponsorship is optional and funds ports, captured profiles, CI maintenance, and ongoing compatibility work. See [SPONSORS.md](SPONSORS.md) or [GitHub Sponsors](https://github.com/sponsors/Michael-A-Kuykendall).
+[Sponsor on GitHub](https://github.com/sponsors/Michael-A-Kuykendall) · [Buy Me a Coffee](https://www.buymeacoffee.com/michaelakuykendall)
+
+Any amount is appreciated. Suggested tiers:
+
+- **$5/month** — Thanks
+- **$15/month** — Supporter
+- **$50/month** — Backer
+- **Custom** — [Email for invoicing](mailto:michaelallenkuykendall@gmail.com)
 
 ## License
 
