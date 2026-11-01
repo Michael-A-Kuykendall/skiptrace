@@ -1,8 +1,7 @@
 # These people make the work possible
 
-Zephyr and alistairheath sponsor my work.
+alistairheath sponsors my work.
 
-- [Zephyr](https://github.com/ZephyrCloudIO)
 - [alistairheath](https://github.com/alistairheath)
 
 ## Infrastructure Partners ($500+/month)
